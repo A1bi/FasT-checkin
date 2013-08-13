@@ -8,10 +8,12 @@
 
 #import "FasTScannerViewController.h"
 #import "FasTScannerButtonView.h"
+#import "FasTApi.h"
 
 @interface FasTScannerViewController ()
 
 - (NSDictionary *)parseTicketData:(ZBarSymbolSet *)data;
+- (void)checkInWithInfo:(NSDictionary *)info;
 - (void)tappedButton:(FasTScannerButtonView *)button;
 
 @end
@@ -79,6 +81,13 @@
     return ticketInfo;
 }
 
+- (void)checkInWithInfo:(NSDictionary *)info
+{
+    [[FasTApi defaultApi] checkInTicketWithInfo:info in:(direction == FasTScannerEntranceDirectionIn) callback:^(NSDictionary *response) {
+        
+    }];
+}
+
 - (void)tappedButton:(FasTScannerButtonView *)button
 {
     [buttons makeObjectsPerformSelector:@selector(toggle)];
@@ -90,7 +99,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     ZBarSymbolSet *results = [info objectForKey: ZBarReaderControllerResults];
-    [self parseTicketData:results];
+    [self checkInWithInfo:[self parseTicketData:results]];
 }
 
 @end
