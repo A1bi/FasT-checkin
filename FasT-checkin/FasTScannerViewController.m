@@ -7,10 +7,12 @@
 //
 
 #import "FasTScannerViewController.h"
+#import "FasTScannerButtonView.h"
 
 @interface FasTScannerViewController ()
 
 - (NSDictionary *)parseTicketData:(ZBarSymbolSet *)data;
+- (void)tappedButton:(FasTScannerButtonView *)button;
 
 @end
 
@@ -28,9 +30,34 @@
         [[self scanner] setSymbology:ZBAR_QRCODE config:ZBAR_CFG_ENABLE to:1];
         
         [self setShowsZBarControls:NO];
-
+        
+        UIView *overlay = [[UIView alloc] initWithFrame:self.view.bounds];
+        [self setCameraOverlayView:overlay];
+        
+        NSMutableArray *btns = [NSMutableArray array];
+        int x = 0;
+        for (NSNumber *d in @[@(FasTScannerEntranceDirectionIn), @(FasTScannerEntranceDirectionOut)]) {
+            FasTScannerButtonView *button = [[[FasTScannerButtonView alloc] initWithEntranceDirection:[d intValue]] autorelease];
+            CGRect frame = button.frame;
+            frame.origin.x = x;
+            button.frame = frame;
+            x += frame.size.width;
+            [overlay addSubview:button];
+            
+            [button addTarget:self action:@selector(tappedButton:) forControlEvents:UIControlEventTouchUpInside];
+            [btns addObject:button];
+        }
+        buttons = [[NSArray arrayWithArray:btns] retain];
+        [[buttons lastObject] toggle];
+        direction = FasTScannerEntranceDirectionIn;
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [buttons release];
+    [super dealloc];
 }
 
 - (NSDictionary *)parseTicketData:(ZBarSymbolSet *)data
@@ -50,6 +77,12 @@
     }];
     
     return ticketInfo;
+}
+
+- (void)tappedButton:(FasTScannerButtonView *)button
+{
+    [buttons makeObjectsPerformSelector:@selector(toggle)];
+    direction = [button direction];
 }
 
 #pragma mark reader delegate

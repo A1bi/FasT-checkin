@@ -9,6 +9,15 @@
 #import <UIKit/UIKit.h>
 #import <ZBarSDK/ZBarReaderViewController.h>
 
+typedef enum {
+    FasTScannerEntranceDirectionIn,
+    FasTScannerEntranceDirectionOut
+} FasTScannerEntranceDirection;
+
 @interface FasTScannerViewController : ZBarReaderViewController <ZBarReaderDelegate>
+{
+    NSArray *buttons;
+    FasTScannerEntranceDirection direction;
+}
 
 @end

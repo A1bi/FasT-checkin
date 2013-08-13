@@ -20,6 +20,12 @@
 		610FCAF717B8F5AE000AAF97 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAF617B8F5AE000AAF97 /* libiconv.dylib */; };
 		610FCCCC17B903FB000AAF97 /* FasTScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCCCB17B903FB000AAF97 /* FasTScannerViewController.m */; };
 		610FCCDE17B99ACB000AAF97 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCCDD17B99ACB000AAF97 /* libzbar.a */; };
+		610FCCE817BA30F5000AAF97 /* FasTScannerButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCCE717BA30F5000AAF97 /* FasTScannerButtonView.m */; };
+		610FCCE917BA3382000AAF97 /* in.png in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCE117BA2F42000AAF97 /* in.png */; };
+		610FCCEA17BA3385000AAF97 /* in@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCE217BA2F42000AAF97 /* in@2x.png */; };
+		610FCCEB17BA3388000AAF97 /* out.png in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCE317BA2F42000AAF97 /* out.png */; };
+		610FCCEC17BA338C000AAF97 /* out@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCE417BA2F42000AAF97 /* out@2x.png */; };
+		610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCED17BA40EA000AAF97 /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +58,13 @@
 		610FCCD717B9042F000AAF97 /* ZBarSymbol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarSymbol.h; sourceTree = "<group>"; };
 		610FCCD917B9977C000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		610FCCDD17B99ACB000AAF97 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzbar.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/FasT-checkin-gybkqwxkhajphbfhuwlzihdgygys/Build/Products/Debug-iphoneos/libzbar.a"; sourceTree = "<group>"; };
+		610FCCE117BA2F42000AAF97 /* in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = in.png; sourceTree = "<group>"; };
+		610FCCE217BA2F42000AAF97 /* in@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in@2x.png"; sourceTree = "<group>"; };
+		610FCCE317BA2F42000AAF97 /* out.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = out.png; sourceTree = "<group>"; };
+		610FCCE417BA2F42000AAF97 /* out@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "out@2x.png"; sourceTree = "<group>"; };
+		610FCCE617BA30F5000AAF97 /* FasTScannerButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerButtonView.h; sourceTree = "<group>"; };
+		610FCCE717BA30F5000AAF97 /* FasTScannerButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerButtonView.m; sourceTree = "<group>"; };
+		610FCCED17BA40EA000AAF97 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,8 +125,8 @@
 			children = (
 				610FCAE017B8F522000AAF97 /* FasTAppDelegate.h */,
 				610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */,
-				610FCCCA17B903FB000AAF97 /* FasTScannerViewController.h */,
-				610FCCCB17B903FB000AAF97 /* FasTScannerViewController.m */,
+				610FCCE517BA30C5000AAF97 /* ScannerViewController */,
+				610FCCDF17BA2F42000AAF97 /* assets */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
 			);
 			path = "FasT-checkin";
@@ -126,6 +139,7 @@
 				610FCADA17B8F522000AAF97 /* InfoPlist.strings */,
 				610FCADD17B8F522000AAF97 /* main.m */,
 				610FCADF17B8F522000AAF97 /* FasT-checkin-Prefix.pch */,
+				610FCCED17BA40EA000AAF97 /* Settings.bundle */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -148,6 +162,36 @@
 			);
 			name = ZBarSDK;
 			path = submodules/ZBar/iphone/include/ZBarSDK;
+			sourceTree = "<group>";
+		};
+		610FCCDF17BA2F42000AAF97 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				610FCCE017BA2F42000AAF97 /* images */,
+			);
+			path = assets;
+			sourceTree = "<group>";
+		};
+		610FCCE017BA2F42000AAF97 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				610FCCE117BA2F42000AAF97 /* in.png */,
+				610FCCE217BA2F42000AAF97 /* in@2x.png */,
+				610FCCE317BA2F42000AAF97 /* out.png */,
+				610FCCE417BA2F42000AAF97 /* out@2x.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		610FCCE517BA30C5000AAF97 /* ScannerViewController */ = {
+			isa = PBXGroup;
+			children = (
+				610FCCCA17B903FB000AAF97 /* FasTScannerViewController.h */,
+				610FCCCB17B903FB000AAF97 /* FasTScannerViewController.m */,
+				610FCCE617BA30F5000AAF97 /* FasTScannerButtonView.h */,
+				610FCCE717BA30F5000AAF97 /* FasTScannerButtonView.m */,
+			);
+			name = ScannerViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,6 +249,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */,
+				610FCCE917BA3382000AAF97 /* in.png in Resources */,
+				610FCCEA17BA3385000AAF97 /* in@2x.png in Resources */,
+				610FCCEB17BA3388000AAF97 /* out.png in Resources */,
+				610FCCEC17BA338C000AAF97 /* out@2x.png in Resources */,
+				610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,6 +284,7 @@
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,
 				610FCCCC17B903FB000AAF97 /* FasTScannerViewController.m in Sources */,
+				610FCCE817BA30F5000AAF97 /* FasTScannerButtonView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
