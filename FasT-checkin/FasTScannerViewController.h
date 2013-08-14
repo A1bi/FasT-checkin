@@ -17,6 +17,7 @@ typedef enum {
 @interface FasTScannerViewController : ZBarReaderViewController <ZBarReaderDelegate>
 {
     NSArray *buttons;
+    UIView *colorOverlay;
     FasTScannerEntranceDirection direction;
 }
 

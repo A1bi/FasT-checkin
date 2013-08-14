@@ -36,7 +36,7 @@
     if (checkinId && [checkinId length] > 0) {
         [FasTApi defaultApiWithClientType:nil clientId:checkinId];
     } else {
-        alert = [[UIAlertView alloc] initWithTitle:@"Checkin ID fehlt" message:@"Bitte tragen Sie eine Checkin ID ein." delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringByKey(@"checkinIdMissing") message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
         [alert show];
     }
 }

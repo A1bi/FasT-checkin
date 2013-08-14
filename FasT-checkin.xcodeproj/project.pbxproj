@@ -56,6 +56,8 @@
 		610FD2DC17BAC6FB000AAF97 /* NSString+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5917BA595E000AAF97 /* NSString+MKNetworkKitAdditions.m */; };
 		610FD2DD17BAC6FE000AAF97 /* UIAlertView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5B17BA595E000AAF97 /* UIAlertView+MKNetworkKitAdditions.m */; };
 		610FD2DE17BAC700000AAF97 /* UIImageView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5D17BA595E000AAF97 /* UIImageView+MKNetworkKitAdditions.m */; };
+		610FD31417BAF35C000AAF97 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD2FD17BAF35B000AAF97 /* MBProgressHUD.m */; };
+		610FD32017BAF491000AAF97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 610FD32217BAF491000AAF97 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,6 +182,9 @@
 		610FD2CD17BA64D4000AAF97 /* SocketIOTransportWebsocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOTransportWebsocket.m; sourceTree = "<group>"; };
 		610FD2CE17BA64D4000AAF97 /* SocketIOTransportXHR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOTransportXHR.m; sourceTree = "<group>"; };
 		610FD2D717BA65F0000AAF97 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		610FD2FC17BAF35B000AAF97 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		610FD2FD17BAF35B000AAF97 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		610FD32117BAF491000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,6 +234,7 @@
 		610FCAD017B8F522000AAF97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				610FD2DF17BAF35B000AAF97 /* MBProgressHUD */,
 				610FCD1C17BA595D000AAF97 /* MKNetworkKit */,
 				610FCEF017BA5960000AAF97 /* socket.IO */,
 				610FCCCD17B9042F000AAF97 /* ZBarSDK */,
@@ -268,6 +274,7 @@
 				610FCADD17B8F522000AAF97 /* main.m */,
 				610FCADF17B8F522000AAF97 /* FasT-checkin-Prefix.pch */,
 				610FCCED17BA40EA000AAF97 /* Settings.bundle */,
+				610FD32217BAF491000AAF97 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -477,6 +484,16 @@
 			path = "socket-rocket/SocketRocket";
 			sourceTree = "<group>";
 		};
+		610FD2DF17BAF35B000AAF97 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				610FD2FC17BAF35B000AAF97 /* MBProgressHUD.h */,
+				610FD2FD17BAF35B000AAF97 /* MBProgressHUD.m */,
+			);
+			name = MBProgressHUD;
+			path = submodules/MBProgressHUD;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -560,6 +577,7 @@
 				610FCCEB17BA3388000AAF97 /* out.png in Resources */,
 				610FCCEC17BA338C000AAF97 /* out@2x.png in Resources */,
 				610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */,
+				610FD32017BAF491000AAF97 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,6 +634,7 @@
 				610FD2D417BA6523000AAF97 /* SRWebSocket.m in Sources */,
 				610FD2D517BA652C000AAF97 /* NSData+SRB64Additions.m in Sources */,
 				610FD2D617BA6551000AAF97 /* base64.c in Sources */,
+				610FD31417BAF35C000AAF97 /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,6 +647,14 @@
 				610FCCD917B9977C000AAF97 /* de */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		610FD32217BAF491000AAF97 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				610FD32117BAF491000AAF97 /* de */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

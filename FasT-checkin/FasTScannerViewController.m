@@ -9,12 +9,16 @@
 #import "FasTScannerViewController.h"
 #import "FasTScannerButtonView.h"
 #import "FasTApi.h"
+#import "MBProgressHUD.h"
+#import "QuartzCore/QuartzCore.h"
 
 @interface FasTScannerViewController ()
 
 - (NSDictionary *)parseTicketData:(ZBarSymbolSet *)data;
 - (void)checkInWithInfo:(NSDictionary *)info;
 - (void)tappedButton:(FasTScannerButtonView *)button;
+- (void)enableScanner:(BOOL)enabled;
+- (void)showColorOverlayWithSuccess:(BOOL)success messageKey:(NSString *)messageKey;
 
 @end
 
@@ -25,12 +29,7 @@
     self = [super init];
     if (self) {
         [self setReaderDelegate:self];
-        
-        // only enable code39 and qr code
-		[[self scanner] setSymbology:0 config:ZBAR_CFG_ENABLE to:1];
-        [[self scanner] setSymbology:ZBAR_CODE39 config:ZBAR_CFG_ENABLE to:1];
-        [[self scanner] setSymbology:ZBAR_QRCODE config:ZBAR_CFG_ENABLE to:1];
-        
+        [self enableScanner:YES];
         [self setShowsZBarControls:NO];
         
         UIView *overlay = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -52,6 +51,10 @@
         buttons = [[NSArray arrayWithArray:btns] retain];
         [[buttons lastObject] toggle];
         direction = FasTScannerEntranceDirectionIn;
+        
+        colorOverlay = [[UIView alloc] initWithFrame:overlay.bounds];
+        [colorOverlay setHidden:YES];
+        [overlay addSubview:colorOverlay];
     }
     return self;
 }
@@ -59,6 +62,7 @@
 - (void)dealloc
 {
     [buttons release];
+    [colorOverlay release];
     [super dealloc];
 }
 
@@ -83,8 +87,23 @@
 
 - (void)checkInWithInfo:(NSDictionary *)info
 {
+    [self enableScanner:NO];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:NO];
+    [hud setLabelText:NSLocalizedStringByKey(@"pleaseWait")];
+    [hud setMode:MBProgressHUDModeIndeterminate];
     [[FasTApi defaultApi] checkInTicketWithInfo:info in:(direction == FasTScannerEntranceDirectionIn) callback:^(NSDictionary *response) {
-        
+        [hud hide:NO];
+        NSString *messageKey = nil;
+        if (response) {
+            if (response[@"error"]) {
+                messageKey = [NSString stringWithFormat:@"checkinError_%@", response[@"error"]];
+            } else if (![response[@"ok"] boolValue]) {
+                messageKey = @"checkinErrorGeneral";
+            }
+        } else {
+            messageKey = @"checkinErrorNetwork";
+        }
+        [self showColorOverlayWithSuccess:[response[@"ok"] boolValue] messageKey:messageKey];
     }];
 }
 
@@ -94,12 +113,63 @@
     direction = [button direction];
 }
 
+- (void)enableScanner:(BOOL)enabled
+{
+    [[self scanner] setSymbology:0 config:ZBAR_CFG_ENABLE to:0];
+    if (enabled) {
+        [[self scanner] setSymbology:ZBAR_CODE39 config:ZBAR_CFG_ENABLE to:1];
+        [[self scanner] setSymbology:ZBAR_QRCODE config:ZBAR_CFG_ENABLE to:1];
+    }
+}
+
+- (void)showColorOverlayWithSuccess:(BOOL)success messageKey:(NSString *)messageKey
+{
+    MBProgressHUD *hud = nil;
+    if (messageKey) {
+        hud = [MBProgressHUD showHUDAddedTo:self.view animated:NO];
+        [hud setMode:MBProgressHUDModeText];
+        [hud setLabelText:NSLocalizedStringByKey(@"checkinError")];
+        [hud setDetailsLabelText:NSLocalizedStringByKey(messageKey)];
+    }
+    
+    UIColor *color = [UIColor performSelector:NSSelectorFromString(success ? @"greenColor" : @"redColor")];
+    [colorOverlay setBackgroundColor:color];
+    [colorOverlay setHidden:NO];
+    
+    CALayer *colorLayer = [colorOverlay layer];
+    [colorLayer removeAllAnimations];
+    [colorLayer setOpacity:1];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (success ? 0 : 5) * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [colorLayer setOpacity:0];
+        
+        CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"opacity"];
+        [anim setFromValue:@(1)];
+        [anim setToValue:@(0)];
+        [anim setDuration:.5];
+        [anim setDelegate:self];
+        [colorLayer addAnimation:anim forKey:@"fadeOut"];
+        
+        [hud hide:YES];
+        [self enableScanner:YES];
+    });
+}
+
 #pragma mark reader delegate
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     ZBarSymbolSet *results = [info objectForKey: ZBarReaderControllerResults];
     [self checkInWithInfo:[self parseTicketData:results]];
+}
+
+#pragma mark animation delegate
+
+- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)finished
+{
+    if (finished) {
+        [colorOverlay setHidden:YES];
+    }
 }
 
 @end

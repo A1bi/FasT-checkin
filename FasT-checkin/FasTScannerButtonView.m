@@ -7,6 +7,7 @@
 //
 
 #import "FasTScannerButtonView.h"
+#import "QuartzCore/QuartzCore.h"
 
 @implementation FasTScannerButtonView
 
@@ -26,7 +27,7 @@
 
 - (void)toggle
 {
-    [self setAlpha:([self alpha] == 1) ? .5 : 1];
+    [[self layer] setOpacity:([[self layer] opacity] == 1) ? .5 : 1];
 }
 
 @end
