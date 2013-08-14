@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <ZBarSDK/ZBarReaderViewController.h>
 
+@class AVAudioPlayer;
+
 typedef enum {
     FasTScannerEntranceDirectionIn,
     FasTScannerEntranceDirectionOut
@@ -19,6 +21,7 @@ typedef enum {
     NSArray *buttons;
     UIView *colorOverlay;
     FasTScannerEntranceDirection direction;
+    AVAudioPlayer *successSound, *errorSound;
 }
 
 @end

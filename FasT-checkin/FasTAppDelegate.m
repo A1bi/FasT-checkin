@@ -39,6 +39,8 @@
         alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringByKey(@"checkinIdMissing") message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
         [alert show];
     }
+    
+    [application setIdleTimerDisabled:YES];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

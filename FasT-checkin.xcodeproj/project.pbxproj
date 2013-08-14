@@ -58,6 +58,8 @@
 		610FD2DE17BAC700000AAF97 /* UIImageView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5D17BA595E000AAF97 /* UIImageView+MKNetworkKitAdditions.m */; };
 		610FD31417BAF35C000AAF97 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD2FD17BAF35B000AAF97 /* MBProgressHUD.m */; };
 		610FD32017BAF491000AAF97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 610FD32217BAF491000AAF97 /* Localizable.strings */; };
+		6156B5FA17BC2CA20038009C /* success.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 6156B5F917BC2CA20038009C /* success.m4a */; };
+		6156B60017BC2F900038009C /* error.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 6156B5FF17BC2F900038009C /* error.m4a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,7 +186,9 @@
 		610FD2D717BA65F0000AAF97 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		610FD2FC17BAF35B000AAF97 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		610FD2FD17BAF35B000AAF97 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		610FD32117BAF491000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = file; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		610FD32117BAF491000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		6156B5F917BC2CA20038009C /* success.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = success.m4a; sourceTree = "<group>"; };
+		6156B5FF17BC2F900038009C /* error.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = error.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -303,6 +307,7 @@
 			isa = PBXGroup;
 			children = (
 				610FCCE017BA2F42000AAF97 /* images */,
+				6156B5F817BC2CA20038009C /* sounds */,
 			);
 			path = assets;
 			sourceTree = "<group>";
@@ -494,6 +499,15 @@
 			path = submodules/MBProgressHUD;
 			sourceTree = "<group>";
 		};
+		6156B5F817BC2CA20038009C /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				6156B5F917BC2CA20038009C /* success.m4a */,
+				6156B5FF17BC2F900038009C /* error.m4a */,
+			);
+			path = sounds;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -578,6 +592,8 @@
 				610FCCEC17BA338C000AAF97 /* out@2x.png in Resources */,
 				610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */,
 				610FD32017BAF491000AAF97 /* Localizable.strings in Resources */,
+				6156B5FA17BC2CA20038009C /* success.m4a in Resources */,
+				6156B60017BC2F900038009C /* error.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

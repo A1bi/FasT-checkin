@@ -11,6 +11,8 @@
 #import "FasTApi.h"
 #import "MBProgressHUD.h"
 #import "QuartzCore/QuartzCore.h"
+#import "AVFoundation/AVAudioSession.h"
+#import "AVFoundation/AVAudioPlayer.h"
 
 @interface FasTScannerViewController ()
 
@@ -55,6 +57,13 @@
         colorOverlay = [[UIView alloc] initWithFrame:overlay.bounds];
         [colorOverlay setHidden:YES];
         [overlay addSubview:colorOverlay];
+        
+        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient error:nil];
+        NSString *extension = @".m4a";
+        NSURL *soundUrl = [[NSBundle mainBundle] URLForResource:@"success" withExtension:extension];
+        successSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
+        soundUrl = [[NSBundle mainBundle] URLForResource:@"error" withExtension:extension];
+        errorSound = [[AVAudioPlayer alloc] initWithContentsOfURL:soundUrl error:nil];
     }
     return self;
 }
@@ -63,6 +72,8 @@
 {
     [buttons release];
     [colorOverlay release];
+    [successSound release];
+    [errorSound release];
     [super dealloc];
 }
 
@@ -130,6 +141,9 @@
         [hud setMode:MBProgressHUDModeText];
         [hud setLabelText:NSLocalizedStringByKey(@"checkinError")];
         [hud setDetailsLabelText:NSLocalizedStringByKey(messageKey)];
+        [errorSound play];
+    } else {
+        [successSound play];
     }
     
     UIColor *color = [UIColor performSelector:NSSelectorFromString(success ? @"greenColor" : @"redColor")];
@@ -140,7 +154,7 @@
     [colorLayer removeAllAnimations];
     [colorLayer setOpacity:1];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (success ? 0 : 5) * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (success ? 0 : 4) * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [colorLayer setOpacity:0];
         
         CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"opacity"];
