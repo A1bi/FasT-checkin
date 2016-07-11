@@ -14,6 +14,11 @@
 		610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */; };
 		610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCED17BA40EA000AAF97 /* Settings.bundle */; };
 		610FD32017BAF491000AAF97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 610FD32217BAF491000AAF97 /* Localizable.strings */; };
+		F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F015FFC61D343F0800493E8E /* FasTScannerViewController.m */; };
+		F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F015FFC81D34408000493E8E /* AVFoundation.framework */; };
+		F015FFCD1D34432700493E8E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F015FFCC1D34432700493E8E /* Images.xcassets */; };
+		F015FFCF1D3443DE00493E8E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */; };
+		F015FFD11D3444B500493E8E /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F015FFD01D3444B500493E8E /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +33,12 @@
 		610FCCD917B9977C000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		610FCCED17BA40EA000AAF97 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		610FD32117BAF491000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		F015FFC51D343F0800493E8E /* FasTScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerViewController.h; sourceTree = "<group>"; };
+		F015FFC61D343F0800493E8E /* FasTScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerViewController.m; sourceTree = "<group>"; };
+		F015FFC81D34408000493E8E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F015FFCC1D34432700493E8E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		F015FFD01D3444B500493E8E /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F015FFCF1D3443DE00493E8E /* CoreGraphics.framework in Frameworks */,
+				F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */,
 				610FCAD217B8F522000AAF97 /* UIKit.framework in Frameworks */,
 				610FCAD417B8F522000AAF97 /* Foundation.framework in Frameworks */,
 			);
@@ -63,6 +76,8 @@
 		610FCAD017B8F522000AAF97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */,
+				F015FFC81D34408000493E8E /* AVFoundation.framework */,
 				610FCAD117B8F522000AAF97 /* UIKit.framework */,
 				610FCAD317B8F522000AAF97 /* Foundation.framework */,
 			);
@@ -74,6 +89,10 @@
 			children = (
 				610FCAE017B8F522000AAF97 /* FasTAppDelegate.h */,
 				610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */,
+				F015FFC51D343F0800493E8E /* FasTScannerViewController.h */,
+				F015FFC61D343F0800493E8E /* FasTScannerViewController.m */,
+				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
+				F015FFCC1D34432700493E8E /* Images.xcassets */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
 			);
 			path = "FasT-checkin";
@@ -120,8 +139,13 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = FasT;
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = Albisigns;
+				TargetAttributes = {
+					610FCACD17B8F522000AAF97 = {
+						DevelopmentTeam = V48L6BF6M3;
+					};
+				};
 			};
 			buildConfigurationList = 610FCAC917B8F522000AAF97 /* Build configuration list for PBXProject "FasT-checkin" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -147,8 +171,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */,
+				F015FFCD1D34432700493E8E /* Images.xcassets in Resources */,
 				610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */,
 				610FD32017BAF491000AAF97 /* Localizable.strings in Resources */,
+				F015FFD11D3444B500493E8E /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +203,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
+				F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -216,6 +243,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -279,14 +307,18 @@
 		610FCAEC17B8F522000AAF97 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/FasT-checkin-gybkqwxkhajphbfhuwlzihdgygys/Build/Products/Debug-iphoneos\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.albisigns.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -295,14 +327,18 @@
 		610FCAED17B8F522000AAF97 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Library/Developer/Xcode/DerivedData/FasT-checkin-gybkqwxkhajphbfhuwlzihdgygys/Build/Products/Debug-iphoneos\"",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "de.albisigns.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

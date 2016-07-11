@@ -7,26 +7,36 @@
 //
 
 #import "FasTAppDelegate.h"
+#import "FasTScannerViewController.h"
+
+@interface FasTAppDelegate ()
+{
+    CGFloat previousScreenBrightness;
+}
+
+@end
 
 @implementation FasTAppDelegate
 
-- (void)dealloc
-{
-    [_window release];
-    [super dealloc];
-}
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    [self.window makeKeyAndVisible];
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     return YES;
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
+- (void)applicationDidBecomeActive:(UIApplication *)application {
     [application setIdleTimerDisabled:YES];
+    
+    previousScreenBrightness = UIScreen.mainScreen.brightness;
+    UIScreen.mainScreen.brightness = 1;
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application {
+    [application setIdleTimerDisabled:NO];
+    
+    UIScreen.mainScreen.brightness = previousScreenBrightness;
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application {
+    [self applicationWillResignActive:application];
 }
 
 @end
