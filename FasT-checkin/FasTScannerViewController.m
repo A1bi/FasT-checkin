@@ -7,15 +7,17 @@
 //
 
 #import "FasTScannerViewController.h"
-#import <AVFoundation/AVFoundation.h>
 
 @interface FasTScannerViewController ()
 {
     AVCaptureSession *session;
+    AVCaptureDevice *captureDevice;
 }
 
 - (void)initCaptureSession;
 - (void)initCapturePreview;
+- (void)initBarcodeDetection;
+- (void)configureCaptureDevice;
 
 @end
 
@@ -26,6 +28,7 @@
     
     [self initCaptureSession];
     [self initCapturePreview];
+    [self initBarcodeDetection];
 }
 
 - (void)dealloc {
@@ -35,20 +38,36 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [session startRunning];
+    [self configureCaptureDevice];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [session stopRunning];
+    [captureDevice unlockForConfiguration];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)initCaptureSession {
     session = [[AVCaptureSession alloc] init];
     
     NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:devices[0] error:NULL];
+    if (devices.count < 1) {
+        NSLog(@"no capture devices found");
+        return;
+    }
+    captureDevice = devices[0];
     
-    [session addInput:input];
+    NSError *error;
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
+    if (!error) {
+        [session addInput:input];
+    } else {
+        NSLog(@"error setting up capture device input: %@", error);
+    }
 }
 
 - (void)initCapturePreview {
@@ -61,8 +80,38 @@
     [self.view.layer addSublayer:preview];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
+- (void)initBarcodeDetection {
+    AVCaptureMetadataOutput *output = [[[AVCaptureMetadataOutput alloc] init] autorelease];
+    // add output first so qr code will be available as metadata object type
+    [session addOutput:output];
+    [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+    output.metadataObjectTypes = @[AVMetadataObjectTypeQRCode];
+}
+
+- (void)configureCaptureDevice {
+    NSError *error;
+    if ([captureDevice lockForConfiguration:&error]) {
+        if ([captureDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
+            captureDevice.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+        }
+        if (captureDevice.isSmoothAutoFocusEnabled) {
+            captureDevice.smoothAutoFocusEnabled = NO;
+        }
+        if ([captureDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
+            captureDevice.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
+        }
+        
+    } else {
+        NSLog(@"error locking capture device configuration: %@", error);
+    }
+}
+
+- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
+{
+    for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
+        NSString *barcodeContent = object.stringValue;
+        NSLog(@"%@", barcodeContent);
+    }
 }
 
 @end
