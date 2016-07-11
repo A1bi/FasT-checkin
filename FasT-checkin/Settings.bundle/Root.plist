@@ -3,22 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>PreferenceSpecifiers</key>
-	<array>
-		<dict>
-			<key>DefaultValue</key>
-			<string></string>
-			<key>IsSecure</key>
-			<false/>
-			<key>Key</key>
-			<string>checkinId</string>
-			<key>KeyboardType</key>
-			<string>NumberPad</string>
-			<key>Title</key>
-			<string>Checkin ID</string>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-		</dict>
-	</array>
+	<array/>
 	<key>StringsTable</key>
 	<string>Root</string>
 </dict>

@@ -9,186 +9,25 @@
 /* Begin PBXBuildFile section */
 		610FCAD217B8F522000AAF97 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAD117B8F522000AAF97 /* UIKit.framework */; };
 		610FCAD417B8F522000AAF97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAD317B8F522000AAF97 /* Foundation.framework */; };
-		610FCAD617B8F522000AAF97 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAD517B8F522000AAF97 /* CoreGraphics.framework */; };
 		610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 610FCADA17B8F522000AAF97 /* InfoPlist.strings */; };
 		610FCADE17B8F522000AAF97 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCADD17B8F522000AAF97 /* main.m */; };
 		610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */; };
-		610FCAEF17B8F587000AAF97 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAEE17B8F587000AAF97 /* AVFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		610FCAF117B8F594000AAF97 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAF017B8F594000AAF97 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		610FCAF317B8F59B000AAF97 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAF217B8F59B000AAF97 /* CoreVideo.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		610FCAF517B8F5A4000AAF97 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAF417B8F5A4000AAF97 /* QuartzCore.framework */; };
-		610FCAF717B8F5AE000AAF97 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAF617B8F5AE000AAF97 /* libiconv.dylib */; };
-		610FCCCC17B903FB000AAF97 /* FasTScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCCCB17B903FB000AAF97 /* FasTScannerViewController.m */; };
-		610FCCDE17B99ACB000AAF97 /* libzbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCCDD17B99ACB000AAF97 /* libzbar.a */; };
-		610FCCE817BA30F5000AAF97 /* FasTScannerButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCCE717BA30F5000AAF97 /* FasTScannerButtonView.m */; };
-		610FCCE917BA3382000AAF97 /* in.png in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCE117BA2F42000AAF97 /* in.png */; };
-		610FCCEA17BA3385000AAF97 /* in@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCE217BA2F42000AAF97 /* in@2x.png */; };
-		610FCCEB17BA3388000AAF97 /* out.png in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCE317BA2F42000AAF97 /* out.png */; };
-		610FCCEC17BA338C000AAF97 /* out@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCE417BA2F42000AAF97 /* out@2x.png */; };
 		610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCED17BA40EA000AAF97 /* Settings.bundle */; };
-		610FD2B717BA6316000AAF97 /* MKNetworkEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5F17BA595E000AAF97 /* MKNetworkEngine.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		610FD2B817BA631C000AAF97 /* MKNetworkOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD6217BA595E000AAF97 /* MKNetworkOperation.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		610FD2B917BA6375000AAF97 /* FasTApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCCFF17BA447B000AAF97 /* FasTApi.m */; };
-		610FD2BA17BA6378000AAF97 /* FasTEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD0317BA447B000AAF97 /* FasTEvent.m */; };
-		610FD2BB17BA637A000AAF97 /* FasTEventDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD0517BA447B000AAF97 /* FasTEventDate.m */; };
-		610FD2BC17BA637E000AAF97 /* FasTFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD0717BA447B000AAF97 /* FasTFormatter.m */; };
-		610FD2BD17BA6380000AAF97 /* FasTOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD0917BA447B000AAF97 /* FasTOrder.m */; };
-		610FD2BE17BA6386000AAF97 /* FasTSeat.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD0D17BA447B000AAF97 /* FasTSeat.m */; };
-		610FD2BF17BA6391000AAF97 /* FasTTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD1317BA447B000AAF97 /* FasTTicket.m */; };
-		610FD2C017BA6395000AAF97 /* FasTTicketType.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD1717BA447B000AAF97 /* FasTTicketType.m */; };
-		610FD2C217BA63DE000AAF97 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FD2C117BA63DE000AAF97 /* CFNetwork.framework */; };
-		610FD2C417BA63ED000AAF97 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FD2C317BA63ED000AAF97 /* SystemConfiguration.framework */; };
-		610FD2C617BA63F3000AAF97 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FD2C517BA63F3000AAF97 /* Security.framework */; };
-		610FD2C817BA63F9000AAF97 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FD2C717BA63F9000AAF97 /* ImageIO.framework */; };
-		610FD2C917BA6475000AAF97 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD6517BA595E000AAF97 /* Reachability.m */; };
-		610FD2CF17BA64D4000AAF97 /* SocketIO.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD2CA17BA64D4000AAF97 /* SocketIO.m */; };
-		610FD2D017BA64D4000AAF97 /* SocketIOJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD2CB17BA64D4000AAF97 /* SocketIOJSONSerialization.m */; };
-		610FD2D117BA64D4000AAF97 /* SocketIOPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD2CC17BA64D4000AAF97 /* SocketIOPacket.m */; };
-		610FD2D217BA64D4000AAF97 /* SocketIOTransportWebsocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD2CD17BA64D4000AAF97 /* SocketIOTransportWebsocket.m */; };
-		610FD2D317BA64D4000AAF97 /* SocketIOTransportXHR.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD2CE17BA64D4000AAF97 /* SocketIOTransportXHR.m */; };
-		610FD2D417BA6523000AAF97 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD20917BA5963000AAF97 /* SRWebSocket.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		610FD2D517BA652C000AAF97 /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD20617BA5963000AAF97 /* NSData+SRB64Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		610FD2D617BA6551000AAF97 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = 610FD20317BA5963000AAF97 /* base64.c */; };
-		610FD2D817BA65F0000AAF97 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FD2D717BA65F0000AAF97 /* libicucore.dylib */; };
-		610FD2D917BAC6F1000AAF97 /* NSDictionary+RequestEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5717BA595E000AAF97 /* NSDictionary+RequestEncoding.m */; };
-		610FD2DA17BAC6F4000AAF97 /* NSData+MKBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5317BA595E000AAF97 /* NSData+MKBase64.m */; };
-		610FD2DB17BAC6F8000AAF97 /* NSDate+RFC1123.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5517BA595E000AAF97 /* NSDate+RFC1123.m */; };
-		610FD2DC17BAC6FB000AAF97 /* NSString+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5917BA595E000AAF97 /* NSString+MKNetworkKitAdditions.m */; };
-		610FD2DD17BAC6FE000AAF97 /* UIAlertView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5B17BA595E000AAF97 /* UIAlertView+MKNetworkKitAdditions.m */; };
-		610FD2DE17BAC700000AAF97 /* UIImageView+MKNetworkKitAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCD5D17BA595E000AAF97 /* UIImageView+MKNetworkKitAdditions.m */; };
-		610FD31417BAF35C000AAF97 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FD2FD17BAF35B000AAF97 /* MBProgressHUD.m */; };
 		610FD32017BAF491000AAF97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 610FD32217BAF491000AAF97 /* Localizable.strings */; };
-		6156B5FA17BC2CA20038009C /* success.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 6156B5F917BC2CA20038009C /* success.m4a */; };
-		6156B60017BC2F900038009C /* error.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 6156B5FF17BC2F900038009C /* error.m4a */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		610FCCF517BA4465000AAF97 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 610FCCBE17B9027D000AAF97 /* zbar.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = libzbar;
-		};
-		610FCCF717BA4465000AAF97 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 610FCCBE17B9027D000AAF97 /* zbar.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DC3CEF9D121633C500D7A786;
-			remoteInfo = readertest;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		610FCACE17B8F522000AAF97 /* FasT-checkin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FasT-checkin.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		610FCAD117B8F522000AAF97 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		610FCAD317B8F522000AAF97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		610FCAD517B8F522000AAF97 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		610FCAD917B8F522000AAF97 /* FasT-checkin-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FasT-checkin-Info.plist"; sourceTree = "<group>"; };
 		610FCADD17B8F522000AAF97 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		610FCADF17B8F522000AAF97 /* FasT-checkin-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FasT-checkin-Prefix.pch"; sourceTree = "<group>"; };
 		610FCAE017B8F522000AAF97 /* FasTAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTAppDelegate.h; sourceTree = "<group>"; };
 		610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTAppDelegate.m; sourceTree = "<group>"; };
-		610FCAEE17B8F587000AAF97 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		610FCAF017B8F594000AAF97 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		610FCAF217B8F59B000AAF97 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
-		610FCAF417B8F5A4000AAF97 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		610FCAF617B8F5AE000AAF97 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
-		610FCCBE17B9027D000AAF97 /* zbar.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zbar.xcodeproj; path = ../../zbar.xcodeproj; sourceTree = "<group>"; };
-		610FCCCA17B903FB000AAF97 /* FasTScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerViewController.h; sourceTree = "<group>"; };
-		610FCCCB17B903FB000AAF97 /* FasTScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerViewController.m; sourceTree = "<group>"; };
-		610FCCCE17B9042F000AAF97 /* ZBarCameraSimulator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarCameraSimulator.h; sourceTree = "<group>"; };
-		610FCCCF17B9042F000AAF97 /* ZBarCaptureReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarCaptureReader.h; sourceTree = "<group>"; };
-		610FCCD017B9042F000AAF97 /* ZBarHelpController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarHelpController.h; sourceTree = "<group>"; };
-		610FCCD117B9042F000AAF97 /* ZBarImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarImage.h; sourceTree = "<group>"; };
-		610FCCD217B9042F000AAF97 /* ZBarImageScanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarImageScanner.h; sourceTree = "<group>"; };
-		610FCCD317B9042F000AAF97 /* ZBarReaderController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarReaderController.h; sourceTree = "<group>"; };
-		610FCCD417B9042F000AAF97 /* ZBarReaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarReaderView.h; sourceTree = "<group>"; };
-		610FCCD517B9042F000AAF97 /* ZBarReaderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarReaderViewController.h; sourceTree = "<group>"; };
-		610FCCD617B9042F000AAF97 /* ZBarSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarSDK.h; sourceTree = "<group>"; };
-		610FCCD717B9042F000AAF97 /* ZBarSymbol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZBarSymbol.h; sourceTree = "<group>"; };
 		610FCCD917B9977C000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		610FCCDD17B99ACB000AAF97 /* libzbar.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzbar.a; path = "../../../../../../../Library/Developer/Xcode/DerivedData/FasT-checkin-gybkqwxkhajphbfhuwlzihdgygys/Build/Products/Debug-iphoneos/libzbar.a"; sourceTree = "<group>"; };
-		610FCCE117BA2F42000AAF97 /* in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = in.png; sourceTree = "<group>"; };
-		610FCCE217BA2F42000AAF97 /* in@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in@2x.png"; sourceTree = "<group>"; };
-		610FCCE317BA2F42000AAF97 /* out.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = out.png; sourceTree = "<group>"; };
-		610FCCE417BA2F42000AAF97 /* out@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "out@2x.png"; sourceTree = "<group>"; };
-		610FCCE617BA30F5000AAF97 /* FasTScannerButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerButtonView.h; sourceTree = "<group>"; };
-		610FCCE717BA30F5000AAF97 /* FasTScannerButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerButtonView.m; sourceTree = "<group>"; };
 		610FCCED17BA40EA000AAF97 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		610FCCFE17BA447B000AAF97 /* FasTApi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTApi.h; sourceTree = "<group>"; };
-		610FCCFF17BA447B000AAF97 /* FasTApi.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTApi.m; sourceTree = "<group>"; };
-		610FCD0017BA447B000AAF97 /* FasTBarcode3of9.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTBarcode3of9.h; sourceTree = "<group>"; };
-		610FCD0117BA447B000AAF97 /* FasTBarcode3of9.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTBarcode3of9.m; sourceTree = "<group>"; };
-		610FCD0217BA447B000AAF97 /* FasTEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTEvent.h; sourceTree = "<group>"; };
-		610FCD0317BA447B000AAF97 /* FasTEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTEvent.m; sourceTree = "<group>"; };
-		610FCD0417BA447B000AAF97 /* FasTEventDate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTEventDate.h; sourceTree = "<group>"; };
-		610FCD0517BA447B000AAF97 /* FasTEventDate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTEventDate.m; sourceTree = "<group>"; };
-		610FCD0617BA447B000AAF97 /* FasTFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTFormatter.h; sourceTree = "<group>"; };
-		610FCD0717BA447B000AAF97 /* FasTFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTFormatter.m; sourceTree = "<group>"; };
-		610FCD0817BA447B000AAF97 /* FasTOrder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTOrder.h; sourceTree = "<group>"; };
-		610FCD0917BA447B000AAF97 /* FasTOrder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTOrder.m; sourceTree = "<group>"; };
-		610FCD0A17BA447B000AAF97 /* FasTPrintersTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTPrintersTableViewController.h; sourceTree = "<group>"; };
-		610FCD0B17BA447B000AAF97 /* FasTPrintersTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTPrintersTableViewController.m; sourceTree = "<group>"; };
-		610FCD0C17BA447B000AAF97 /* FasTSeat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTSeat.h; sourceTree = "<group>"; };
-		610FCD0D17BA447B000AAF97 /* FasTSeat.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTSeat.m; sourceTree = "<group>"; };
-		610FCD0E17BA447B000AAF97 /* FasTSeatingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTSeatingView.h; sourceTree = "<group>"; };
-		610FCD0F17BA447B000AAF97 /* FasTSeatingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTSeatingView.m; sourceTree = "<group>"; };
-		610FCD1017BA447B000AAF97 /* FasTSeatView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTSeatView.h; sourceTree = "<group>"; };
-		610FCD1117BA447B000AAF97 /* FasTSeatView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTSeatView.m; sourceTree = "<group>"; };
-		610FCD1217BA447B000AAF97 /* FasTTicket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTTicket.h; sourceTree = "<group>"; };
-		610FCD1317BA447B000AAF97 /* FasTTicket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTTicket.m; sourceTree = "<group>"; };
-		610FCD1417BA447B000AAF97 /* FasTTicketPrinter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTTicketPrinter.h; sourceTree = "<group>"; };
-		610FCD1517BA447B000AAF97 /* FasTTicketPrinter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTTicketPrinter.m; sourceTree = "<group>"; };
-		610FCD1617BA447B000AAF97 /* FasTTicketType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTTicketType.h; sourceTree = "<group>"; };
-		610FCD1717BA447B000AAF97 /* FasTTicketType.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTTicketType.m; sourceTree = "<group>"; };
-		610FCD5217BA595E000AAF97 /* NSData+MKBase64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+MKBase64.h"; sourceTree = "<group>"; };
-		610FCD5317BA595E000AAF97 /* NSData+MKBase64.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+MKBase64.m"; sourceTree = "<group>"; };
-		610FCD5417BA595E000AAF97 /* NSDate+RFC1123.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDate+RFC1123.h"; sourceTree = "<group>"; };
-		610FCD5517BA595E000AAF97 /* NSDate+RFC1123.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDate+RFC1123.m"; sourceTree = "<group>"; };
-		610FCD5617BA595E000AAF97 /* NSDictionary+RequestEncoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+RequestEncoding.h"; sourceTree = "<group>"; };
-		610FCD5717BA595E000AAF97 /* NSDictionary+RequestEncoding.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+RequestEncoding.m"; sourceTree = "<group>"; };
-		610FCD5817BA595E000AAF97 /* NSString+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
-		610FCD5917BA595E000AAF97 /* NSString+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
-		610FCD5A17BA595E000AAF97 /* UIAlertView+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
-		610FCD5B17BA595E000AAF97 /* UIAlertView+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
-		610FCD5C17BA595E000AAF97 /* UIImageView+MKNetworkKitAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImageView+MKNetworkKitAdditions.h"; sourceTree = "<group>"; };
-		610FCD5D17BA595E000AAF97 /* UIImageView+MKNetworkKitAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+MKNetworkKitAdditions.m"; sourceTree = "<group>"; };
-		610FCD5E17BA595E000AAF97 /* MKNetworkEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MKNetworkEngine.h; path = MKNetworkKit/MKNetworkEngine.h; sourceTree = "<group>"; };
-		610FCD5F17BA595E000AAF97 /* MKNetworkEngine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MKNetworkEngine.m; path = MKNetworkKit/MKNetworkEngine.m; sourceTree = "<group>"; };
-		610FCD6017BA595E000AAF97 /* MKNetworkKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MKNetworkKit.h; path = MKNetworkKit/MKNetworkKit.h; sourceTree = "<group>"; };
-		610FCD6117BA595E000AAF97 /* MKNetworkOperation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MKNetworkOperation.h; path = MKNetworkKit/MKNetworkOperation.h; sourceTree = "<group>"; };
-		610FCD6217BA595E000AAF97 /* MKNetworkOperation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MKNetworkOperation.m; path = MKNetworkKit/MKNetworkOperation.m; sourceTree = "<group>"; };
-		610FCD6417BA595E000AAF97 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		610FCD6517BA595E000AAF97 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		610FCEF517BA5960000AAF97 /* SocketIO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIO.h; sourceTree = "<group>"; };
-		610FCEF717BA5960000AAF97 /* SocketIOJSONSerialization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOJSONSerialization.h; sourceTree = "<group>"; };
-		610FCEF917BA5960000AAF97 /* SocketIOPacket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOPacket.h; sourceTree = "<group>"; };
-		610FCEFB17BA5960000AAF97 /* SocketIOTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOTransport.h; sourceTree = "<group>"; };
-		610FCEFC17BA5960000AAF97 /* SocketIOTransportWebsocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOTransportWebsocket.h; sourceTree = "<group>"; };
-		610FCEFE17BA5960000AAF97 /* SocketIOTransportXHR.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SocketIOTransportXHR.h; sourceTree = "<group>"; };
-		610FD20317BA5963000AAF97 /* base64.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
-		610FD20417BA5963000AAF97 /* base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
-		610FD20517BA5963000AAF97 /* NSData+SRB64Additions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+SRB64Additions.h"; sourceTree = "<group>"; };
-		610FD20617BA5963000AAF97 /* NSData+SRB64Additions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+SRB64Additions.m"; sourceTree = "<group>"; };
-		610FD20717BA5963000AAF97 /* SocketRocket-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SocketRocket-Prefix.pch"; sourceTree = "<group>"; };
-		610FD20817BA5963000AAF97 /* SRWebSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
-		610FD20917BA5963000AAF97 /* SRWebSocket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
-		610FD2C117BA63DE000AAF97 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		610FD2C317BA63ED000AAF97 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		610FD2C517BA63F3000AAF97 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		610FD2C717BA63F9000AAF97 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
-		610FD2CA17BA64D4000AAF97 /* SocketIO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIO.m; sourceTree = "<group>"; };
-		610FD2CB17BA64D4000AAF97 /* SocketIOJSONSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOJSONSerialization.m; sourceTree = "<group>"; };
-		610FD2CC17BA64D4000AAF97 /* SocketIOPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOPacket.m; sourceTree = "<group>"; };
-		610FD2CD17BA64D4000AAF97 /* SocketIOTransportWebsocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOTransportWebsocket.m; sourceTree = "<group>"; };
-		610FD2CE17BA64D4000AAF97 /* SocketIOTransportXHR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketIOTransportXHR.m; sourceTree = "<group>"; };
-		610FD2D717BA65F0000AAF97 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
-		610FD2FC17BAF35B000AAF97 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		610FD2FD17BAF35B000AAF97 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		610FD32117BAF491000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		6156B5F917BC2CA20038009C /* success.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = success.m4a; sourceTree = "<group>"; };
-		6156B5FF17BC2F900038009C /* error.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = error.m4a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,20 +35,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				610FCCDE17B99ACB000AAF97 /* libzbar.a in Frameworks */,
-				610FCAF717B8F5AE000AAF97 /* libiconv.dylib in Frameworks */,
-				610FCAF517B8F5A4000AAF97 /* QuartzCore.framework in Frameworks */,
-				610FCAF317B8F59B000AAF97 /* CoreVideo.framework in Frameworks */,
-				610FCAF117B8F594000AAF97 /* CoreMedia.framework in Frameworks */,
-				610FCAEF17B8F587000AAF97 /* AVFoundation.framework in Frameworks */,
 				610FCAD217B8F522000AAF97 /* UIKit.framework in Frameworks */,
 				610FCAD417B8F522000AAF97 /* Foundation.framework in Frameworks */,
-				610FCAD617B8F522000AAF97 /* CoreGraphics.framework in Frameworks */,
-				610FD2C217BA63DE000AAF97 /* CFNetwork.framework in Frameworks */,
-				610FD2C817BA63F9000AAF97 /* ImageIO.framework in Frameworks */,
-				610FD2C617BA63F3000AAF97 /* Security.framework in Frameworks */,
-				610FD2C417BA63ED000AAF97 /* SystemConfiguration.framework in Frameworks */,
-				610FD2D817BA65F0000AAF97 /* libicucore.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,8 +48,6 @@
 			children = (
 				610FCAD717B8F522000AAF97 /* FasT-checkin */,
 				610FCAD017B8F522000AAF97 /* Frameworks */,
-				610FCAF617B8F5AE000AAF97 /* libiconv.dylib */,
-				610FD2D717BA65F0000AAF97 /* libicucore.dylib */,
 				610FCACF17B8F522000AAF97 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -238,21 +63,8 @@
 		610FCAD017B8F522000AAF97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				610FD2DF17BAF35B000AAF97 /* MBProgressHUD */,
-				610FCD1C17BA595D000AAF97 /* MKNetworkKit */,
-				610FCEF017BA5960000AAF97 /* socket.IO */,
-				610FCCCD17B9042F000AAF97 /* ZBarSDK */,
-				610FCAF417B8F5A4000AAF97 /* QuartzCore.framework */,
-				610FCAF217B8F59B000AAF97 /* CoreVideo.framework */,
-				610FCAF017B8F594000AAF97 /* CoreMedia.framework */,
-				610FCAEE17B8F587000AAF97 /* AVFoundation.framework */,
 				610FCAD117B8F522000AAF97 /* UIKit.framework */,
 				610FCAD317B8F522000AAF97 /* Foundation.framework */,
-				610FCAD517B8F522000AAF97 /* CoreGraphics.framework */,
-				610FD2C717BA63F9000AAF97 /* ImageIO.framework */,
-				610FD2C517BA63F3000AAF97 /* Security.framework */,
-				610FD2C317BA63ED000AAF97 /* SystemConfiguration.framework */,
-				610FD2C117BA63DE000AAF97 /* CFNetwork.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -262,9 +74,6 @@
 			children = (
 				610FCAE017B8F522000AAF97 /* FasTAppDelegate.h */,
 				610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */,
-				610FCCE517BA30C5000AAF97 /* ScannerViewController */,
-				610FCCF917BA447B000AAF97 /* FasT-objc-common */,
-				610FCCDF17BA2F42000AAF97 /* assets */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
 			);
 			path = "FasT-checkin";
@@ -281,231 +90,6 @@
 				610FD32217BAF491000AAF97 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		610FCCCD17B9042F000AAF97 /* ZBarSDK */ = {
-			isa = PBXGroup;
-			children = (
-				610FCCBE17B9027D000AAF97 /* zbar.xcodeproj */,
-				610FCCCE17B9042F000AAF97 /* ZBarCameraSimulator.h */,
-				610FCCCF17B9042F000AAF97 /* ZBarCaptureReader.h */,
-				610FCCD017B9042F000AAF97 /* ZBarHelpController.h */,
-				610FCCD117B9042F000AAF97 /* ZBarImage.h */,
-				610FCCD217B9042F000AAF97 /* ZBarImageScanner.h */,
-				610FCCD317B9042F000AAF97 /* ZBarReaderController.h */,
-				610FCCD417B9042F000AAF97 /* ZBarReaderView.h */,
-				610FCCD517B9042F000AAF97 /* ZBarReaderViewController.h */,
-				610FCCD617B9042F000AAF97 /* ZBarSDK.h */,
-				610FCCD717B9042F000AAF97 /* ZBarSymbol.h */,
-				610FCCDD17B99ACB000AAF97 /* libzbar.a */,
-			);
-			name = ZBarSDK;
-			path = submodules/ZBar/iphone/include/ZBarSDK;
-			sourceTree = "<group>";
-		};
-		610FCCDF17BA2F42000AAF97 /* assets */ = {
-			isa = PBXGroup;
-			children = (
-				610FCCE017BA2F42000AAF97 /* images */,
-				6156B5F817BC2CA20038009C /* sounds */,
-			);
-			path = assets;
-			sourceTree = "<group>";
-		};
-		610FCCE017BA2F42000AAF97 /* images */ = {
-			isa = PBXGroup;
-			children = (
-				610FCCE117BA2F42000AAF97 /* in.png */,
-				610FCCE217BA2F42000AAF97 /* in@2x.png */,
-				610FCCE317BA2F42000AAF97 /* out.png */,
-				610FCCE417BA2F42000AAF97 /* out@2x.png */,
-			);
-			path = images;
-			sourceTree = "<group>";
-		};
-		610FCCE517BA30C5000AAF97 /* ScannerViewController */ = {
-			isa = PBXGroup;
-			children = (
-				610FCCCA17B903FB000AAF97 /* FasTScannerViewController.h */,
-				610FCCCB17B903FB000AAF97 /* FasTScannerViewController.m */,
-				610FCCE617BA30F5000AAF97 /* FasTScannerButtonView.h */,
-				610FCCE717BA30F5000AAF97 /* FasTScannerButtonView.m */,
-			);
-			name = ScannerViewController;
-			sourceTree = "<group>";
-		};
-		610FCCEF17BA4465000AAF97 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				610FCCF617BA4465000AAF97 /* libzbar.a */,
-				610FCCF817BA4465000AAF97 /* readertest.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		610FCCF917BA447B000AAF97 /* FasT-objc-common */ = {
-			isa = PBXGroup;
-			children = (
-				610FCCFE17BA447B000AAF97 /* FasTApi.h */,
-				610FCCFF17BA447B000AAF97 /* FasTApi.m */,
-				610FCD0017BA447B000AAF97 /* FasTBarcode3of9.h */,
-				610FCD0117BA447B000AAF97 /* FasTBarcode3of9.m */,
-				610FCD0217BA447B000AAF97 /* FasTEvent.h */,
-				610FCD0317BA447B000AAF97 /* FasTEvent.m */,
-				610FCD0417BA447B000AAF97 /* FasTEventDate.h */,
-				610FCD0517BA447B000AAF97 /* FasTEventDate.m */,
-				610FCD0617BA447B000AAF97 /* FasTFormatter.h */,
-				610FCD0717BA447B000AAF97 /* FasTFormatter.m */,
-				610FCD0817BA447B000AAF97 /* FasTOrder.h */,
-				610FCD0917BA447B000AAF97 /* FasTOrder.m */,
-				610FCD0A17BA447B000AAF97 /* FasTPrintersTableViewController.h */,
-				610FCD0B17BA447B000AAF97 /* FasTPrintersTableViewController.m */,
-				610FCD0C17BA447B000AAF97 /* FasTSeat.h */,
-				610FCD0D17BA447B000AAF97 /* FasTSeat.m */,
-				610FCD0E17BA447B000AAF97 /* FasTSeatingView.h */,
-				610FCD0F17BA447B000AAF97 /* FasTSeatingView.m */,
-				610FCD1017BA447B000AAF97 /* FasTSeatView.h */,
-				610FCD1117BA447B000AAF97 /* FasTSeatView.m */,
-				610FCD1217BA447B000AAF97 /* FasTTicket.h */,
-				610FCD1317BA447B000AAF97 /* FasTTicket.m */,
-				610FCD1417BA447B000AAF97 /* FasTTicketPrinter.h */,
-				610FCD1517BA447B000AAF97 /* FasTTicketPrinter.m */,
-				610FCD1617BA447B000AAF97 /* FasTTicketType.h */,
-				610FCD1717BA447B000AAF97 /* FasTTicketType.m */,
-				610FCD1817BA447B000AAF97 /* submodules */,
-			);
-			name = "FasT-objc-common";
-			path = "submodules/FasT-objc-common";
-			sourceTree = SOURCE_ROOT;
-		};
-		610FCD1817BA447B000AAF97 /* submodules */ = {
-			isa = PBXGroup;
-			children = (
-				610FCD1917BA447B000AAF97 /* MKNetworkKit */,
-				610FCD1A17BA447B000AAF97 /* socket.IO */,
-			);
-			path = submodules;
-			sourceTree = "<group>";
-		};
-		610FCD1917BA447B000AAF97 /* MKNetworkKit */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = MKNetworkKit;
-			sourceTree = "<group>";
-		};
-		610FCD1A17BA447B000AAF97 /* socket.IO */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = socket.IO;
-			sourceTree = "<group>";
-		};
-		610FCD1C17BA595D000AAF97 /* MKNetworkKit */ = {
-			isa = PBXGroup;
-			children = (
-				610FCD5E17BA595E000AAF97 /* MKNetworkEngine.h */,
-				610FCD5F17BA595E000AAF97 /* MKNetworkEngine.m */,
-				610FCD6017BA595E000AAF97 /* MKNetworkKit.h */,
-				610FCD6117BA595E000AAF97 /* MKNetworkOperation.h */,
-				610FCD6217BA595E000AAF97 /* MKNetworkOperation.m */,
-				610FCD6317BA595E000AAF97 /* Reachability */,
-				610FCD4F17BA595E000AAF97 /* Categories */,
-			);
-			name = MKNetworkKit;
-			path = "submodules/FasT-objc-common/submodules/MKNetworkKit";
-			sourceTree = "<group>";
-		};
-		610FCD4F17BA595E000AAF97 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				610FCD5217BA595E000AAF97 /* NSData+MKBase64.h */,
-				610FCD5317BA595E000AAF97 /* NSData+MKBase64.m */,
-				610FCD5417BA595E000AAF97 /* NSDate+RFC1123.h */,
-				610FCD5517BA595E000AAF97 /* NSDate+RFC1123.m */,
-				610FCD5617BA595E000AAF97 /* NSDictionary+RequestEncoding.h */,
-				610FCD5717BA595E000AAF97 /* NSDictionary+RequestEncoding.m */,
-				610FCD5817BA595E000AAF97 /* NSString+MKNetworkKitAdditions.h */,
-				610FCD5917BA595E000AAF97 /* NSString+MKNetworkKitAdditions.m */,
-				610FCD5A17BA595E000AAF97 /* UIAlertView+MKNetworkKitAdditions.h */,
-				610FCD5B17BA595E000AAF97 /* UIAlertView+MKNetworkKitAdditions.m */,
-				610FCD5C17BA595E000AAF97 /* UIImageView+MKNetworkKitAdditions.h */,
-				610FCD5D17BA595E000AAF97 /* UIImageView+MKNetworkKitAdditions.m */,
-			);
-			name = Categories;
-			path = MKNetworkKit/Categories;
-			sourceTree = "<group>";
-		};
-		610FCD6317BA595E000AAF97 /* Reachability */ = {
-			isa = PBXGroup;
-			children = (
-				610FCD6417BA595E000AAF97 /* Reachability.h */,
-				610FCD6517BA595E000AAF97 /* Reachability.m */,
-			);
-			name = Reachability;
-			path = MKNetworkKit/Reachability;
-			sourceTree = "<group>";
-		};
-		610FCEF017BA5960000AAF97 /* socket.IO */ = {
-			isa = PBXGroup;
-			children = (
-				610FCEF517BA5960000AAF97 /* SocketIO.h */,
-				610FD2CA17BA64D4000AAF97 /* SocketIO.m */,
-				610FCEF717BA5960000AAF97 /* SocketIOJSONSerialization.h */,
-				610FD2CB17BA64D4000AAF97 /* SocketIOJSONSerialization.m */,
-				610FCEF917BA5960000AAF97 /* SocketIOPacket.h */,
-				610FD2CC17BA64D4000AAF97 /* SocketIOPacket.m */,
-				610FCEFB17BA5960000AAF97 /* SocketIOTransport.h */,
-				610FCEFC17BA5960000AAF97 /* SocketIOTransportWebsocket.h */,
-				610FD2CD17BA64D4000AAF97 /* SocketIOTransportWebsocket.m */,
-				610FCEFE17BA5960000AAF97 /* SocketIOTransportXHR.h */,
-				610FD2CE17BA64D4000AAF97 /* SocketIOTransportXHR.m */,
-				610FCF0F17BA5960000AAF97 /* submodules */,
-			);
-			name = socket.IO;
-			path = "submodules/FasT-objc-common/submodules/socket.IO";
-			sourceTree = "<group>";
-		};
-		610FCF0F17BA5960000AAF97 /* submodules */ = {
-			isa = PBXGroup;
-			children = (
-				610FD20217BA5963000AAF97 /* SocketRocket */,
-			);
-			path = submodules;
-			sourceTree = "<group>";
-		};
-		610FD20217BA5963000AAF97 /* SocketRocket */ = {
-			isa = PBXGroup;
-			children = (
-				610FD20317BA5963000AAF97 /* base64.c */,
-				610FD20417BA5963000AAF97 /* base64.h */,
-				610FD20517BA5963000AAF97 /* NSData+SRB64Additions.h */,
-				610FD20617BA5963000AAF97 /* NSData+SRB64Additions.m */,
-				610FD20717BA5963000AAF97 /* SocketRocket-Prefix.pch */,
-				610FD20817BA5963000AAF97 /* SRWebSocket.h */,
-				610FD20917BA5963000AAF97 /* SRWebSocket.m */,
-			);
-			name = SocketRocket;
-			path = "socket-rocket/SocketRocket";
-			sourceTree = "<group>";
-		};
-		610FD2DF17BAF35B000AAF97 /* MBProgressHUD */ = {
-			isa = PBXGroup;
-			children = (
-				610FD2FC17BAF35B000AAF97 /* MBProgressHUD.h */,
-				610FD2FD17BAF35B000AAF97 /* MBProgressHUD.m */,
-			);
-			name = MBProgressHUD;
-			path = submodules/MBProgressHUD;
-			sourceTree = "<group>";
-		};
-		6156B5F817BC2CA20038009C /* sounds */ = {
-			isa = PBXGroup;
-			children = (
-				6156B5F917BC2CA20038009C /* success.m4a */,
-				6156B5FF17BC2F900038009C /* error.m4a */,
-			);
-			path = sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -550,12 +134,6 @@
 			mainGroup = 610FCAC517B8F522000AAF97;
 			productRefGroup = 610FCACF17B8F522000AAF97 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 610FCCEF17BA4465000AAF97 /* Products */;
-					ProjectRef = 610FCCBE17B9027D000AAF97 /* zbar.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				610FCACD17B8F522000AAF97 /* FasT-checkin */,
@@ -563,37 +141,14 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXReferenceProxy section */
-		610FCCF617BA4465000AAF97 /* libzbar.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libzbar.a;
-			remoteRef = 610FCCF517BA4465000AAF97 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		610FCCF817BA4465000AAF97 /* readertest.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = readertest.app;
-			remoteRef = 610FCCF717BA4465000AAF97 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
-
 /* Begin PBXResourcesBuildPhase section */
 		610FCACC17B8F522000AAF97 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */,
-				610FCCE917BA3382000AAF97 /* in.png in Resources */,
-				610FCCEA17BA3385000AAF97 /* in@2x.png in Resources */,
-				610FCCEB17BA3388000AAF97 /* out.png in Resources */,
-				610FCCEC17BA338C000AAF97 /* out@2x.png in Resources */,
 				610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */,
 				610FD32017BAF491000AAF97 /* Localizable.strings in Resources */,
-				6156B5FA17BC2CA20038009C /* success.m4a in Resources */,
-				6156B60017BC2F900038009C /* error.m4a in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -623,34 +178,6 @@
 			files = (
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,
-				610FCCCC17B903FB000AAF97 /* FasTScannerViewController.m in Sources */,
-				610FCCE817BA30F5000AAF97 /* FasTScannerButtonView.m in Sources */,
-				610FD2B717BA6316000AAF97 /* MKNetworkEngine.m in Sources */,
-				610FD2B817BA631C000AAF97 /* MKNetworkOperation.m in Sources */,
-				610FD2C917BA6475000AAF97 /* Reachability.m in Sources */,
-				610FD2D917BAC6F1000AAF97 /* NSDictionary+RequestEncoding.m in Sources */,
-				610FD2DA17BAC6F4000AAF97 /* NSData+MKBase64.m in Sources */,
-				610FD2DB17BAC6F8000AAF97 /* NSDate+RFC1123.m in Sources */,
-				610FD2DC17BAC6FB000AAF97 /* NSString+MKNetworkKitAdditions.m in Sources */,
-				610FD2DD17BAC6FE000AAF97 /* UIAlertView+MKNetworkKitAdditions.m in Sources */,
-				610FD2DE17BAC700000AAF97 /* UIImageView+MKNetworkKitAdditions.m in Sources */,
-				610FD2B917BA6375000AAF97 /* FasTApi.m in Sources */,
-				610FD2BA17BA6378000AAF97 /* FasTEvent.m in Sources */,
-				610FD2BB17BA637A000AAF97 /* FasTEventDate.m in Sources */,
-				610FD2BC17BA637E000AAF97 /* FasTFormatter.m in Sources */,
-				610FD2BD17BA6380000AAF97 /* FasTOrder.m in Sources */,
-				610FD2BE17BA6386000AAF97 /* FasTSeat.m in Sources */,
-				610FD2BF17BA6391000AAF97 /* FasTTicket.m in Sources */,
-				610FD2C017BA6395000AAF97 /* FasTTicketType.m in Sources */,
-				610FD2CF17BA64D4000AAF97 /* SocketIO.m in Sources */,
-				610FD2D017BA64D4000AAF97 /* SocketIOJSONSerialization.m in Sources */,
-				610FD2D117BA64D4000AAF97 /* SocketIOPacket.m in Sources */,
-				610FD2D217BA64D4000AAF97 /* SocketIOTransportWebsocket.m in Sources */,
-				610FD2D317BA64D4000AAF97 /* SocketIOTransportXHR.m in Sources */,
-				610FD2D417BA6523000AAF97 /* SRWebSocket.m in Sources */,
-				610FD2D517BA652C000AAF97 /* NSData+SRB64Additions.m in Sources */,
-				610FD2D617BA6551000AAF97 /* base64.c in Sources */,
-				610FD31417BAF35C000AAF97 /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,0 @@
-"pleaseWait" = "bitte warten...";
-"checkinIdMissing" = "Checkin ID fehlt";
-"checkinError" = "Fehler";
-"checkinErrorNetwork" = "Server antwortet nicht.";
-"checkinErrorGeneral" = "Bitte an Abendkasse verweisen.";
-"checkinError_checked_in" = "Dieses Ticket wurde bereits gescannt.";
-"checkinError_not_checked_in" = "Dieses Ticket wurde noch nicht gescannt.";

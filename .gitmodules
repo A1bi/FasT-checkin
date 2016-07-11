@@ -1,9 +1,0 @@
-[submodule "submodules/ZBar"]
-	path = submodules/ZBar
-	url = git@github.com:ZBar/ZBar.git
-[submodule "submodules/FasT-objc-common"]
-	path = submodules/FasT-objc-common
-	url = git@github.com:A1bi/FasT-objc-common.git
-[submodule "submodules/MBProgressHUD"]
-	path = submodules/MBProgressHUD
-	url = git@github.com:jdg/MBProgressHUD.git

@@ -9,9 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface FasTAppDelegate : UIResponder <UIApplicationDelegate>
-{
-    UIAlertView *alert;
-}
 
 @property (strong, nonatomic) UIWindow *window;
 

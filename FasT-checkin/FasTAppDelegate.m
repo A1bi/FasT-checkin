@@ -7,15 +7,12 @@
 //
 
 #import "FasTAppDelegate.h"
-#import "FasTScannerViewController.h"
-#import "FasTApi.h"
 
 @implementation FasTAppDelegate
 
 - (void)dealloc
 {
     [_window release];
-    [alert release];
     [super dealloc];
 }
 
@@ -24,28 +21,12 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     [self.window makeKeyAndVisible];
     
-    FasTScannerViewController *scanner = [[[FasTScannerViewController alloc] init] autorelease];
-    self.window.rootViewController = scanner;
-    
     return YES;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    NSString *checkinId = [[NSUserDefaults standardUserDefaults] valueForKey:@"checkinId"];
-    if (checkinId && [checkinId length] > 0) {
-        [FasTApi defaultApiWithClientType:nil clientId:checkinId];
-    } else {
-        alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringByKey(@"checkinIdMissing") message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
-        [alert show];
-    }
-    
     [application setIdleTimerDisabled:YES];
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    [alert dismissWithClickedButtonIndex:0 animated:NO];
 }
 
 @end
