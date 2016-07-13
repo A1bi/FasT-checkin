@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class FasTTicket;
+
 @interface FasTTicketVerifier : NSObject
 
-+ (void)setKeys:(NSDictionary *)k;
-+ (NSDictionary *)verify:(NSString *)messageData;
++ (void)init;
++ (FasTTicket *)getTicketByBarcode:(NSString *)messageData;
 
 @end

@@ -7,22 +7,77 @@
 //
 
 #import "FasTTicketVerifier.h"
+#import "FasTTicket.h"
 #import <CommonCrypto/CommonHMAC.h>
 
 static NSDictionary *keys = nil;
+static NSMutableDictionary *ticketsById = nil;
+static NSMutableDictionary *ticketsByBarcode = nil;
+
+@interface FasTTicketVerifier ()
+
++ (NSDictionary *)verify:(NSString *)messageData;
+
+@end
 
 @implementation FasTTicketVerifier
 
-+ (void)setKeys:(NSDictionary *)k {
++ (void)init {
+    [ticketsById release];
+    ticketsById = [[NSMutableDictionary alloc] init];
+    
+    [ticketsByBarcode release];
+    ticketsByBarcode = [[NSMutableDictionary alloc] init];
+    
+    NSDictionary *tmpKeys = @{@(1): @"3534fe1286a0a7551395891ff32a8d44d919e19775f555cc5ad410adc8e7bc2d"};
+    
     NSMutableDictionary *_keys = [NSMutableDictionary dictionary];
-    for (NSNumber *keyId in k) {
-        _keys[keyId] = [k[keyId] dataUsingEncoding:NSUTF8StringEncoding];
+    for (NSNumber *keyId in tmpKeys) {
+        _keys[keyId] = [tmpKeys[keyId] dataUsingEncoding:NSUTF8StringEncoding];
     }
     [keys release];
     keys = [[_keys copy] retain];
 }
 
++ (FasTTicket *)getTicketByBarcode:(NSString *)messageData {
+    // check if this message has already been processed
+    FasTTicket *ticket = ticketsByBarcode[messageData];
+    if (!ticket) {
+        // not yet processed -> verify
+        NSDictionary *ticketInfo = [self verify:messageData];
+        
+        if (ticketInfo) {
+            @try {
+                NSNumber *ticketId = ticketInfo[@"ti"];
+                // check if ticket is already in memory
+                ticket = ticketsById[ticketId];
+                if (!ticket) {
+                    // create new ticket instance
+                    ticket = [[[FasTTicket alloc] init] autorelease];
+                    ticket.ticketId = ticketId;
+                    ticket.dateId = ticketInfo[@"da"];
+                    ticket.number = ticketInfo[@"no"];
+                    ticketsById[ticketId] = ticket;
+                }
+                
+            } @catch (NSException *exception) {
+                NSLog(@"ticket could not be validated, exception: %@", exception);
+            }
+        }
+        
+        ticketsByBarcode[messageData] = ticket ? ticket : [NSNull null];
+        
+    // message has already been processed and was invalid
+    } else if ([ticket isKindOfClass:[NSNull class]]) {
+        return nil;
+    }
+    
+    return ticket;
+}
+
 + (NSDictionary *)verify:(NSString *)messageData {
+    NSLog(@"verifying barcode");
+    
     // remove url
     messageData = [messageData componentsSeparatedByString:@"/"].lastObject;
     

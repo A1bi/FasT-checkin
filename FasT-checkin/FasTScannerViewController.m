@@ -7,7 +7,8 @@
 //
 
 #import "FasTScannerViewController.h"
-#import "FasTTicketValidator.h"
+#import "FasTTicketVerifier.h"
+#import "FasTTicket.h"
 
 @interface FasTScannerViewController ()
 {
@@ -31,7 +32,7 @@
     [self initCapturePreview];
     [self initBarcodeDetection];
     
-    [FasTTicketValidator init];
+    [FasTTicketVerifier init];
 }
 
 - (void)dealloc {
@@ -120,8 +121,9 @@
 {
     for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
         NSString *barcodeContent = object.stringValue;
-        [FasTTicketValidator validate:barcodeContent];
-//        NSLog(@"%@", barcodeContent);
+        
+        FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
+        NSLog(@"%@", ticket.number);
     }
 }
 
