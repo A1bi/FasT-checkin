@@ -7,6 +7,7 @@
 //
 
 #import "FasTScannerViewController.h"
+#import "FasTMessageVerifier.h"
 
 @interface FasTScannerViewController ()
 {
@@ -29,6 +30,9 @@
     [self initCaptureSession];
     [self initCapturePreview];
     [self initBarcodeDetection];
+    
+    [FasTMessageVerifier fetchKeys];
+    [FasTMessageVerifier verify:@"eyJrIjo5LCJkIjp7InRpIjoyMSwibm8iOiI0NTk4MzA0LTQiLCJkYSI6NCwidHkiOjIsInNlIjo3MX19--6b58251ebbe87752fed25ff71c9e8151f83506c5"];
 }
 
 - (void)dealloc {

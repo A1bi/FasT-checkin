@@ -19,6 +19,8 @@
 		F015FFCD1D34432700493E8E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F015FFCC1D34432700493E8E /* Images.xcassets */; };
 		F015FFCF1D3443DE00493E8E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */; };
 		F015FFD11D3444B500493E8E /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F015FFD01D3444B500493E8E /* Storyboard.storyboard */; };
+		F0377C741D35509500F4A668 /* FasTMessageVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C731D35509500F4A668 /* FasTMessageVerifier.m */; };
+		F0377C761D35573200F4A668 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C751D35573200F4A668 /* Security.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +41,9 @@
 		F015FFCC1D34432700493E8E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F015FFD01D3444B500493E8E /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
+		F0377C721D35509500F4A668 /* FasTMessageVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTMessageVerifier.h; sourceTree = "<group>"; };
+		F0377C731D35509500F4A668 /* FasTMessageVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTMessageVerifier.m; sourceTree = "<group>"; };
+		F0377C751D35573200F4A668 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0377C761D35573200F4A668 /* Security.framework in Frameworks */,
 				F015FFCF1D3443DE00493E8E /* CoreGraphics.framework in Frameworks */,
 				F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */,
 				610FCAD217B8F522000AAF97 /* UIKit.framework in Frameworks */,
@@ -76,6 +82,7 @@
 		610FCAD017B8F522000AAF97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F0377C751D35573200F4A668 /* Security.framework */,
 				F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */,
 				F015FFC81D34408000493E8E /* AVFoundation.framework */,
 				610FCAD117B8F522000AAF97 /* UIKit.framework */,
@@ -91,6 +98,8 @@
 				610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */,
 				F015FFC51D343F0800493E8E /* FasTScannerViewController.h */,
 				F015FFC61D343F0800493E8E /* FasTScannerViewController.m */,
+				F0377C721D35509500F4A668 /* FasTMessageVerifier.h */,
+				F0377C731D35509500F4A668 /* FasTMessageVerifier.m */,
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
 				F015FFCC1D34432700493E8E /* Images.xcassets */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
@@ -205,6 +214,7 @@
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
 				F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,
+				F0377C741D35509500F4A668 /* FasTMessageVerifier.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
