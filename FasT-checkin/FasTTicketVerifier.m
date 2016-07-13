@@ -11,6 +11,7 @@
 #import <CommonCrypto/CommonHMAC.h>
 
 static NSDictionary *keys = nil;
+static NSDictionary *dates = nil;
 static NSMutableDictionary *ticketsById = nil;
 static NSMutableDictionary *ticketsByBarcode = nil;
 
@@ -37,6 +38,9 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     }
     [keys release];
     keys = [[_keys copy] retain];
+    
+    [dates release];
+    dates = [@{@(1): [NSDate dateWithTimeIntervalSinceNow:0]} retain];
 }
 
 + (FasTTicket *)getTicketByBarcode:(NSString *)messageData {
@@ -55,7 +59,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
                     // create new ticket instance
                     ticket = [[[FasTTicket alloc] init] autorelease];
                     ticket.ticketId = ticketId;
-                    ticket.dateId = ticketInfo[@"da"];
+                    ticket.date = dates[ticketInfo[@"da"]];
                     ticket.number = ticketInfo[@"no"];
                     ticketsById[ticketId] = ticket;
                 }

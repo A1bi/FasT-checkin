@@ -123,7 +123,13 @@
         NSString *barcodeContent = object.stringValue;
         
         FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
-        NSLog(@"%@", ticket.number);
+        if (!ticket) {
+            NSLog(@"barcode invalid");
+        } else if (![ticket isValidToday]) {
+            NSLog(@"ticket is not valid today");
+        } else {
+            NSLog(@"%@", ticket.number);
+        }
     }
 }
 

@@ -11,8 +11,10 @@
 @interface FasTTicket : NSObject
 
 @property (strong) NSNumber *ticketId;
-@property (strong) NSNumber *dateId;
+@property (strong) NSDate *date;
 @property (strong) NSString *number;
 @property BOOL cancelled;
+
+- (BOOL)isValidToday;
 
 @end
