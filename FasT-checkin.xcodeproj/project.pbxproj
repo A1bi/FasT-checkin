@@ -22,9 +22,12 @@
 		F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C731D35509500F4A668 /* FasTTicketVerifier.m */; };
 		F0377C761D35573200F4A668 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C751D35573200F4A668 /* Security.framework */; };
 		F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C7B1D3665F300F4A668 /* FasTTicket.m */; };
+		F0377C7E1D36860A00F4A668 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F0377C7D1D36860A00F4A668 /* Podfile */; };
+		F57C2855ED3EF18913746267 /* libPods-FasT-checkin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0AE9547D2FFE57C6B255F0F6 /* Pods-FasT-checkin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FasT-checkin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin.debug.xcconfig"; sourceTree = "<group>"; };
 		610FCACE17B8F522000AAF97 /* FasT-checkin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FasT-checkin.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		610FCAD117B8F522000AAF97 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		610FCAD317B8F522000AAF97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -36,6 +39,8 @@
 		610FCCD917B9977C000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		610FCCED17BA40EA000AAF97 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		610FD32117BAF491000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FasT-checkin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA14629DE5D7C1EF36DFBEA0 /* Pods-FasT-checkin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FasT-checkin.release.xcconfig"; path = "Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin.release.xcconfig"; sourceTree = "<group>"; };
 		F015FFC51D343F0800493E8E /* FasTScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerViewController.h; sourceTree = "<group>"; };
 		F015FFC61D343F0800493E8E /* FasTScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerViewController.m; sourceTree = "<group>"; };
 		F015FFC81D34408000493E8E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -47,6 +52,7 @@
 		F0377C751D35573200F4A668 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F0377C7A1D3665F300F4A668 /* FasTTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTTicket.h; sourceTree = "<group>"; };
 		F0377C7B1D3665F300F4A668 /* FasTTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTTicket.m; sourceTree = "<group>"; };
+		F0377C7D1D36860A00F4A668 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +65,7 @@
 				F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */,
 				610FCAD217B8F522000AAF97 /* UIKit.framework in Frameworks */,
 				610FCAD417B8F522000AAF97 /* Foundation.framework in Frameworks */,
+				F57C2855ED3EF18913746267 /* libPods-FasT-checkin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +78,8 @@
 				610FCAD717B8F522000AAF97 /* FasT-checkin */,
 				610FCAD017B8F522000AAF97 /* Frameworks */,
 				610FCACF17B8F522000AAF97 /* Products */,
+				F0377C7D1D36860A00F4A668 /* Podfile */,
+				6172CA03A02603468CECE4A6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,6 +99,7 @@
 				F015FFC81D34408000493E8E /* AVFoundation.framework */,
 				610FCAD117B8F522000AAF97 /* UIKit.framework */,
 				610FCAD317B8F522000AAF97 /* Foundation.framework */,
+				72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -125,6 +135,15 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		6172CA03A02603468CECE4A6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0AE9547D2FFE57C6B255F0F6 /* Pods-FasT-checkin.debug.xcconfig */,
+				EA14629DE5D7C1EF36DFBEA0 /* Pods-FasT-checkin.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,10 +151,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 610FCAEB17B8F522000AAF97 /* Build configuration list for PBXNativeTarget "FasT-checkin" */;
 			buildPhases = (
+				E38E70D0932C5FF07F06CE49 /* [CP] Check Pods Manifest.lock */,
 				610FCACA17B8F522000AAF97 /* Sources */,
 				610FCACB17B8F522000AAF97 /* Frameworks */,
 				610FCACC17B8F522000AAF97 /* Resources */,
 				610FCCDA17B99843000AAF97 /* ShellScript */,
+				33D690FE602B346FA10B44AF /* [CP] Embed Pods Frameworks */,
+				E0B152D25E06FCEE3ACEB09F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -184,6 +206,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0377C7E1D36860A00F4A668 /* Podfile in Resources */,
 				610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */,
 				F015FFCD1D34432700493E8E /* Images.xcassets in Resources */,
 				610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */,
@@ -195,6 +218,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		33D690FE602B346FA10B44AF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		610FCCDA17B99843000AAF97 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -207,6 +245,36 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "# This script automatically sets the version string of\n# an Xcode project from the Git repository containing the project.\n\nset -o errexit\nset -o nounset\n\nINFO_PLIST=\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Info\"\n\nVERSION=$(git --git-dir=\"${PROJECT_DIR}/.git\" --work-tree=\"${PROJECT_DIR}/\" rev-list master | wc -l)\n\ndefaults write $INFO_PLIST CFBundleVersion $VERSION\n\necho \"VERSION: ${VERSION}\"";
+			showEnvVarsInLog = 0;
+		};
+		E0B152D25E06FCEE3ACEB09F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E38E70D0932C5FF07F06CE49 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -322,12 +390,18 @@
 		};
 		610FCAEC17B8F522000AAF97 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0AE9547D2FFE57C6B255F0F6 /* Pods-FasT-checkin.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"API_HOST=\"@\\\"http://ao-mbp.local:4000\\\"\"",
+				);
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -339,6 +413,7 @@
 		};
 		610FCAED17B8F522000AAF97 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EA14629DE5D7C1EF36DFBEA0 /* Pods-FasT-checkin.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

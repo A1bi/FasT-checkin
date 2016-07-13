@@ -127,8 +127,10 @@
             NSLog(@"barcode invalid");
         } else if (![ticket isValidToday]) {
             NSLog(@"ticket is not valid today");
+        } else if ([ticket cancelled]) {
+            NSLog(@"ticket has been cancelled");
         } else {
-            NSLog(@"%@", ticket.number);
+            NSLog(@"ticket is valid: %@", ticket.number);
         }
     }
 }

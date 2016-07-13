@@ -9,6 +9,11 @@
 #import "FasTTicketVerifier.h"
 #import "FasTTicket.h"
 #import <CommonCrypto/CommonHMAC.h>
+#import <AFNetworking.h>
+
+#ifndef DEBUG
+#define API_HOST @"https://www.theater-kaisersesch.de"
+#endif
 
 static NSDictionary *keys = nil;
 static NSDictionary *dates = nil;
@@ -18,6 +23,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 @interface FasTTicketVerifier ()
 
 + (NSDictionary *)verify:(NSString *)messageData;
++ (void)fetchInfoFromServer:(void (^)(NSDictionary *response))completion;
 
 @end
 
@@ -30,17 +36,36 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     [ticketsByBarcode release];
     ticketsByBarcode = [[NSMutableDictionary alloc] init];
     
-    NSDictionary *tmpKeys = @{@(1): @"3534fe1286a0a7551395891ff32a8d44d919e19775f555cc5ad410adc8e7bc2d"};
-    
-    NSMutableDictionary *_keys = [NSMutableDictionary dictionary];
-    for (NSNumber *keyId in tmpKeys) {
-        _keys[keyId] = [tmpKeys[keyId] dataUsingEncoding:NSUTF8StringEncoding];
-    }
-    [keys release];
-    keys = [[_keys copy] retain];
-    
-    [dates release];
-    dates = [@{@(1): [NSDate dateWithTimeIntervalSinceNow:0]} retain];
+    [self fetchInfoFromServer:^(NSDictionary *response) {
+        // signing keys
+        NSMutableDictionary *_keys = [NSMutableDictionary dictionary];
+        for (NSDictionary *key in response[@"signing_keys"]) {
+            _keys[key[@"id"]] = [key[@"secret"] dataUsingEncoding:NSUTF8StringEncoding];
+        }
+        [keys release];
+        keys = [[_keys copy] retain];
+        
+        // dates
+        NSMutableDictionary *_dates = [NSMutableDictionary dictionary];
+        for (NSDictionary *date in response[@"dates"]) {
+            _dates[date[@"id"]] = [NSDate dateWithTimeIntervalSince1970:((NSNumber *)date[@"date"]).integerValue];
+        }
+        [dates release];
+        dates = [[_dates copy] retain];
+        
+        // changed tickets
+        for (NSDictionary *ticketInfo in response[@"changed_tickets"]) {
+            FasTTicket *ticket = ticketsById[ticketInfo[@"id"]];
+            if (!ticket) {
+                ticket = [[[FasTTicket alloc] init] autorelease];
+                ticketsById[ticketInfo[@"id"]] = ticket;
+            }
+            ticket.ticketId = ticketInfo[@"id"];
+            ticket.date = dates[ticketInfo[@"date_id"]];
+            ticket.number = ticketInfo[@"number"];
+            ticket.cancelled = ((NSNumber *)ticketInfo[@"cancelled"]).boolValue;
+        }
+    }];
 }
 
 + (FasTTicket *)getTicketByBarcode:(NSString *)messageData {
@@ -143,6 +168,16 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     }
 
     return ticketInfoPayload;
+}
+
++ (void)fetchInfoFromServer:(void (^)(NSDictionary *response))completion {
+    NSString *url = [NSString stringWithFormat:@"%@/api/check_in", API_HOST];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        completion(responseObject);
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"could not fetch info from server: %@", error);
+    }];
 }
 
 @end

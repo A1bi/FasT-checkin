@@ -14,3 +14,7 @@
 #endif
 
 #define NSLocalizedStringByKey(key) NSLocalizedString(key, nil)
+
+#ifndef DEBUG
+#define NSLog(...);
+#endif
