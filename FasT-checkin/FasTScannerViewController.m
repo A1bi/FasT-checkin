@@ -41,12 +41,14 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     [session startRunning];
     [self configureCaptureDevice];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     [session stopRunning];
     [captureDevice unlockForConfiguration];
 }
@@ -89,24 +91,28 @@
     // add output first so qr code will be available as metadata object type
     [session addOutput:output];
     [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-    output.metadataObjectTypes = @[AVMetadataObjectTypeQRCode];
+    if ([[output availableMetadataObjectTypes] containsObject:AVMetadataObjectTypeQRCode]) {
+        output.metadataObjectTypes = @[AVMetadataObjectTypeQRCode];
+    }
 }
 
 - (void)configureCaptureDevice {
-    NSError *error;
-    if ([captureDevice lockForConfiguration:&error]) {
-        if ([captureDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
-            captureDevice.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+    if (captureDevice) {
+        NSError *error;
+        if ([captureDevice lockForConfiguration:&error]) {
+            if ([captureDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
+                captureDevice.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+            }
+            if (captureDevice.isSmoothAutoFocusEnabled) {
+                captureDevice.smoothAutoFocusEnabled = NO;
+            }
+            if ([captureDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
+                captureDevice.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
+            }
+            
+        } else {
+            NSLog(@"error locking capture device configuration: %@", error);
         }
-        if (captureDevice.isSmoothAutoFocusEnabled) {
-            captureDevice.smoothAutoFocusEnabled = NO;
-        }
-        if ([captureDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
-            captureDevice.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
-        }
-        
-    } else {
-        NSLog(@"error locking capture device configuration: %@", error);
     }
 }
 
