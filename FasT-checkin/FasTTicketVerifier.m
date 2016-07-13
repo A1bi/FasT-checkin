@@ -6,30 +6,28 @@
 //  Copyright © 2016 Albisigns. All rights reserved.
 //
 
-#import "FasTMessageVerifier.h"
+#import "FasTTicketVerifier.h"
 #import <CommonCrypto/CommonHMAC.h>
 
-static NSArray *keys = nil;
+static NSDictionary *keys = nil;
 
-@implementation FasTMessageVerifier
+@implementation FasTTicketVerifier
 
-+ (void)fetchKeys {
-    NSMutableArray *_keys = [NSMutableArray array];
-    for (NSInteger i = 0; i < 10; i++) {
-        NSString *key = @"12345676";
-        [_keys addObject:[key dataUsingEncoding:NSUTF8StringEncoding]];
++ (void)setKeys:(NSDictionary *)k {
+    NSMutableDictionary *_keys = [NSMutableDictionary dictionary];
+    for (NSNumber *keyId in k) {
+        _keys[keyId] = [k[keyId] dataUsingEncoding:NSUTF8StringEncoding];
     }
-    
     [keys release];
     keys = [[_keys copy] retain];
 }
 
-+ (NSDictionary *)verify:(NSString *)message {
-    message = [message stringByReplacingOccurrencesOfString:@"~" withString:@"+"];
-    message = [message stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
-    message = [message stringByReplacingOccurrencesOfString:@"," withString:@"="];
++ (NSDictionary *)verify:(NSString *)messageData {
+    messageData = [messageData stringByReplacingOccurrencesOfString:@"~" withString:@"+"];
+    messageData = [messageData stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
+    messageData = [messageData stringByReplacingOccurrencesOfString:@"," withString:@"="];
     
-    NSArray *parts = [message componentsSeparatedByString:@"--"];
+    NSArray *parts = [messageData componentsSeparatedByString:@"--"];
     if (parts.count < 2) {
         NSLog(@"ticket parts not found");
         return nil;
@@ -38,7 +36,7 @@ static NSArray *keys = nil;
     NSString *signature = parts[1];
 
     NSError *error = nil;
-    NSData *ticketDataJson = [[NSData alloc] initWithBase64EncodedString:ticketData options:0];
+    NSData *ticketDataJson = [[[NSData alloc] initWithBase64EncodedString:ticketData options:0] autorelease];
     NSDictionary *ticketInfo = [NSJSONSerialization JSONObjectWithData:ticketDataJson options:0 error:&error];
     if (error) {
         NSLog(@"error parsing ticket json data: %@", error);
@@ -54,7 +52,7 @@ static NSArray *keys = nil;
     
     NSData *keyData = nil;
     if ([keyId isKindOfClass:[NSNumber class]]) {
-        keyData = keys[keyId.integerValue];
+        keyData = keys[keyId];
     }
     if (!keyData) {
         NSLog(@"signing key not found");

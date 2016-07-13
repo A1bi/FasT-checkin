@@ -19,8 +19,9 @@
 		F015FFCD1D34432700493E8E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F015FFCC1D34432700493E8E /* Images.xcassets */; };
 		F015FFCF1D3443DE00493E8E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */; };
 		F015FFD11D3444B500493E8E /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F015FFD01D3444B500493E8E /* Storyboard.storyboard */; };
-		F0377C741D35509500F4A668 /* FasTMessageVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C731D35509500F4A668 /* FasTMessageVerifier.m */; };
+		F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C731D35509500F4A668 /* FasTTicketVerifier.m */; };
 		F0377C761D35573200F4A668 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C751D35573200F4A668 /* Security.framework */; };
+		F0377C791D362CE100F4A668 /* FasTTicketValidator.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C781D362CE100F4A668 /* FasTTicketValidator.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,9 +42,11 @@
 		F015FFCC1D34432700493E8E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F015FFD01D3444B500493E8E /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
-		F0377C721D35509500F4A668 /* FasTMessageVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTMessageVerifier.h; sourceTree = "<group>"; };
-		F0377C731D35509500F4A668 /* FasTMessageVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTMessageVerifier.m; sourceTree = "<group>"; };
+		F0377C721D35509500F4A668 /* FasTTicketVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTTicketVerifier.h; sourceTree = "<group>"; };
+		F0377C731D35509500F4A668 /* FasTTicketVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTTicketVerifier.m; sourceTree = "<group>"; };
 		F0377C751D35573200F4A668 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		F0377C771D362CE100F4A668 /* FasTTicketValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTTicketValidator.h; sourceTree = "<group>"; };
+		F0377C781D362CE100F4A668 /* FasTTicketValidator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTTicketValidator.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +101,10 @@
 				610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */,
 				F015FFC51D343F0800493E8E /* FasTScannerViewController.h */,
 				F015FFC61D343F0800493E8E /* FasTScannerViewController.m */,
-				F0377C721D35509500F4A668 /* FasTMessageVerifier.h */,
-				F0377C731D35509500F4A668 /* FasTMessageVerifier.m */,
+				F0377C721D35509500F4A668 /* FasTTicketVerifier.h */,
+				F0377C731D35509500F4A668 /* FasTTicketVerifier.m */,
+				F0377C771D362CE100F4A668 /* FasTTicketValidator.h */,
+				F0377C781D362CE100F4A668 /* FasTTicketValidator.m */,
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
 				F015FFCC1D34432700493E8E /* Images.xcassets */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
@@ -212,9 +217,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
+				F0377C791D362CE100F4A668 /* FasTTicketValidator.m in Sources */,
 				F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,
-				F0377C741D35509500F4A668 /* FasTMessageVerifier.m in Sources */,
+				F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

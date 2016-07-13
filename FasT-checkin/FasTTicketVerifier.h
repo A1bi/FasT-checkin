@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface FasTMessageVerifier : NSObject
+@interface FasTTicketVerifier : NSObject
 
-+ (void)fetchKeys;
-+ (NSDictionary *)verify:(NSString *)message;
++ (void)setKeys:(NSDictionary *)k;
++ (NSDictionary *)verify:(NSString *)messageData;
 
 @end
