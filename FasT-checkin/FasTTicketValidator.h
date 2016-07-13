@@ -10,7 +10,7 @@
 
 @interface FasTTicketValidator : NSObject
 
-+ (void)fetchInfo;
-+ (NSNumber *)validate:(NSString *)messageData;
++ (void)init;
++ (NSDictionary *)validate:(NSString *)messageData;
 
 @end

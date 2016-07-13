@@ -11,10 +11,26 @@
 
 static NSNumber *currentDateId = nil;
 static NSDictionary *changedTickets = nil;
+// barcode cache contains ticket info by barcode content
+static NSMutableDictionary *ticketCache = nil;
+static NSMutableArray *ticketCacheEntryOrder = nil;
+
+@interface FasTTicketValidator ()
+
++ (NSNumber *)verifyAndValidate:(NSString *)messageData;
++ (void)clearCache;
+
+@end
 
 @implementation FasTTicketValidator
 
-+ (void)fetchInfo {
++ (void)init {
+    [ticketCache release];
+    ticketCache = [[NSMutableDictionary alloc] init];
+    
+    [ticketCacheEntryOrder release];
+    ticketCacheEntryOrder = [[NSMutableArray alloc] init];
+    
     currentDateId = [@(4) retain];
     changedTickets = [@{} retain];
     
@@ -22,8 +38,37 @@ static NSDictionary *changedTickets = nil;
     [FasTTicketVerifier setKeys:keys];
 }
 
-+ (NSNumber *)validate:(NSString *)messageData
++ (NSDictionary *)validate:(NSString *)messageData
 {
+    // check if this barcode is in cache
+    id ticketInfo = ticketCache[messageData];
+    if (!ticketInfo) {
+        // not in cache -> validate
+        NSLog(@"barcode cache miss");
+        ticketInfo = [self verifyAndValidate:messageData];
+        if (!ticketInfo) {
+            // invalid -> store NSNull in cache
+            ticketInfo = [NSNull null];
+        }
+        
+        ticketCache[messageData] = ticketInfo;
+        [ticketCacheEntryOrder addObject:messageData];
+        
+        [self clearCache];
+        
+    } else {
+        NSLog(@"barcode cache hit");
+    }
+    
+    if (![ticketInfo isKindOfClass:[NSNumber class]]) {
+        NSLog(@"ticket invalid");
+        return nil;
+    }
+    
+    return ticketInfo;
+}
+
++ (NSNumber *)verifyAndValidate:(NSString *)messageData {
     NSDictionary *ticketInfo = [FasTTicketVerifier verify:messageData];
     NSNumber *ticketId;
     
@@ -49,6 +94,17 @@ static NSDictionary *changedTickets = nil;
     }
     
     return ticketId;
+}
+
++ (void)clearCache {
+    // clear oldest cache entries
+    if (ticketCacheEntryOrder.count > 5) {
+        NSLog(@"clearing oldest cache entries");
+        NSRange cacheRange = NSMakeRange(0, 3);
+        NSArray *entriesToRemove = [ticketCacheEntryOrder subarrayWithRange:cacheRange];
+        [ticketCache removeObjectsForKeys:entriesToRemove];
+        [ticketCacheEntryOrder removeObjectsInRange:cacheRange];
+    }
 }
 
 @end

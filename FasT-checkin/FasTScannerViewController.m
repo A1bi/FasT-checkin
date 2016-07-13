@@ -31,12 +31,12 @@
     [self initCapturePreview];
     [self initBarcodeDetection];
     
-    [FasTTicketValidator fetchInfo];
-    [FasTTicketValidator validate:@"eyJrIjoxLCJkIjp7InRpIjoyMiwibm8iOiI1NDY5NTA1LTEiLCJkYSI6NCwidHkiOjIsInNlIjozMX19--7af38d3fd27c68d27357907642d28c06858c6727"];
+    [FasTTicketValidator init];
 }
 
 - (void)dealloc {
     [session release];
+    [captureDevice release];
     [super dealloc];
 }
 
@@ -120,7 +120,8 @@
 {
     for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
         NSString *barcodeContent = object.stringValue;
-        NSLog(@"%@", barcodeContent);
+        [FasTTicketValidator validate:barcodeContent];
+//        NSLog(@"%@", barcodeContent);
     }
 }
 

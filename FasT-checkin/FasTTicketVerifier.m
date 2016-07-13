@@ -23,10 +23,15 @@ static NSDictionary *keys = nil;
 }
 
 + (NSDictionary *)verify:(NSString *)messageData {
+    // remove url
+    messageData = [messageData componentsSeparatedByString:@"/"].lastObject;
+    
+    // revert url encoding
     messageData = [messageData stringByReplacingOccurrencesOfString:@"~" withString:@"+"];
     messageData = [messageData stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
     messageData = [messageData stringByReplacingOccurrencesOfString:@"," withString:@"="];
     
+    // separate data and digest
     NSArray *parts = [messageData componentsSeparatedByString:@"--"];
     if (parts.count < 2) {
         NSLog(@"ticket parts not found");
@@ -35,6 +40,7 @@ static NSDictionary *keys = nil;
     NSString *ticketData = parts[0];
     NSString *signature = parts[1];
 
+    // decode ticket base64 and json data
     NSError *error = nil;
     NSData *ticketDataJson = [[[NSData alloc] initWithBase64EncodedString:ticketData options:0] autorelease];
     NSDictionary *ticketInfo = [NSJSONSerialization JSONObjectWithData:ticketDataJson options:0 error:&error];
@@ -43,6 +49,7 @@ static NSDictionary *keys = nil;
         return nil;
     }
     
+    // get key id from ticket data
     NSNumber *keyId = ticketInfo[@"k"];
     NSDictionary *ticketInfoPayload = ticketInfo[@"d"];
     if (!keyId || !ticketInfoPayload) {
@@ -59,9 +66,11 @@ static NSDictionary *keys = nil;
         return nil;
     }
     
+    // generate hmac digest
     char digest[CC_SHA1_DIGEST_LENGTH];
     CCHmac(kCCHmacAlgSHA1, keyData.bytes, keyData.length, ticketData.UTF8String, ticketData.length, digest);
     
+    // compare generated with given digest (encoded as a hex string)
     char signatureByte[3] = "";
     char byte;
     for (NSInteger i = 0; i < sizeof(digest); i++) {
