@@ -23,6 +23,7 @@
 		F0377C761D35573200F4A668 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C751D35573200F4A668 /* Security.framework */; };
 		F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C7B1D3665F300F4A668 /* FasTTicket.m */; };
 		F0377C7E1D36860A00F4A668 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F0377C7D1D36860A00F4A668 /* Podfile */; };
+		F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */; };
 		F57C2855ED3EF18913746267 /* libPods-FasT-checkin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		F0377C7A1D3665F300F4A668 /* FasTTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTTicket.h; sourceTree = "<group>"; };
 		F0377C7B1D3665F300F4A668 /* FasTTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTTicket.m; sourceTree = "<group>"; };
 		F0377C7D1D36860A00F4A668 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */,
 				F0377C761D35573200F4A668 /* Security.framework in Frameworks */,
 				F015FFCF1D3443DE00493E8E /* CoreGraphics.framework in Frameworks */,
 				F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */,
@@ -94,6 +97,7 @@
 		610FCAD017B8F522000AAF97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */,
 				F0377C751D35573200F4A668 /* Security.framework */,
 				F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */,
 				F015FFC81D34408000493E8E /* AVFoundation.framework */,

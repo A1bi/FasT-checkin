@@ -14,6 +14,7 @@
 @property (strong) NSDate *date;
 @property (strong) NSString *number;
 @property BOOL cancelled;
+@property BOOL checkedIn;
 
 - (BOOL)isValidToday;
 

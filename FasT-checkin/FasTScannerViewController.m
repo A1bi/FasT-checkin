@@ -9,11 +9,16 @@
 #import "FasTScannerViewController.h"
 #import "FasTTicketVerifier.h"
 #import "FasTTicket.h"
+#import <AudioToolbox/AudioToolbox.h>
+
+void AudioServicesStopSystemSound(SystemSoundID soundId);
+void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NSDictionary *vibrationPattern);
 
 @interface FasTScannerViewController ()
 {
     AVCaptureSession *session;
     AVCaptureDevice *captureDevice;
+    NSDictionary *successVibration, *failVibration;
 }
 
 - (void)initCaptureSession;
@@ -32,12 +37,19 @@
     [self initCapturePreview];
     [self initBarcodeDetection];
     
+    [successVibration release];
+    successVibration = [@{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @100 ] } retain];
+    [failVibration release];
+    failVibration = [@{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @100, @NO, @100, @YES, @100, @NO, @100, @YES, @100 ] } retain];
+    
     [FasTTicketVerifier init];
 }
 
 - (void)dealloc {
     [session release];
     [captureDevice release];
+    [successVibration release];
+    [failVibration release];
     [super dealloc];
 }
 
@@ -122,16 +134,26 @@
     for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
         NSString *barcodeContent = object.stringValue;
         
+        NSDictionary *vibration = nil;
+        
         FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
         if (!ticket) {
             NSLog(@"barcode invalid");
+        } else if (ticket.checkedIn) {
+            NSLog(@"ticket already checked in");
         } else if (![ticket isValidToday]) {
             NSLog(@"ticket is not valid today");
-        } else if ([ticket cancelled]) {
+        } else if (ticket.cancelled) {
             NSLog(@"ticket has been cancelled");
         } else {
+            ticket.checkedIn = YES;
+            
+            vibration = successVibration;
+            
             NSLog(@"ticket is valid: %@", ticket.number);
         }
+        
+        AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, vibration);
     }
 }
 
