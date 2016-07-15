@@ -23,7 +23,8 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 @interface FasTTicketVerifier ()
 
 + (NSDictionary *)verify:(NSString *)messageData;
-+ (void)fetchInfoFromServer:(void (^)(NSDictionary *response))completion;
++ (void)fetchInfoFromServer;
++ (void)processApiResponse:(NSDictionary *)response;
 
 @end
 
@@ -36,36 +37,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     [ticketsByBarcode release];
     ticketsByBarcode = [[NSMutableDictionary alloc] init];
     
-    [self fetchInfoFromServer:^(NSDictionary *response) {
-        // signing keys
-        NSMutableDictionary *_keys = [NSMutableDictionary dictionary];
-        for (NSDictionary *key in response[@"signing_keys"]) {
-            _keys[key[@"id"]] = [key[@"secret"] dataUsingEncoding:NSUTF8StringEncoding];
-        }
-        [keys release];
-        keys = [[_keys copy] retain];
-        
-        // dates
-        NSMutableDictionary *_dates = [NSMutableDictionary dictionary];
-        for (NSDictionary *date in response[@"dates"]) {
-            _dates[date[@"id"]] = [NSDate dateWithTimeIntervalSince1970:((NSNumber *)date[@"date"]).integerValue];
-        }
-        [dates release];
-        dates = [[_dates copy] retain];
-        
-        // changed tickets
-        for (NSDictionary *ticketInfo in response[@"changed_tickets"]) {
-            FasTTicket *ticket = ticketsById[ticketInfo[@"id"]];
-            if (!ticket) {
-                ticket = [[[FasTTicket alloc] init] autorelease];
-                ticketsById[ticketInfo[@"id"]] = ticket;
-            }
-            ticket.ticketId = ticketInfo[@"id"];
-            ticket.date = dates[ticketInfo[@"date_id"]];
-            ticket.number = ticketInfo[@"number"];
-            ticket.cancelled = ((NSNumber *)ticketInfo[@"cancelled"]).boolValue;
-        }
-    }];
+    [self fetchInfoFromServer];
 }
 
 + (FasTTicket *)getTicketByBarcode:(NSString *)messageData {
@@ -170,14 +142,51 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     return ticketInfoPayload;
 }
 
-+ (void)fetchInfoFromServer:(void (^)(NSDictionary *response))completion {
++ (void)fetchInfoFromServer {
     NSString *url = [NSString stringWithFormat:@"%@/api/check_in", API_HOST];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        completion(responseObject);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionTask *task, id response) {
+        [self processApiResponse:response];
+        [defaults setObject:response forKey:@"lastApiResponse"];
+        [defaults synchronize];
     } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"could not fetch info from server: %@", error);
+        NSDictionary *response = [defaults objectForKey:@"lastApiResponse"];
+        if (response) {
+            [self processApiResponse:response];
+        }
     }];
+}
+
++ (void)processApiResponse:(NSDictionary *)response {
+    // signing keys
+    NSMutableDictionary *_keys = [NSMutableDictionary dictionary];
+    for (NSDictionary *key in response[@"signing_keys"]) {
+        _keys[key[@"id"]] = [key[@"secret"] dataUsingEncoding:NSUTF8StringEncoding];
+    }
+    [keys release];
+    keys = [[_keys copy] retain];
+    
+    // dates
+    NSMutableDictionary *_dates = [NSMutableDictionary dictionary];
+    for (NSDictionary *date in response[@"dates"]) {
+        _dates[date[@"id"]] = [NSDate dateWithTimeIntervalSince1970:((NSNumber *)date[@"date"]).integerValue];
+    }
+    [dates release];
+    dates = [[_dates copy] retain];
+    
+    // changed tickets
+    for (NSDictionary *ticketInfo in response[@"changed_tickets"]) {
+        FasTTicket *ticket = ticketsById[ticketInfo[@"id"]];
+        if (!ticket) {
+            ticket = [[[FasTTicket alloc] init] autorelease];
+            ticketsById[ticketInfo[@"id"]] = ticket;
+        }
+        ticket.ticketId = ticketInfo[@"id"];
+        ticket.date = dates[ticketInfo[@"date_id"]];
+        ticket.number = ticketInfo[@"number"];
+        ticket.cancelled = ((NSNumber *)ticketInfo[@"cancelled"]).boolValue;
+    }
 }
 
 @end
