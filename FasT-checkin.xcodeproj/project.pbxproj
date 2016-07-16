@@ -24,6 +24,7 @@
 		F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C7B1D3665F300F4A668 /* FasTTicket.m */; };
 		F0377C7E1D36860A00F4A668 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F0377C7D1D36860A00F4A668 /* Podfile */; };
 		F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */; };
+		F0F46AA11D3912A800648897 /* FasTScannerBarcodeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */; };
 		F57C2855ED3EF18913746267 /* libPods-FasT-checkin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +56,8 @@
 		F0377C7B1D3665F300F4A668 /* FasTTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTTicket.m; sourceTree = "<group>"; };
 		F0377C7D1D36860A00F4A668 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
 		F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		F0F46A9F1D3912A800648897 /* FasTScannerBarcodeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerBarcodeLayer.h; sourceTree = "<group>"; };
+		F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerBarcodeLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,7 +82,6 @@
 			isa = PBXGroup;
 			children = (
 				610FCAD717B8F522000AAF97 /* FasT-checkin */,
-				610FCAD017B8F522000AAF97 /* Frameworks */,
 				610FCACF17B8F522000AAF97 /* Products */,
 				F0377C7D1D36860A00F4A668 /* Podfile */,
 				6172CA03A02603468CECE4A6 /* Pods */,
@@ -106,6 +108,7 @@
 				72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */,
 			);
 			name = Frameworks;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		610FCAD717B8F522000AAF97 /* FasT-checkin */ = {
@@ -115,6 +118,8 @@
 				610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */,
 				F015FFC51D343F0800493E8E /* FasTScannerViewController.h */,
 				F015FFC61D343F0800493E8E /* FasTScannerViewController.m */,
+				F0F46A9F1D3912A800648897 /* FasTScannerBarcodeLayer.h */,
+				F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */,
 				F0377C721D35509500F4A668 /* FasTTicketVerifier.h */,
 				F0377C731D35509500F4A668 /* FasTTicketVerifier.m */,
 				F0377C7A1D3665F300F4A668 /* FasTTicket.h */,
@@ -122,6 +127,7 @@
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
 				F015FFCC1D34432700493E8E /* Images.xcassets */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
+				610FCAD017B8F522000AAF97 /* Frameworks */,
 			);
 			path = "FasT-checkin";
 			sourceTree = "<group>";
@@ -292,6 +298,7 @@
 				F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,
 				F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */,
+				F0F46AA11D3912A800648897 /* FasTScannerBarcodeLayer.m in Sources */,
 				F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

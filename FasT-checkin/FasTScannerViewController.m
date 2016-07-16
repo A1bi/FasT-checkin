@@ -9,6 +9,7 @@
 #import "FasTScannerViewController.h"
 #import "FasTTicketVerifier.h"
 #import "FasTTicket.h"
+#import "FasTScannerBarcodeLayer.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 void AudioServicesStopSystemSound(SystemSoundID soundId);
@@ -18,13 +19,18 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 {
     AVCaptureSession *session;
     AVCaptureDevice *captureDevice;
+    AVCaptureVideoPreviewLayer *preview;
     NSDictionary *successVibration, *failVibration;
+    CALayer *targetLayer;
+    NSString *lastBarcode;
+    FasTScannerBarcodeLayer *lastBarcodeLayer;
 }
 
 - (void)initCaptureSession;
 - (void)initCapturePreview;
 - (void)initBarcodeDetection;
 - (void)configureCaptureDevice;
+- (void)vibrateWithPattern:(NSDictionary *)pattern;
 
 @end
 
@@ -40,7 +46,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [successVibration release];
     successVibration = [@{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @100 ] } retain];
     [failVibration release];
-    failVibration = [@{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @100, @NO, @100, @YES, @100, @NO, @100, @YES, @100 ] } retain];
+    failVibration = [@{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @500 ] } retain];
     
     [FasTTicketVerifier init];
 }
@@ -50,6 +56,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [captureDevice release];
     [successVibration release];
     [failVibration release];
+    [lastBarcodeLayer release];
+    [lastBarcode release];
     [super dealloc];
 }
 
@@ -90,13 +98,15 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 }
 
 - (void)initCapturePreview {
-    AVCaptureVideoPreviewLayer *preview = [AVCaptureVideoPreviewLayer layerWithSession:session];
-    
-    preview.bounds = self.view.bounds;
-    preview.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+    preview = [AVCaptureVideoPreviewLayer layerWithSession:session];
     preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    preview.frame = self.view.bounds;
     
     [self.view.layer addSublayer:preview];
+    
+    targetLayer = [CALayer layer];
+    targetLayer.frame = self.view.bounds;
+    [self.view.layer addSublayer:targetLayer];
 }
 
 - (void)initBarcodeDetection {
@@ -132,29 +142,60 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
     for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
+        AVMetadataMachineReadableCodeObject *transformedObject = (AVMetadataMachineReadableCodeObject *)[preview transformedMetadataObjectForMetadataObject:object];
+        
         NSString *barcodeContent = object.stringValue;
         
-        NSDictionary *vibration = nil;
+        if (![barcodeContent isEqualToString:lastBarcode]) {
+            FasTScannerBarcodeLayer *layer = [FasTScannerBarcodeLayer layer];
+            [targetLayer addSublayer:layer];
+            
+            [lastBarcodeLayer remove];
+            [lastBarcodeLayer release];
+            lastBarcodeLayer = [layer retain];
+            [lastBarcode release];
+            lastBarcode = [barcodeContent retain];
+            
+            NSDictionary *vibration = failVibration;
         
-        FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
-        if (!ticket) {
-            NSLog(@"barcode invalid");
-        } else if (ticket.checkedIn) {
-            NSLog(@"ticket already checked in");
-        } else if (![ticket isValidToday]) {
-            NSLog(@"ticket is not valid today");
-        } else if (ticket.cancelled) {
-            NSLog(@"ticket has been cancelled");
+            FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
+            if (!ticket) {
+                NSLog(@"barcode invalid");
+                
+            } else {
+                layer.fillColor = [UIColor redColor].CGColor;
+                
+                if (ticket.checkedIn) {
+                    NSLog(@"ticket already checked in");
+                } else if (![ticket isValidToday]) {
+                    NSLog(@"ticket is not valid today");
+                } else if (ticket.cancelled) {
+                    NSLog(@"ticket has been cancelled");
+                } else {
+//                    ticket.checkedIn = YES;
+                    
+                    vibration = successVibration;
+                    layer.fillColor = [UIColor greenColor].CGColor;
+                    
+                    NSLog(@"ticket is valid: %@", ticket.number);
+                }
+                
+                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(vibrateWithPattern:) object:nil];
+                [self performSelector:@selector(vibrateWithPattern:) withObject:vibration afterDelay:0.3];
+            }
         } else {
-            ticket.checkedIn = YES;
+            [lastBarcodeLayer setCorners:transformedObject.corners];
             
-            vibration = successVibration;
-            
-            NSLog(@"ticket is valid: %@", ticket.number);
+            if (![targetLayer.sublayers containsObject:lastBarcodeLayer]) {
+                [targetLayer addSublayer:lastBarcodeLayer];
+            }
         }
-        
-        AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, vibration);
     }
+}
+
+- (void)vibrateWithPattern:(NSDictionary *)pattern {
+    NSLog(@"vibe");
+    AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, pattern);
 }
 
 @end
