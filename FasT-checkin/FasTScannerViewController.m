@@ -23,6 +23,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     NSDictionary *successVibration, *failVibration;
     CALayer *targetLayer;
     NSString *lastBarcode;
+    NSMutableArray *acceptedTicketIds;
     FasTScannerBarcodeLayer *lastBarcodeLayer;
 }
 
@@ -31,6 +32,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)initBarcodeDetection;
 - (void)configureCaptureDevice;
 - (void)vibrateWithPattern:(NSDictionary *)pattern;
+- (void)persistUserDefaults;
 
 @end
 
@@ -48,7 +50,15 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [failVibration release];
     failVibration = [@{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @500 ] } retain];
     
+    
+    NSArray *_acceptedTicketIds = [[NSUserDefaults standardUserDefaults] objectForKey:@"acceptedTicketIds"];
+    
+    [acceptedTicketIds release];
+    acceptedTicketIds = [[NSMutableArray arrayWithArray:_acceptedTicketIds] retain];
+    
     [FasTTicketVerifier init];
+    
+    [self persistUserDefaults];
 }
 
 - (void)dealloc {
@@ -58,6 +68,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [failVibration release];
     [lastBarcodeLayer release];
     [lastBarcode release];
+    [acceptedTicketIds release];
     [super dealloc];
 }
 
@@ -165,14 +176,15 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
             } else {
                 layer.fillColor = [UIColor redColor].CGColor;
                 
-                if (ticket.checkedIn) {
-                    NSLog(@"ticket already checked in");
-                } else if (![ticket isValidToday]) {
+                if (![ticket isValidToday]) {
                     NSLog(@"ticket is not valid today");
                 } else if (ticket.cancelled) {
                     NSLog(@"ticket has been cancelled");
                 } else {
-//                    ticket.checkedIn = YES;
+                    if (!ticket.checkedIn) {
+                        ticket.checkedIn = YES;
+                        [acceptedTicketIds addObject:ticket.ticketId];
+                    }
                     
                     vibration = successVibration;
                     layer.fillColor = [UIColor greenColor].CGColor;
@@ -196,6 +208,15 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)vibrateWithPattern:(NSDictionary *)pattern {
     NSLog(@"vibe");
     AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, pattern);
+}
+
+- (void)persistUserDefaults {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:acceptedTicketIds forKey:@"acceptedTicketIds"];
+    [defaults synchronize];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(persistUserDefaults) object:nil];
+    [self performSelector:@selector(persistUserDefaults) withObject:nil afterDelay:30];
 }
 
 @end
