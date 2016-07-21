@@ -8,12 +8,8 @@
 
 #import "FasTTicketVerifier.h"
 #import "FasTTicket.h"
+#import "FasTApi.h"
 #import <CommonCrypto/CommonHMAC.h>
-#import <AFNetworking.h>
-
-#ifndef DEBUG
-#define API_HOST @"https://www.theater-kaisersesch.de"
-#endif
 
 static NSDictionary *keys = nil;
 static NSDictionary *dates = nil;
@@ -143,14 +139,12 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 }
 
 + (void)fetchInfoFromServer {
-    NSString *url = [NSString stringWithFormat:@"%@/api/check_in", API_HOST];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionTask *task, id response) {
+    [FasTApi get:nil parameters:nil success:^(NSURLSessionDataTask *task, id response) {
         [self processApiResponse:response];
         [defaults setObject:response forKey:@"lastApiResponse"];
         [defaults synchronize];
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
         NSDictionary *response = [defaults objectForKey:@"lastApiResponse"];
         if (response) {
             [self processApiResponse:response];

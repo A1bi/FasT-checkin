@@ -23,7 +23,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     NSDictionary *successVibration, *failVibration;
     CALayer *targetLayer;
     NSString *lastBarcode;
-    NSMutableArray *acceptedTicketIds;
+    NSMutableArray *acceptedTickets;
     FasTScannerBarcodeLayer *lastBarcodeLayer;
 }
 
@@ -50,11 +50,12 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [failVibration release];
     failVibration = [@{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @500 ] } retain];
     
-    
-    NSArray *_acceptedTicketIds = [[NSUserDefaults standardUserDefaults] objectForKey:@"acceptedTicketIds"];
-    
-    [acceptedTicketIds release];
-    acceptedTicketIds = [[NSMutableArray arrayWithArray:_acceptedTicketIds] retain];
+    [acceptedTickets release];
+    acceptedTickets = [[[NSUserDefaults standardUserDefaults] objectForKey:@"acceptedTickets"] mutableCopy];
+    if (!acceptedTickets) {
+        acceptedTickets = [NSMutableArray array];
+    }
+    [acceptedTickets retain];
     
     [FasTTicketVerifier init];
     
@@ -68,7 +69,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [failVibration release];
     [lastBarcodeLayer release];
     [lastBarcode release];
-    [acceptedTicketIds release];
+    [acceptedTickets release];
     [super dealloc];
 }
 
@@ -183,7 +184,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
                 } else {
                     if (!ticket.checkedIn) {
                         ticket.checkedIn = YES;
-                        [acceptedTicketIds addObject:ticket.ticketId];
+                        [acceptedTickets addObject:ticket.ticketId];
                     }
                     
                     vibration = successVibration;
@@ -212,7 +213,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
 - (void)persistUserDefaults {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:acceptedTicketIds forKey:@"acceptedTicketIds"];
+    [defaults setObject:acceptedTickets forKey:@"acceptedTickets"];
     [defaults synchronize];
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(persistUserDefaults) object:nil];
