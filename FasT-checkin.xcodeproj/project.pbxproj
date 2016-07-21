@@ -20,6 +20,7 @@
 		F015FFCF1D3443DE00493E8E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */; };
 		F015FFD11D3444B500493E8E /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F015FFD01D3444B500493E8E /* Storyboard.storyboard */; };
 		F02F87721D41020000B5B0F3 /* FasTApi.m in Sources */ = {isa = PBXBuildFile; fileRef = F02F87711D41020000B5B0F3 /* FasTApi.m */; };
+		F02F87751D410A5300B5B0F3 /* FasTCheckIn.m in Sources */ = {isa = PBXBuildFile; fileRef = F02F87741D410A5300B5B0F3 /* FasTCheckIn.m */; };
 		F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C731D35509500F4A668 /* FasTTicketVerifier.m */; };
 		F0377C761D35573200F4A668 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C751D35573200F4A668 /* Security.framework */; };
 		F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C7B1D3665F300F4A668 /* FasTTicket.m */; };
@@ -52,6 +53,8 @@
 		F015FFD01D3444B500493E8E /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		F02F87701D41020000B5B0F3 /* FasTApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTApi.h; sourceTree = "<group>"; };
 		F02F87711D41020000B5B0F3 /* FasTApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTApi.m; sourceTree = "<group>"; };
+		F02F87731D410A5300B5B0F3 /* FasTCheckIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTCheckIn.h; sourceTree = "<group>"; };
+		F02F87741D410A5300B5B0F3 /* FasTCheckIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTCheckIn.m; sourceTree = "<group>"; };
 		F0377C721D35509500F4A668 /* FasTTicketVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTTicketVerifier.h; sourceTree = "<group>"; };
 		F0377C731D35509500F4A668 /* FasTTicketVerifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTTicketVerifier.m; sourceTree = "<group>"; };
 		F0377C751D35573200F4A668 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -127,6 +130,8 @@
 				F0377C731D35509500F4A668 /* FasTTicketVerifier.m */,
 				F0377C7A1D3665F300F4A668 /* FasTTicket.h */,
 				F0377C7B1D3665F300F4A668 /* FasTTicket.m */,
+				F02F87731D410A5300B5B0F3 /* FasTCheckIn.h */,
+				F02F87741D410A5300B5B0F3 /* FasTCheckIn.m */,
 				F02F87701D41020000B5B0F3 /* FasTApi.h */,
 				F02F87711D41020000B5B0F3 /* FasTApi.m */,
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
@@ -302,6 +307,7 @@
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
 				F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,
+				F02F87751D410A5300B5B0F3 /* FasTCheckIn.m in Sources */,
 				F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */,
 				F0F46AA11D3912A800648897 /* FasTScannerBarcodeLayer.m in Sources */,
 				F02F87721D41020000B5B0F3 /* FasTApi.m in Sources */,

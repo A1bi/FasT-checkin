@@ -11,6 +11,8 @@
 #import "FasTApi.h"
 #import <CommonCrypto/CommonHMAC.h>
 
+#define kLastApiResponseDefaultsKey @"lastApiResponse"
+
 static NSDictionary *keys = nil;
 static NSDictionary *dates = nil;
 static NSMutableDictionary *ticketsById = nil;
@@ -142,10 +144,10 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [FasTApi get:nil parameters:nil success:^(NSURLSessionDataTask *task, id response) {
         [self processApiResponse:response];
-        [defaults setObject:response forKey:@"lastApiResponse"];
+        [defaults setObject:response forKey:kLastApiResponseDefaultsKey];
         [defaults synchronize];
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSDictionary *response = [defaults objectForKey:@"lastApiResponse"];
+        NSDictionary *response = [defaults objectForKey:kLastApiResponseDefaultsKey];
         if (response) {
             [self processApiResponse:response];
         }

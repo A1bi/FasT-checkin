@@ -10,10 +10,14 @@
 #import "FasTTicketVerifier.h"
 #import "FasTTicket.h"
 #import "FasTScannerBarcodeLayer.h"
+#import "FasTCheckIn.h"
+#import "FasTApi.h"
 #import <AudioToolbox/AudioToolbox.h>
 
 void AudioServicesStopSystemSound(SystemSoundID soundId);
 void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NSDictionary *vibrationPattern);
+
+#define kCheckInsToSubmitDefaultsKey @"checkInsToSubmit"
 
 @interface FasTScannerViewController ()
 {
@@ -23,8 +27,9 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     NSDictionary *successVibration, *failVibration;
     CALayer *targetLayer;
     NSString *lastBarcode;
-    NSMutableArray *acceptedTickets;
+    NSMutableArray *checkInsToSubmit;
     FasTScannerBarcodeLayer *lastBarcodeLayer;
+    NSNumberFormatter *mediumNumberFormatter;
 }
 
 - (void)initCaptureSession;
@@ -32,7 +37,10 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)initBarcodeDetection;
 - (void)configureCaptureDevice;
 - (void)vibrateWithPattern:(NSDictionary *)pattern;
-- (void)persistUserDefaults;
+- (void)submitCheckIns;
+- (void)scheduleCheckInSubmission;
+- (void)persistCheckIns;
+- (void)loadPersistedCheckIns;
 
 @end
 
@@ -50,16 +58,23 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [failVibration release];
     failVibration = [@{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @500 ] } retain];
     
-    [acceptedTickets release];
-    acceptedTickets = [[[NSUserDefaults standardUserDefaults] objectForKey:@"acceptedTickets"] mutableCopy];
-    if (!acceptedTickets) {
-        acceptedTickets = [NSMutableArray array];
-    }
-    [acceptedTickets retain];
+    checkInsToSubmit = [[NSMutableArray alloc] init];
+    
+    mediumNumberFormatter = [[NSNumberFormatter alloc] init];
+    mediumNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     
     [FasTTicketVerifier init];
     
-    [self persistUserDefaults];
+    [self loadPersistedCheckIns];
+    [self submitCheckIns];
+    
+    NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        [self persistCheckIns];
+    }];
+    [defaultCenter addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        [self loadPersistedCheckIns];
+    }];
 }
 
 - (void)dealloc {
@@ -69,7 +84,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [failVibration release];
     [lastBarcodeLayer release];
     [lastBarcode release];
-    [acceptedTickets release];
+    [checkInsToSubmit release];
+    [mediumNumberFormatter release];
     [super dealloc];
 }
 
@@ -182,9 +198,13 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
                 } else if (ticket.cancelled) {
                     NSLog(@"ticket has been cancelled");
                 } else {
-                    if (!ticket.checkedIn) {
-                        ticket.checkedIn = YES;
-                        [acceptedTickets addObject:ticket.ticketId];
+                    if (!ticket.checkIn) {
+                        // TODO: components are already determined in ticket verifier, we should leverage this!
+                        NSString *mediumString = [[barcodeContent componentsSeparatedByString:@"--"] lastObject];
+                        NSNumber *medium = [mediumNumberFormatter numberFromString:mediumString];
+                        FasTCheckIn *checkIn = [[[FasTCheckIn alloc] initWithTicket:ticket medium:medium] autorelease];
+                        ticket.checkIn = checkIn;
+                        [checkInsToSubmit addObject:ticket.checkIn];
                     }
                     
                     vibration = successVibration;
@@ -211,13 +231,66 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, pattern);
 }
 
-- (void)persistUserDefaults {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:acceptedTickets forKey:@"acceptedTickets"];
-    [defaults synchronize];
+- (void)submitCheckIns {
+    NSMutableArray *checkIns = [NSMutableArray array];
+    for (FasTCheckIn *checkIn in checkInsToSubmit) {
+        NSDictionary *info = @{ @"ticket_id": checkIn.ticketId, @"date": @(checkIn.date.timeIntervalSince1970), @"medium": checkIn.medium };
+        [checkIns addObject:info];
+    }
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(persistUserDefaults) object:nil];
-    [self performSelector:@selector(persistUserDefaults) withObject:nil afterDelay:30];
+    if (checkIns.count < 1) {
+        [self scheduleCheckInSubmission];
+        return;
+    }
+    
+    NSArray *_checkInsToSubmit = [checkInsToSubmit copy];
+    [FasTApi post:nil parameters:@{ @"check_ins": checkIns } success:^(NSURLSessionDataTask *task, id response) {
+        if (((NSNumber *)response[@"ok"]).boolValue) {
+            [checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];
+        }
+        [self scheduleCheckInSubmission];
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [self scheduleCheckInSubmission];
+    }];
+}
+
+- (void)scheduleCheckInSubmission {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scheduleCheckInSubmission) object:nil];
+    [self performSelector:@selector(submitCheckIns) withObject:nil afterDelay:60];
+}
+
+// if internet connection is not available save check ins for later submission
+- (void)persistCheckIns {
+    if (checkInsToSubmit.count < 1) {
+        return;
+    }
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *checkInsToPersist = [[defaults objectForKey:kCheckInsToSubmitDefaultsKey] mutableCopy];
+    if (!checkInsToPersist) {
+        checkInsToPersist = [NSMutableArray array];
+    }
+    
+    for (FasTCheckIn *checkIn in checkInsToSubmit) {
+        NSDictionary *info = @{ @"ticketId": checkIn.ticketId, @"date": checkIn.date, @"medium": checkIn.medium };
+        [checkInsToPersist addObject:info];
+    }
+    [checkInsToSubmit removeAllObjects];
+    
+    [defaults setObject:checkInsToPersist forKey:kCheckInsToSubmitDefaultsKey];
+    [defaults synchronize];
+}
+
+- (void)loadPersistedCheckIns {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    // are there check ins from older sessions yet to submit ?
+    NSArray *checkInsLeftOver = [defaults objectForKey:kCheckInsToSubmitDefaultsKey];
+    for (NSDictionary *checkInInfo in checkInsLeftOver) {
+        FasTCheckIn *checkIn = [[[FasTCheckIn alloc] initWithTicketId:checkInInfo[@"ticketId"] medium:checkInInfo[@"medium"] date:checkInInfo[@"date"]] autorelease];
+        [checkInsToSubmit addObject:checkIn];
+    }
+    [defaults removeObjectForKey:kCheckInsToSubmitDefaultsKey];
 }
 
 @end

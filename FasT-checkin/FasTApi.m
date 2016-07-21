@@ -34,7 +34,9 @@
     success:(void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
     failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
 {
-    [[AFHTTPSessionManager manager] GET:[self urlForAction:action] parameters:params progress:nil success:success failure:failure];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [manager POST:[self urlForAction:action] parameters:params progress:nil success:success failure:failure];
 }
 
 + (NSString *)urlForAction:(NSString *)action {

@@ -8,13 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+@class FasTCheckIn;
+
 @interface FasTTicket : NSObject
 
 @property (strong) NSNumber *ticketId;
 @property (strong) NSDate *date;
 @property (strong) NSString *number;
 @property BOOL cancelled;
-@property BOOL checkedIn;
+@property (strong) FasTCheckIn *checkIn;
 
 - (BOOL)isValidToday;
 
