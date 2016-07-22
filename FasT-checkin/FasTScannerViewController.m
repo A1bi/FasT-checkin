@@ -176,6 +176,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
         
         if (![barcodeContent isEqualToString:lastBarcode]) {
             FasTScannerBarcodeLayer *layer = [FasTScannerBarcodeLayer layer];
+            layer.fillColor = [UIColor redColor].CGColor;
             [targetLayer addSublayer:layer];
             
             [lastBarcodeLayer remove];
@@ -191,8 +192,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
                 NSLog(@"barcode invalid");
                 
             } else {
-                layer.fillColor = [UIColor redColor].CGColor;
-                
                 if (![ticket isValidToday]) {
                     NSLog(@"ticket is not valid today");
                 } else if (ticket.cancelled) {
@@ -212,10 +211,11 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
                     
                     NSLog(@"ticket is valid: %@", ticket.number);
                 }
-                
-                [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(vibrateWithPattern:) object:nil];
-                [self performSelector:@selector(vibrateWithPattern:) withObject:vibration afterDelay:0.3];
             }
+            
+            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(vibrateWithPattern:) object:nil];
+            [self performSelector:@selector(vibrateWithPattern:) withObject:vibration afterDelay:0.3];
+            
         } else {
             [lastBarcodeLayer setCorners:transformedObject.corners];
             
