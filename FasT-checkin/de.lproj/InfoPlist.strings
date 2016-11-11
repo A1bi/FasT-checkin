@@ -1,2 +1,3 @@
 "CFBundleDisplayName" = "FasT Einlasskontrolle";
 "CFBundleName" = "FasT Einlasskontrolle";
+"NSCameraUsageDescription" = "Die Kamera wird zum Scannen der Barcodes benötigt.";
