@@ -13,6 +13,5 @@
 @interface FasTScannerBarcodeLayer : CAShapeLayer
 
 - (void)setCorners:(NSArray *)corners;
-- (void)remove;
 
 @end

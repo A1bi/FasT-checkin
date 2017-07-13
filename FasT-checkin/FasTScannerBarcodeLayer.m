@@ -38,11 +38,6 @@
     CFRelease(path);
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(remove) withObject:nil afterDelay:2];
-}
-
-- (void)remove {
-    [self removeFromSuperlayer];
 }
 
 @end

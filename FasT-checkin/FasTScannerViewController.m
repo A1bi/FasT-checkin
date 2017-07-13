@@ -24,12 +24,12 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     AVCaptureSession *session;
     AVCaptureDevice *captureDevice;
     AVCaptureVideoPreviewLayer *preview;
-    NSDictionary *successVibration, *failVibration;
+    NSDictionary *successVibration, *warningVibration, *failVibration;
     CALayer *targetLayer;
-    NSString *lastBarcode;
     NSMutableArray *checkInsToSubmit;
-    FasTScannerBarcodeLayer *lastBarcodeLayer;
+    FasTScannerBarcodeLayer *barcodeLayer;
     NSNumberFormatter *mediumNumberFormatter;
+    NSString *lastBarcodeContent;
     BOOL scanning;
 }
 
@@ -60,6 +60,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     
     [successVibration release];
     successVibration = [@{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @100 ] } retain];
+    [warningVibration release];
+    warningVibration = [@{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @50, @NO, @50, @YES, @50, @NO, @50, @YES, @50 ] } retain];
     [failVibration release];
     failVibration = [@{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @500 ] } retain];
     
@@ -80,17 +82,22 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [defaultCenter addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
         [self loadPersistedCheckIns];
     }];
+    
+    [barcodeLayer release];
+    barcodeLayer = [[FasTScannerBarcodeLayer layer] retain];
+    [targetLayer addSublayer:barcodeLayer];
 }
 
 - (void)dealloc {
     [session release];
     [captureDevice release];
     [successVibration release];
+    [warningVibration release];
     [failVibration release];
-    [lastBarcodeLayer release];
-    [lastBarcode release];
+    [barcodeLayer release];
     [checkInsToSubmit release];
     [mediumNumberFormatter release];
+    [lastBarcodeContent release];
     [super dealloc];
 }
 
@@ -189,7 +196,10 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)stopScanning
 {
     scanning = NO;
+    [lastBarcodeContent release];
+    lastBarcodeContent = nil;
     [self configureCaptureDeviceForAutoFocus];
+    [barcodeLayer setHidden:YES];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -217,57 +227,49 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
         
         NSString *barcodeContent = object.stringValue;
         
-        if (![barcodeContent isEqualToString:lastBarcode]) {
-            FasTScannerBarcodeLayer *layer = [FasTScannerBarcodeLayer layer];
-            layer.fillColor = [UIColor redColor].CGColor;
-            [targetLayer addSublayer:layer];
-            
-            [lastBarcodeLayer remove];
-            [lastBarcodeLayer release];
-            lastBarcodeLayer = [layer retain];
-            [lastBarcode release];
-            lastBarcode = [barcodeContent retain];
-            
-            NSDictionary *vibration = failVibration;
+        BOOL showLayer = !lastBarcodeContent || [barcodeContent isEqualToString:lastBarcodeContent];
+        if (showLayer) {
+            [barcodeLayer setCorners:transformedObject.corners];
+        }
+        [barcodeLayer setHidden:!showLayer];
         
-            FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
-            if (!ticket) {
-                NSLog(@"barcode invalid");
-                
-            } else {
-                if (![ticket isValidToday]) {
-                    NSLog(@"ticket is not valid today");
-                } else if (ticket.cancelled) {
-                    NSLog(@"ticket has been cancelled");
-                } else {
-                    if (!ticket.checkIn) {
-                        // TODO: components are already determined in ticket verifier, we should leverage this!
-                        NSString *mediumString = [[barcodeContent componentsSeparatedByString:@"--"] lastObject];
-                        NSNumber *medium = [mediumNumberFormatter numberFromString:mediumString];
-                        FasTCheckIn *checkIn = [[[FasTCheckIn alloc] initWithTicket:ticket medium:medium] autorelease];
-                        ticket.checkIn = checkIn;
-                        [checkInsToSubmit addObject:ticket.checkIn];
-                    }
-                    
-                    vibration = successVibration;
-                    layer.fillColor = [UIColor greenColor].CGColor;
-                    
-                    NSLog(@"ticket is valid: %@", ticket.number);
-                }
-            }
-            
-            [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(vibrateWithPattern:) object:nil];
-            [self performSelector:@selector(vibrateWithPattern:) withObject:vibration afterDelay:0.3];
+        if (lastBarcodeContent) return;
+        lastBarcodeContent = [barcodeContent retain];
+        
+        barcodeLayer.fillColor = [UIColor redColor].CGColor;
+        NSDictionary *vibration = failVibration;
+    
+        FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
+        if (!ticket) {
+            NSLog(@"barcode invalid");
             
         } else {
-            [lastBarcodeLayer setCorners:transformedObject.corners];
-            
-            if (![targetLayer.sublayers containsObject:lastBarcodeLayer]) {
-                [targetLayer addSublayer:lastBarcodeLayer];
+            if (![ticket isValidToday]) {
+                NSLog(@"ticket is not valid today");
+            } else if (ticket.cancelled) {
+                NSLog(@"ticket has been cancelled");
+            } else {
+                if (!ticket.checkIn) {
+                    // TODO: components are already determined in ticket verifier, we should leverage this!
+                    NSString *mediumString = [[barcodeContent componentsSeparatedByString:@"--"] lastObject];
+                    NSNumber *medium = [mediumNumberFormatter numberFromString:mediumString];
+                    FasTCheckIn *checkIn = [[[FasTCheckIn alloc] initWithTicket:ticket medium:medium] autorelease];
+                    ticket.checkIn = checkIn;
+                    [checkInsToSubmit addObject:ticket.checkIn];
+                } else {
+                    vibration = warningVibration;
+                }
+                
+                vibration = successVibration;
+                barcodeLayer.fillColor = [UIColor greenColor].CGColor;
+                
+                NSLog(@"ticket is valid: %@", ticket.number);
             }
         }
+
+        [barcodeLayer setHidden:NO];
+        [self vibrateWithPattern:vibration];
         
-        [self stopScanning];
         return;
     }
 }
