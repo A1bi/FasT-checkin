@@ -15,6 +15,7 @@
 @property (strong) NSNumber *ticketId;
 @property (strong) NSDate *date;
 @property (strong) NSString *number;
+@property (strong) NSString *type;
 @property BOOL cancelled;
 @property (strong) FasTCheckIn *checkIn;
 

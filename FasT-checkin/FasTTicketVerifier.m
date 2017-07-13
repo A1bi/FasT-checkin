@@ -15,6 +15,7 @@
 
 static NSDictionary *keys = nil;
 static NSDictionary *dates = nil;
+static NSDictionary *ticketTypes = nil;
 static NSMutableDictionary *ticketsById = nil;
 static NSMutableDictionary *ticketsByBarcode = nil;
 
@@ -55,6 +56,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
                     ticket = [[[FasTTicket alloc] init] autorelease];
                     ticket.ticketId = ticketId;
                     ticket.date = dates[ticketInfo[@"da"]];
+                    ticket.type = ticketTypes[ticketInfo[@"ty"]];
                     ticket.number = ticketInfo[@"no"];
                     ticketsById[ticketId] = ticket;
                 }
@@ -171,6 +173,13 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     [dates release];
     dates = [[_dates copy] retain];
     
+    NSMutableDictionary *_ticketTypes = [NSMutableDictionary dictionary];
+    for (NSDictionary *type in response[@"ticket_types"]) {
+        _ticketTypes[type[@"id"]] = type[@"name"];
+    }
+    [ticketTypes release];
+    ticketTypes = [[_ticketTypes copy] retain];
+    
     // changed tickets
     for (NSDictionary *ticketInfo in response[@"changed_tickets"]) {
         FasTTicket *ticket = ticketsById[ticketInfo[@"id"]];
@@ -180,6 +189,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
         }
         ticket.ticketId = ticketInfo[@"id"];
         ticket.date = dates[ticketInfo[@"date_id"]];
+        ticket.type = ticketTypes[ticketInfo[@"type_id"]];
         ticket.number = ticketInfo[@"number"];
         ticket.cancelled = ((NSNumber *)ticketInfo[@"cancelled"]).boolValue;
     }

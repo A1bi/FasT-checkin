@@ -26,7 +26,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     AVCaptureVideoPreviewLayer *preview;
     NSDictionary *successVibration, *warningVibration, *failVibration;
     CALayer *targetLayer, *infoLayer;
-    CATextLayer *infoLayerText;
+    CATextLayer *infoTextLayer;
     FasTScannerBarcodeLayer *barcodeLayer;
     NSNumberFormatter *mediumNumberFormatter;
     NSString *lastBarcodeContent;
@@ -43,6 +43,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)startScanning;
 - (void)stopScanning;
 - (void)vibrateWithPattern:(NSDictionary *)pattern;
+- (void)setInfoLayerText:(NSString *)text;
 
 @end
 
@@ -79,7 +80,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [mediumNumberFormatter release];
     [lastBarcodeContent release];
     [infoLayer release];
-    [infoLayerText release];
+    [infoTextLayer release];
     [super dealloc];
 }
 
@@ -152,20 +153,20 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [infoLayer release];
     infoLayer = [[CALayer layer] retain];
     infoLayer.backgroundColor = [UIColor blueColor].CGColor;
-    infoLayer.opacity = 0.7;
+    infoLayer.opacity = 0.75;
     infoLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 65);
     infoLayer.hidden = YES;
     [targetLayer addSublayer:infoLayer];
     
-    [infoLayerText removeFromSuperlayer];
-    [infoLayerText release];
-    infoLayerText = [[CATextLayer layer] retain];
-    infoLayerText.fontSize = 28;
-    infoLayerText.alignmentMode = kCAAlignmentCenter;
-    infoLayerText.frame = CGRectMake(10, 20, infoLayer.frame.size.width - 20, 40);
-    infoLayerText.contentsScale = [[UIScreen mainScreen] scale];
-    infoLayerText.hidden = YES;
-    [targetLayer addSublayer:infoLayerText];
+    [infoTextLayer removeFromSuperlayer];
+    [infoTextLayer release];
+    infoTextLayer = [[CATextLayer layer] retain];
+    infoTextLayer.fontSize = 28;
+    infoTextLayer.alignmentMode = kCAAlignmentCenter;
+    infoTextLayer.frame = CGRectMake(10, 20, infoLayer.frame.size.width - 20, 40);
+    infoTextLayer.contentsScale = [[UIScreen mainScreen] scale];
+    infoTextLayer.hidden = YES;
+    [targetLayer addSublayer:infoTextLayer];
 }
 
 - (void)configureCaptureDeviceForFocusPoint:(CGPoint)focusPoint {
@@ -213,7 +214,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     
     barcodeLayer.hidden = YES;
     infoLayer.hidden = YES;
-    infoLayerText.hidden = YES;
+    infoTextLayer.hidden = YES;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -281,7 +282,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
                     vibration = warningVibration;
                 }
                 
-                infoText = [NSString stringWithFormat:@"%@ – OK", ticket.number];
+                infoText = [NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type];
                 NSLog(@"ticket is valid: %@", ticket.number);
             }
         }
@@ -290,8 +291,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
         barcodeLayer.hidden = NO;
         infoLayer.backgroundColor = fillColor.CGColor;
         infoLayer.hidden = NO;
-        infoLayerText.string = infoText;
-        infoLayerText.hidden = NO;
+        [self setInfoLayerText:infoText];
+        infoTextLayer.hidden = NO;
         
         [self vibrateWithPattern:vibration];
         
@@ -301,6 +302,25 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
 - (void)vibrateWithPattern:(NSDictionary *)pattern {
     AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, pattern);
+}
+
+- (void)setInfoLayerText:(NSString *)text
+{
+    float fontSize = 28;
+    CGSize fontBounds = CGSizeMake(1000, 1000);
+    while (fontBounds.width >= infoTextLayer.frame.size.width - 10) {
+        fontSize -= 0.1f;
+        UIFont *font = [UIFont systemFontOfSize:fontSize];
+        fontBounds = [text sizeWithAttributes:@{NSFontAttributeName: font}];
+    }
+    
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    
+    infoTextLayer.fontSize = fontSize;
+    infoTextLayer.string = text;
+    
+    [CATransaction commit];
 }
 
 @end
