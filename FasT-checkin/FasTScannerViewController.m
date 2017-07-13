@@ -25,7 +25,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     AVCaptureDevice *captureDevice;
     AVCaptureVideoPreviewLayer *preview;
     NSDictionary *successVibration, *warningVibration, *failVibration;
-    CALayer *targetLayer;
+    CALayer *targetLayer, *infoLayer;
+    CATextLayer *infoLayerText;
     FasTScannerBarcodeLayer *barcodeLayer;
     NSNumberFormatter *mediumNumberFormatter;
     NSString *lastBarcodeContent;
@@ -35,6 +36,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)initCaptureSession;
 - (void)initCapturePreview;
 - (void)initBarcodeDetection;
+- (void)initLayers;
 - (void)configureCaptureDeviceForFocusPoint:(CGPoint)focusPoint;
 - (void)configureCaptureDeviceForAutoFocus;
 - (void)configureCaptureDevice:(AVCaptureFocusMode)focusMode exposureMode:(AVCaptureExposureMode)exposureMode focusPoint:(CGPoint)focusPoint;
@@ -52,6 +54,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [self initCaptureSession];
     [self initCapturePreview];
     [self initBarcodeDetection];
+    [self initLayers];
     
     [successVibration release];
     successVibration = [@{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @100 ] } retain];
@@ -64,10 +67,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     mediumNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     
     [FasTTicketVerifier init];
-    
-    [barcodeLayer release];
-    barcodeLayer = [[FasTScannerBarcodeLayer layer] retain];
-    [targetLayer addSublayer:barcodeLayer];
 }
 
 - (void)dealloc {
@@ -79,6 +78,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [barcodeLayer release];
     [mediumNumberFormatter release];
     [lastBarcodeContent release];
+    [infoLayer release];
+    [infoLayerText release];
     [super dealloc];
 }
 
@@ -140,6 +141,33 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
 }
 
+- (void)initLayers
+{
+    [barcodeLayer removeFromSuperlayer];
+    [barcodeLayer release];
+    barcodeLayer = [[FasTScannerBarcodeLayer layer] retain];
+    [targetLayer addSublayer:barcodeLayer];
+    
+    [infoLayer removeFromSuperlayer];
+    [infoLayer release];
+    infoLayer = [[CALayer layer] retain];
+    infoLayer.backgroundColor = [UIColor blueColor].CGColor;
+    infoLayer.opacity = 0.7;
+    infoLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 65);
+    infoLayer.hidden = YES;
+    [targetLayer addSublayer:infoLayer];
+    
+    [infoLayerText removeFromSuperlayer];
+    [infoLayerText release];
+    infoLayerText = [[CATextLayer layer] retain];
+    infoLayerText.fontSize = 28;
+    infoLayerText.alignmentMode = kCAAlignmentCenter;
+    infoLayerText.frame = CGRectMake(10, 20, infoLayer.frame.size.width - 20, 40);
+    infoLayerText.contentsScale = [[UIScreen mainScreen] scale];
+    infoLayerText.hidden = YES;
+    [targetLayer addSublayer:infoLayerText];
+}
+
 - (void)configureCaptureDeviceForFocusPoint:(CGPoint)focusPoint {
     [self configureCaptureDevice:AVCaptureFocusModeAutoFocus exposureMode:AVCaptureExposureModeAutoExpose focusPoint:focusPoint];
 }
@@ -177,10 +205,15 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)stopScanning
 {
     scanning = NO;
+    
     [lastBarcodeContent release];
     lastBarcodeContent = nil;
+    
     [self configureCaptureDeviceForAutoFocus];
-    [barcodeLayer setHidden:YES];
+    
+    barcodeLayer.hidden = YES;
+    infoLayer.hidden = YES;
+    infoLayerText.hidden = YES;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -212,12 +245,13 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
         if (showLayer) {
             [barcodeLayer setCorners:transformedObject.corners];
         }
-        [barcodeLayer setHidden:!showLayer];
+        barcodeLayer.hidden = !showLayer;
         
         if (lastBarcodeContent) return;
         lastBarcodeContent = [barcodeContent retain];
         
-        barcodeLayer.fillColor = [UIColor redColor].CGColor;
+        UIColor *fillColor = [UIColor redColor];
+        NSString *infoText = @"Ungültiger Barcode";
         NSDictionary *vibration = failVibration;
     
         FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
@@ -226,8 +260,10 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
             
         } else {
             if (![ticket isValidToday]) {
+                infoText = @"Gültig für eine andere Aufführung";
                 NSLog(@"ticket is not valid today");
             } else if (ticket.cancelled) {
+                infoText = @"Ticket ist storniert";
                 NSLog(@"ticket has been cancelled");
                 
             } else {
@@ -237,19 +273,26 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
                     NSNumber *medium = [mediumNumberFormatter numberFromString:mediumString];
                     [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:medium];
                     
-                    barcodeLayer.fillColor = [UIColor greenColor].CGColor;
+                    fillColor = [UIColor greenColor];
                     vibration = successVibration;
                     
                 } else {
-                    barcodeLayer.fillColor = [UIColor yellowColor].CGColor;
+                    fillColor = [UIColor yellowColor];
                     vibration = warningVibration;
                 }
                 
+                infoText = [NSString stringWithFormat:@"%@ – OK", ticket.number];
                 NSLog(@"ticket is valid: %@", ticket.number);
             }
         }
 
-        [barcodeLayer setHidden:NO];
+        barcodeLayer.fillColor = fillColor.CGColor;
+        barcodeLayer.hidden = NO;
+        infoLayer.backgroundColor = fillColor.CGColor;
+        infoLayer.hidden = NO;
+        infoLayerText.string = infoText;
+        infoLayerText.hidden = NO;
+        
         [self vibrateWithPattern:vibration];
         
         return;
