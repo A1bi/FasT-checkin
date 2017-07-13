@@ -30,12 +30,17 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     NSMutableArray *checkInsToSubmit;
     FasTScannerBarcodeLayer *lastBarcodeLayer;
     NSNumberFormatter *mediumNumberFormatter;
+    BOOL scanning;
 }
 
 - (void)initCaptureSession;
 - (void)initCapturePreview;
 - (void)initBarcodeDetection;
-- (void)configureCaptureDevice;
+- (void)configureCaptureDeviceForFocusPoint:(CGPoint)focusPoint;
+- (void)configureCaptureDeviceForAutoFocus;
+- (void)configureCaptureDevice:(AVCaptureFocusMode)focusMode exposureMode:(AVCaptureExposureMode)exposureMode focusPoint:(CGPoint)focusPoint;
+- (void)startScanning;
+- (void)stopScanning;
 - (void)vibrateWithPattern:(NSDictionary *)pattern;
 - (void)submitCheckIns;
 - (void)scheduleCheckInSubmission;
@@ -92,14 +97,14 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [session startRunning];
-    [self configureCaptureDevice];
+    [self stopScanning];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [self stopScanning];
     [session stopRunning];
-    [captureDevice unlockForConfiguration];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -138,28 +143,37 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 }
 
 - (void)initBarcodeDetection {
-    AVCaptureMetadataOutput *output = [[[AVCaptureMetadataOutput alloc] init] autorelease];
+    AVCaptureMetadataOutput *metadataOutput = [[[AVCaptureMetadataOutput alloc] init] autorelease];
     // add output first so qr code will be available as metadata object type
-    [session addOutput:output];
-    [output setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-    if ([[output availableMetadataObjectTypes] containsObject:AVMetadataObjectTypeQRCode]) {
-        output.metadataObjectTypes = @[AVMetadataObjectTypeQRCode];
+    [session addOutput:metadataOutput];
+    if ([[metadataOutput availableMetadataObjectTypes] containsObject:AVMetadataObjectTypeQRCode]) {
+        metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeQRCode];
     }
+    [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
 }
 
-- (void)configureCaptureDevice {
+- (void)configureCaptureDeviceForFocusPoint:(CGPoint)focusPoint {
+    [self configureCaptureDevice:AVCaptureFocusModeAutoFocus exposureMode:AVCaptureExposureModeAutoExpose focusPoint:focusPoint];
+}
+
+- (void)configureCaptureDeviceForAutoFocus {
+    [self configureCaptureDevice:AVCaptureFocusModeContinuousAutoFocus exposureMode:AVCaptureExposureModeContinuousAutoExposure focusPoint:CGPointZero];
+}
+
+- (void)configureCaptureDevice:(AVCaptureFocusMode)focusMode exposureMode:(AVCaptureExposureMode)exposureMode focusPoint:(CGPoint)focusPoint {
     if (captureDevice) {
         NSError *error;
         if ([captureDevice lockForConfiguration:&error]) {
-            if ([captureDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
-                captureDevice.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+            if ([captureDevice isFocusModeSupported:focusMode]) {
+                captureDevice.focusMode = focusMode;
             }
-            if (captureDevice.isSmoothAutoFocusEnabled) {
-                captureDevice.smoothAutoFocusEnabled = NO;
+            if (focusMode == AVCaptureFocusModeAutoFocus && [captureDevice isFocusPointOfInterestSupported]) {
+                captureDevice.focusPointOfInterest = focusPoint;
             }
-            if ([captureDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
-                captureDevice.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
+            if ([captureDevice isExposureModeSupported:exposureMode]) {
+                captureDevice.exposureMode = exposureMode;
             }
+            [captureDevice unlockForConfiguration];
             
         } else {
             NSLog(@"error locking capture device configuration: %@", error);
@@ -167,8 +181,37 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     }
 }
 
+- (void)startScanning
+{
+    scanning = YES;
+}
+
+- (void)stopScanning
+{
+    scanning = NO;
+    [self configureCaptureDeviceForAutoFocus];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = touches.anyObject;
+    CGPoint location = [touch locationInView:self.view];
+    location = [preview captureDevicePointOfInterestForPoint:location];
+    
+    [self configureCaptureDeviceForFocusPoint:location];
+    
+    [self startScanning];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self stopScanning];
+}
+
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
+    if (!scanning) return;
+    
     for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
         AVMetadataMachineReadableCodeObject *transformedObject = (AVMetadataMachineReadableCodeObject *)[preview transformedMetadataObjectForMetadataObject:object];
         
@@ -223,6 +266,9 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
                 [targetLayer addSublayer:lastBarcodeLayer];
             }
         }
+        
+        [self stopScanning];
+        return;
     }
 }
 

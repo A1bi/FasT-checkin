@@ -195,7 +195,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = FasT;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Albisigns;
 				TargetAttributes = {
 					610FCACD17B8F522000AAF97 = {
