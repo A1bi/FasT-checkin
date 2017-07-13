@@ -163,7 +163,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
         _keys[key[@"id"]] = [key[@"secret"] dataUsingEncoding:NSUTF8StringEncoding];
     }
     [keys release];
-    keys = [[_keys copy] retain];
+    keys = [_keys copy];
     
     // dates
     NSMutableDictionary *_dates = [NSMutableDictionary dictionary];
@@ -171,14 +171,14 @@ static NSMutableDictionary *ticketsByBarcode = nil;
         _dates[date[@"id"]] = [NSDate dateWithTimeIntervalSince1970:((NSNumber *)date[@"date"]).integerValue];
     }
     [dates release];
-    dates = [[_dates copy] retain];
+    dates = [_dates copy];
     
     NSMutableDictionary *_ticketTypes = [NSMutableDictionary dictionary];
     for (NSDictionary *type in response[@"ticket_types"]) {
         _ticketTypes[type[@"id"]] = type[@"name"];
     }
     [ticketTypes release];
-    ticketTypes = [[_ticketTypes copy] retain];
+    ticketTypes = [_ticketTypes copy];
     
     // changed tickets
     for (NSDictionary *ticketInfo in response[@"changed_tickets"]) {

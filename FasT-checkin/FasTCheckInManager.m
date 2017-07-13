@@ -77,7 +77,7 @@
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *checkInsToPersist = [[defaults objectForKey:kCheckInsToSubmitDefaultsKey] mutableCopy];
+    NSMutableArray *checkInsToPersist = [[[defaults objectForKey:kCheckInsToSubmitDefaultsKey] mutableCopy] autorelease];
     if (!checkInsToPersist) {
         checkInsToPersist = [NSMutableArray array];
     }
@@ -104,7 +104,7 @@
         return;
     }
     
-    NSArray *_checkInsToSubmit = [checkInsToSubmit copy];
+    NSArray *_checkInsToSubmit = [[checkInsToSubmit copy] autorelease];
     [FasTApi post:nil parameters:@{ @"check_ins": checkIns } success:^(NSURLSessionDataTask *task, id response) {
         if (((NSNumber *)response[@"ok"]).boolValue) {
             [checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];

@@ -28,4 +28,14 @@
     }
 }
 
+- (void)dealloc
+{
+    [_ticketId release];
+    [_date release];
+    [_number release];
+    [_type release];
+    [_checkIn release];
+    [super dealloc];
+}
+
 @end
