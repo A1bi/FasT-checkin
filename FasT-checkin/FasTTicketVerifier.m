@@ -195,4 +195,10 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     }
 }
 
++ (void)clearTickets
+{
+    [ticketsById removeAllObjects];
+    [ticketsByBarcode removeAllObjects];
+}
+
 @end

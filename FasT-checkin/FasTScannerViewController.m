@@ -30,7 +30,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     FasTScannerBarcodeLayer *barcodeLayer;
     NSNumberFormatter *mediumNumberFormatter;
     NSString *lastBarcodeContent;
-    BOOL scanning;
+    UITouch *scanningTouch;
 }
 
 - (void)initCaptureSession;
@@ -40,10 +40,9 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)configureCaptureDeviceForFocusPoint:(CGPoint)focusPoint;
 - (void)configureCaptureDeviceForAutoFocus;
 - (void)configureCaptureDevice:(AVCaptureFocusMode)focusMode exposureMode:(AVCaptureExposureMode)exposureMode focusPoint:(CGPoint)focusPoint;
-- (void)startScanning;
 - (void)stopScanning;
 - (void)vibrateWithPattern:(NSDictionary *)pattern;
-- (void)setInfoLayerText:(NSString *)text;
+- (void)setInfoLayerText:(NSString *)text withBackgroundColor:(UIColor *)color;
 
 @end
 
@@ -130,6 +129,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     targetLayer = [CALayer layer];
     targetLayer.frame = self.view.bounds;
     [self.view.layer addSublayer:targetLayer];
+    
+    self.view.multipleTouchEnabled = YES;
 }
 
 - (void)initBarcodeDetection {
@@ -198,14 +199,9 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     }
 }
 
-- (void)startScanning
-{
-    scanning = YES;
-}
-
 - (void)stopScanning
 {
-    scanning = NO;
+    scanningTouch = nil;
     
     [lastBarcodeContent release];
     lastBarcodeContent = nil;
@@ -219,23 +215,31 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    UITouch *touch = touches.anyObject;
-    CGPoint location = [touch locationInView:self.view];
-    location = [preview captureDevicePointOfInterestForPoint:location];
-    
-    [self configureCaptureDeviceForFocusPoint:location];
-    
-    [self startScanning];
+    if (scanningTouch) {
+        if (touches.count > 1) {
+            [FasTTicketVerifier clearTickets];
+            [self setInfoLayerText:@"Check-In-Status zurückgesetzt" withBackgroundColor:[UIColor blueColor]];
+        }
+        
+    } else {
+        scanningTouch = touches.anyObject;
+        CGPoint location = [scanningTouch locationInView:self.view];
+        location = [preview captureDevicePointOfInterestForPoint:location];
+        
+        [self configureCaptureDeviceForFocusPoint:location];
+    }
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [self stopScanning];
+    if ([touches containsObject:scanningTouch]) {
+        [self stopScanning];
+    }
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
-    if (!scanning) return;
+    if (!scanningTouch) return;
     
     for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
         AVMetadataMachineReadableCodeObject *transformedObject = (AVMetadataMachineReadableCodeObject *)[preview transformedMetadataObjectForMetadataObject:object];
@@ -289,10 +293,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
         barcodeLayer.fillColor = fillColor.CGColor;
         barcodeLayer.hidden = NO;
-        infoLayer.backgroundColor = fillColor.CGColor;
-        infoLayer.hidden = NO;
-        [self setInfoLayerText:infoText];
-        infoTextLayer.hidden = NO;
+        [self setInfoLayerText:infoText withBackgroundColor:fillColor];
         
         [self vibrateWithPattern:vibration];
         
@@ -304,7 +305,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, pattern);
 }
 
-- (void)setInfoLayerText:(NSString *)text
+- (void)setInfoLayerText:(NSString *)text withBackgroundColor:(UIColor *)color
 {
     float fontSize = 28;
     CGSize fontBounds = CGSizeMake(1000, 1000);
@@ -321,6 +322,11 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     infoTextLayer.string = text;
     
     [CATransaction commit];
+    
+    infoTextLayer.hidden = NO;
+    
+    infoLayer.backgroundColor = color.CGColor;
+    infoLayer.hidden = NO;
 }
 
 @end

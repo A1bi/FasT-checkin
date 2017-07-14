@@ -22,11 +22,15 @@
 }
 
 - (instancetype)initWithTicket:(FasTTicket *)ticket medium:(NSNumber *)medium {
-    self = [self initWithTicketId:ticket.ticketId medium:medium date:[NSDate date]];
-    if (self) {
-        _ticket = [ticket retain];
-    }
-    return self;
+    return [self initWithTicketId:ticket.ticketId medium:medium date:[NSDate date]];
+}
+
+- (void)dealloc
+{
+    [_ticketId release];
+    [_medium release];
+    [_date release];
+    [super dealloc];
 }
 
 @end

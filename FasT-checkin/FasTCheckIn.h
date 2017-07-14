@@ -13,7 +13,6 @@
 @interface FasTCheckIn : NSObject
 
 @property (readonly) NSDate *date;
-@property (readonly) FasTTicket *ticket;
 @property (readonly) NSNumber *ticketId;
 @property (readonly) NSNumber *medium;
 
