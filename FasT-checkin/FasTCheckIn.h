@@ -10,7 +10,7 @@
 
 @class FasTTicket;
 
-@interface FasTCheckIn : NSObject
+@interface FasTCheckIn : NSObject <NSCoding>
 
 @property (readonly) NSDate *date;
 @property (readonly) NSNumber *ticketId;

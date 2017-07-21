@@ -14,6 +14,8 @@
 		610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */; };
 		610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 610FCCED17BA40EA000AAF97 /* Settings.bundle */; };
 		610FD32017BAF491000AAF97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 610FD32217BAF491000AAF97 /* Localizable.strings */; };
+		F00122971F21E8ED0009B766 /* FasTStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F00122961F21E8ED0009B766 /* FasTStatisticsViewController.m */; };
+		F001229A1F21EBC90009B766 /* FasTStatisticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F00122991F21EBC90009B766 /* FasTStatisticsManager.m */; };
 		F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F015FFC61D343F0800493E8E /* FasTScannerViewController.m */; };
 		F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F015FFC81D34408000493E8E /* AVFoundation.framework */; };
 		F015FFCD1D34432700493E8E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F015FFCC1D34432700493E8E /* Images.xcassets */; };
@@ -46,6 +48,10 @@
 		610FD32117BAF491000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FasT-checkin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA14629DE5D7C1EF36DFBEA0 /* Pods-FasT-checkin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FasT-checkin.release.xcconfig"; path = "Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin.release.xcconfig"; sourceTree = "<group>"; };
+		F00122951F21E8ED0009B766 /* FasTStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTStatisticsViewController.h; sourceTree = "<group>"; };
+		F00122961F21E8ED0009B766 /* FasTStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTStatisticsViewController.m; sourceTree = "<group>"; };
+		F00122981F21EBC90009B766 /* FasTStatisticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTStatisticsManager.h; sourceTree = "<group>"; };
+		F00122991F21EBC90009B766 /* FasTStatisticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTStatisticsManager.m; sourceTree = "<group>"; };
 		F015FFC51D343F0800493E8E /* FasTScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerViewController.h; sourceTree = "<group>"; };
 		F015FFC61D343F0800493E8E /* FasTScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerViewController.m; sourceTree = "<group>"; };
 		F015FFC81D34408000493E8E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -139,6 +145,10 @@
 				F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */,
 				F02F87701D41020000B5B0F3 /* FasTApi.h */,
 				F02F87711D41020000B5B0F3 /* FasTApi.m */,
+				F00122981F21EBC90009B766 /* FasTStatisticsManager.h */,
+				F00122991F21EBC90009B766 /* FasTStatisticsManager.m */,
+				F00122951F21E8ED0009B766 /* FasTStatisticsViewController.h */,
+				F00122961F21E8ED0009B766 /* FasTStatisticsViewController.m */,
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
 				F015FFCC1D34432700493E8E /* Images.xcassets */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
@@ -312,6 +322,8 @@
 			files = (
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
 				F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */,
+				F00122971F21E8ED0009B766 /* FasTStatisticsViewController.m in Sources */,
+				F001229A1F21EBC90009B766 /* FasTStatisticsManager.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,
 				F02F87751D410A5300B5B0F3 /* FasTCheckIn.m in Sources */,
 				F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */,

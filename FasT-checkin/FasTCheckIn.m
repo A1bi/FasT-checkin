@@ -25,6 +25,16 @@
     return [self initWithTicketId:ticket.ticketId medium:medium date:[NSDate date]];
 }
 
+- (instancetype)initWithCoder:(NSCoder *)decoder {
+    return [self initWithTicketId:[decoder decodeObjectForKey:@"ticketId"] medium:[decoder decodeObjectForKey:@"medium"] date:[decoder decodeObjectForKey:@"date"]];
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject:_ticketId forKey:@"ticketId"];
+    [encoder encodeObject:_medium forKey:@"medium"];
+    [encoder encodeObject:_date forKey:@"date"];
+}
+
 - (void)dealloc
 {
     [_ticketId release];

@@ -13,6 +13,7 @@
 #import "FasTCheckIn.h"
 #import "FasTApi.h"
 #import "FasTCheckInManager.h"
+#import "FasTStatisticsManager.h"
 
 #import <AudioToolbox/AudioToolbox.h>
 
@@ -31,6 +32,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     NSNumberFormatter *mediumNumberFormatter;
     NSString *lastBarcodeContent;
     UITouch *scanningTouch;
+    IBOutlet UILongPressGestureRecognizer *longPressRecognizer;
 }
 
 - (void)initCaptureSession;
@@ -43,6 +45,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)stopScanning;
 - (void)vibrateWithPattern:(NSDictionary *)pattern;
 - (void)setInfoLayerText:(NSString *)text withBackgroundColor:(UIColor *)color;
+- (IBAction)longDoublePressRecognized;
 
 @end
 
@@ -80,6 +83,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [lastBarcodeContent release];
     [infoLayer release];
     [infoTextLayer release];
+    [longPressRecognizer release];
     [super dealloc];
 }
 
@@ -89,8 +93,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [self stopScanning];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self stopScanning];
     [session stopRunning];
@@ -202,6 +205,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)stopScanning
 {
     scanningTouch = nil;
+    longPressRecognizer.enabled = NO;
     
     [lastBarcodeContent release];
     lastBarcodeContent = nil;
@@ -215,18 +219,16 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    if (scanningTouch) {
-        if (touches.count > 1) {
-            [FasTTicketVerifier clearTickets];
-            [self setInfoLayerText:@"Check-In-Status zurückgesetzt" withBackgroundColor:[UIColor blueColor]];
-        }
-        
-    } else {
+    if (!scanningTouch) {
         scanningTouch = touches.anyObject;
+        longPressRecognizer.enabled = YES;
+        
         CGPoint location = [scanningTouch locationInView:self.view];
         location = [preview captureDevicePointOfInterestForPoint:location];
         
         [self configureCaptureDeviceForFocusPoint:location];
+        
+        [[FasTStatisticsManager sharedManager] increaseScanAttempts];
     }
 }
 
@@ -258,6 +260,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
         UIColor *fillColor = [UIColor redColor];
         NSString *infoText = @"Ungültiger Barcode";
         NSDictionary *vibration = failVibration;
+        
+        FasTStatisticsManager *stats = [FasTStatisticsManager sharedManager];
     
         FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
         if (!ticket) {
@@ -281,14 +285,22 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
                     fillColor = [UIColor greenColor];
                     vibration = successVibration;
                     
+                    [stats addCheckIn:ticket.checkIn];
+                    
                 } else {
                     fillColor = [UIColor yellowColor];
                     vibration = warningVibration;
+                    
+                    [stats addDuplicateCheckIn:ticket.checkIn];
                 }
                 
                 infoText = [NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type];
                 NSLog(@"ticket is valid: %@", ticket.number);
             }
+        }
+        
+        if (fillColor == UIColor.redColor) {
+            [stats increaseDeniedScans];
         }
 
         barcodeLayer.fillColor = fillColor.CGColor;
@@ -327,6 +339,13 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     
     infoLayer.backgroundColor = color.CGColor;
     infoLayer.hidden = NO;
+}
+
+- (void)longDoublePressRecognized
+{
+    if (longPressRecognizer.state == UIGestureRecognizerStateBegan) {
+        [self performSegueWithIdentifier:@"InfoSegue" sender:nil];
+    }
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "FasTCheckIn.h"
 #import "FasTTicket.h"
 #import "FasTApi.h"
+#import "FasTStatisticsManager.h"
 
 #define kCheckInsToSubmitDefaultsKey @"checkInsToSubmit"
 
@@ -26,6 +27,8 @@
 @end
 
 @implementation FasTCheckInManager
+
+@synthesize checkInsToSubmit;
 
 + (instancetype)sharedManager
 {
@@ -49,9 +52,6 @@
         NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
         [defaultCenter addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
             [self persistCheckIns];
-        }];
-        [defaultCenter addObserverForName:UIApplicationDidBecomeActiveNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-            [self loadPersistedCheckIns];
         }];
     }
     return self;
@@ -77,37 +77,28 @@
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *checkInsToPersist = [[[defaults objectForKey:kCheckInsToSubmitDefaultsKey] mutableCopy] autorelease];
-    if (!checkInsToPersist) {
-        checkInsToPersist = [NSMutableArray array];
-    }
-    
-    for (FasTCheckIn *checkIn in checkInsToSubmit) {
-        NSDictionary *info = @{ @"ticketId": checkIn.ticketId, @"date": checkIn.date, @"medium": checkIn.medium };
-        [checkInsToPersist addObject:info];
-    }
-    [checkInsToSubmit removeAllObjects];
-    
-    [defaults setObject:checkInsToPersist forKey:kCheckInsToSubmitDefaultsKey];
+    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:checkInsToSubmit] forKey:kCheckInsToSubmitDefaultsKey];
     [defaults synchronize];
 }
 
 - (void)submitCheckIns {
+    if (checkInsToSubmit.count < 1) {
+        [self scheduleCheckInSubmission];
+        return;
+    }
+    
     NSMutableArray *checkIns = [NSMutableArray array];
     for (FasTCheckIn *checkIn in checkInsToSubmit) {
         NSDictionary *info = @{ @"ticket_id": checkIn.ticketId, @"date": @(checkIn.date.timeIntervalSince1970), @"medium": checkIn.medium };
         [checkIns addObject:info];
     }
     
-    if (checkIns.count < 1) {
-        [self scheduleCheckInSubmission];
-        return;
-    }
-    
     NSArray *_checkInsToSubmit = [[checkInsToSubmit copy] autorelease];
     [FasTApi post:nil parameters:@{ @"check_ins": checkIns } success:^(NSURLSessionDataTask *task, id response) {
         if (((NSNumber *)response[@"ok"]).boolValue) {
             [checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];
+            [self persistCheckIns];
+            [[FasTStatisticsManager sharedManager] addSubmittedCheckIns:_checkInsToSubmit];
         }
         [self scheduleCheckInSubmission];
         
@@ -118,18 +109,17 @@
 
 - (void)scheduleCheckInSubmission {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scheduleCheckInSubmission) object:nil];
-    [self performSelector:@selector(submitCheckIns) withObject:nil afterDelay:60];
+    [self performSelector:@selector(submitCheckIns) withObject:nil afterDelay:10];
 }
 
 - (void)loadPersistedCheckIns {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     // are there check ins from older sessions yet to submit ?
-    NSArray *checkInsLeftOver = [defaults objectForKey:kCheckInsToSubmitDefaultsKey];
-    for (NSDictionary *checkInInfo in checkInsLeftOver) {
-        FasTCheckIn *checkIn = [[[FasTCheckIn alloc] initWithTicketId:checkInInfo[@"ticketId"] medium:checkInInfo[@"medium"] date:checkInInfo[@"date"]] autorelease];
-        [checkInsToSubmit addObject:checkIn];
+    NSData *checkInData = [defaults objectForKey:kCheckInsToSubmitDefaultsKey];
+    checkInsToSubmit = [[NSKeyedUnarchiver unarchiveObjectWithData:checkInData] retain];
+    if (!checkInsToSubmit) {
+        checkInsToSubmit = [[NSMutableArray alloc] init];
     }
-    [defaults removeObjectForKey:kCheckInsToSubmitDefaultsKey];
 }
 
 @end

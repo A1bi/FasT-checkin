@@ -12,6 +12,8 @@
 
 @interface FasTCheckInManager : NSObject
 
+@property (nonatomic, readonly) NSMutableArray *checkInsToSubmit;
+
 + (instancetype)sharedManager;
 
 - (void)checkInTicket:(FasTTicket *)ticket withMedium:(NSNumber *)medium;
