@@ -16,6 +16,7 @@
 		610FD32017BAF491000AAF97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 610FD32217BAF491000AAF97 /* Localizable.strings */; };
 		F00122971F21E8ED0009B766 /* FasTStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F00122961F21E8ED0009B766 /* FasTStatisticsViewController.m */; };
 		F001229A1F21EBC90009B766 /* FasTStatisticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F00122991F21EBC90009B766 /* FasTStatisticsManager.m */; };
+		F001229D1F2240570009B766 /* FasTStatisticsCheckInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F001229C1F2240570009B766 /* FasTStatisticsCheckInViewController.m */; };
 		F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F015FFC61D343F0800493E8E /* FasTScannerViewController.m */; };
 		F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F015FFC81D34408000493E8E /* AVFoundation.framework */; };
 		F015FFCD1D34432700493E8E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F015FFCC1D34432700493E8E /* Images.xcassets */; };
@@ -52,6 +53,8 @@
 		F00122961F21E8ED0009B766 /* FasTStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTStatisticsViewController.m; sourceTree = "<group>"; };
 		F00122981F21EBC90009B766 /* FasTStatisticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTStatisticsManager.h; sourceTree = "<group>"; };
 		F00122991F21EBC90009B766 /* FasTStatisticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTStatisticsManager.m; sourceTree = "<group>"; };
+		F001229B1F2240570009B766 /* FasTStatisticsCheckInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTStatisticsCheckInViewController.h; sourceTree = "<group>"; };
+		F001229C1F2240570009B766 /* FasTStatisticsCheckInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTStatisticsCheckInViewController.m; sourceTree = "<group>"; };
 		F015FFC51D343F0800493E8E /* FasTScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerViewController.h; sourceTree = "<group>"; };
 		F015FFC61D343F0800493E8E /* FasTScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerViewController.m; sourceTree = "<group>"; };
 		F015FFC81D34408000493E8E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -149,6 +152,8 @@
 				F00122991F21EBC90009B766 /* FasTStatisticsManager.m */,
 				F00122951F21E8ED0009B766 /* FasTStatisticsViewController.h */,
 				F00122961F21E8ED0009B766 /* FasTStatisticsViewController.m */,
+				F001229B1F2240570009B766 /* FasTStatisticsCheckInViewController.h */,
+				F001229C1F2240570009B766 /* FasTStatisticsCheckInViewController.m */,
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
 				F015FFCC1D34432700493E8E /* Images.xcassets */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
@@ -322,6 +327,7 @@
 			files = (
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
 				F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */,
+				F001229D1F2240570009B766 /* FasTStatisticsCheckInViewController.m in Sources */,
 				F00122971F21E8ED0009B766 /* FasTStatisticsViewController.m in Sources */,
 				F001229A1F21EBC90009B766 /* FasTStatisticsManager.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,

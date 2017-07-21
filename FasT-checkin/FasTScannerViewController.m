@@ -54,6 +54,11 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if (![defaults objectForKey:@"statistics"]) {
+        [defaults removeObjectForKey:@"checkInsToSubmit"];
+    }
+    
     [self initCaptureSession];
     [self initCapturePreview];
     [self initBarcodeDetection];
