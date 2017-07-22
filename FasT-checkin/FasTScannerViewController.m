@@ -25,6 +25,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     AVCaptureSession *session;
     AVCaptureDevice *captureDevice;
     AVCaptureVideoPreviewLayer *preview;
+    AVCaptureMetadataOutput *metadataOutput;
     NSDictionary *successVibration, *warningVibration, *failVibration;
     CALayer *targetLayer, *infoLayer;
     CATextLayer *infoTextLayer;
@@ -33,6 +34,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     NSString *lastBarcodeContent;
     UITouch *scanningTouch;
     IBOutlet UILongPressGestureRecognizer *longPressRecognizer;
+    NSMutableDictionary *recentScanTimes;
 }
 
 - (void)initCaptureSession;
@@ -45,6 +47,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)stopScanning;
 - (void)vibrateWithPattern:(NSDictionary *)pattern;
 - (void)setInfoLayerText:(NSString *)text withBackgroundColor:(UIColor *)color;
+- (void)clearRecentScanTimes;
 - (IBAction)longDoublePressRecognized;
 
 @end
@@ -74,12 +77,19 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     mediumNumberFormatter = [[NSNumberFormatter alloc] init];
     mediumNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     
+    [recentScanTimes release];
+    recentScanTimes = [[NSMutableDictionary alloc] init];
+    
+    
+    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(clearRecentScanTimes) userInfo:nil repeats:YES];
+    
     [FasTTicketVerifier init];
 }
 
 - (void)dealloc {
     [session release];
     [captureDevice release];
+    [metadataOutput release];
     [successVibration release];
     [warningVibration release];
     [failVibration release];
@@ -89,6 +99,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [infoLayer release];
     [infoTextLayer release];
     [longPressRecognizer release];
+    [recentScanTimes release];
     [super dealloc];
 }
 
@@ -128,7 +139,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 }
 
 - (void)initCapturePreview {
-    preview = [AVCaptureVideoPreviewLayer layerWithSession:session];
+    [preview release];
+    preview = [[AVCaptureVideoPreviewLayer layerWithSession:session] retain];
     preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
     preview.frame = self.view.bounds;
     
@@ -142,13 +154,13 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 }
 
 - (void)initBarcodeDetection {
-    AVCaptureMetadataOutput *metadataOutput = [[[AVCaptureMetadataOutput alloc] init] autorelease];
+    [metadataOutput release];
+    metadataOutput = [[AVCaptureMetadataOutput alloc] init];
     // add output first so qr code will be available as metadata object type
     [session addOutput:metadataOutput];
     if ([[metadataOutput availableMetadataObjectTypes] containsObject:AVMetadataObjectTypeQRCode]) {
         metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeQRCode];
     }
-    [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
 }
 
 - (void)initLayers
@@ -209,8 +221,14 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
 - (void)stopScanning
 {
+    [metadataOutput setMetadataObjectsDelegate:nil queue:dispatch_get_main_queue()];
+    
     scanningTouch = nil;
     longPressRecognizer.enabled = NO;
+    
+    if (lastBarcodeContent) {
+        recentScanTimes[lastBarcodeContent] = [NSDate date];
+    }
     
     [lastBarcodeContent release];
     lastBarcodeContent = nil;
@@ -231,6 +249,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
         CGPoint location = [scanningTouch locationInView:self.view];
         location = [preview captureDevicePointOfInterestForPoint:location];
         
+        [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+        
         [self configureCaptureDeviceForFocusPoint:location];
         
         [[FasTStatisticsManager sharedManager] increaseScanAttempts];
@@ -246,76 +266,86 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
-    if (!scanningTouch) return;
+    if (!scanningTouch || metadataObjects.count < 1) return;
     
+    AVMetadataMachineReadableCodeObject *targetBarcode = nil;
     for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
-        AVMetadataMachineReadableCodeObject *transformedObject = (AVMetadataMachineReadableCodeObject *)[preview transformedMetadataObjectForMetadataObject:object];
-        
-        NSString *barcodeContent = object.stringValue;
-        
-        BOOL showLayer = !lastBarcodeContent || [barcodeContent isEqualToString:lastBarcodeContent];
-        if (showLayer) {
-            [barcodeLayer setCorners:transformedObject.corners];
+        BOOL theSameAsBefore = lastBarcodeContent && [lastBarcodeContent isEqualToString:object.stringValue];
+        BOOL newScanAndNewBarcode = !lastBarcodeContent && !recentScanTimes[object.stringValue];
+        if (theSameAsBefore || newScanAndNewBarcode) {
+            targetBarcode = object;
+            break;
         }
-        barcodeLayer.hidden = !showLayer;
-        
-        if (lastBarcodeContent) return;
-        lastBarcodeContent = [barcodeContent retain];
-        
-        UIColor *fillColor = [UIColor redColor];
-        NSString *infoText = @"Ungültiger Barcode";
-        NSDictionary *vibration = failVibration;
-        
-        FasTStatisticsManager *stats = [FasTStatisticsManager sharedManager];
+    }
     
-        FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
-        if (!ticket) {
-            NSLog(@"barcode invalid");
-            
-        } else {
-            if (![ticket isValidToday]) {
-                infoText = @"Gültig für eine andere Aufführung";
-                NSLog(@"ticket is not valid today");
-            } else if (ticket.cancelled) {
-                infoText = @"Ticket ist storniert";
-                NSLog(@"ticket has been cancelled");
-                
-            } else {
-                if (!ticket.checkIn) {
-                    // TODO: components are already determined in ticket verifier, we should leverage this!
-                    NSString *mediumString = [[barcodeContent componentsSeparatedByString:@"--"] lastObject];
-                    NSNumber *medium = [mediumNumberFormatter numberFromString:mediumString];
-                    [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:medium];
-                    
-                    fillColor = [UIColor greenColor];
-                    vibration = successVibration;
-                    
-                    [stats addCheckIn:ticket.checkIn];
-                    
-                } else {
-                    fillColor = [UIColor yellowColor];
-                    vibration = warningVibration;
-                    
-                    [stats addDuplicateCheckIn:ticket.checkIn];
-                }
-                
-                infoText = [NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type];
-                NSLog(@"ticket is valid: %@", ticket.number);
-            }
-        }
-        
-        if (fillColor == UIColor.redColor) {
-            [stats increaseDeniedScans];
-        }
-
-        barcodeLayer.fillColor = fillColor.CGColor;
-        barcodeLayer.hidden = NO;
-        [self setInfoLayerText:infoText withBackgroundColor:fillColor];
-        
-        [self vibrateWithPattern:vibration];
-        
+    if (!targetBarcode) {
         return;
     }
+    
+    AVMetadataMachineReadableCodeObject *transformedObject = (AVMetadataMachineReadableCodeObject *)[preview transformedMetadataObjectForMetadataObject:targetBarcode];
+    
+    NSString *barcodeContent = targetBarcode.stringValue;
+    
+    BOOL showLayer = !lastBarcodeContent || [barcodeContent isEqualToString:lastBarcodeContent];
+    if (showLayer) {
+        [barcodeLayer setCorners:transformedObject.corners];
+    }
+    barcodeLayer.hidden = !showLayer;
+    
+    if (lastBarcodeContent) return;
+    lastBarcodeContent = [barcodeContent retain];
+    
+    UIColor *fillColor = [UIColor redColor];
+    NSString *infoText = @"Ungültiger Barcode";
+    NSDictionary *vibration = failVibration;
+    
+    FasTStatisticsManager *stats = [FasTStatisticsManager sharedManager];
+
+    FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
+    if (!ticket) {
+        NSLog(@"barcode invalid");
+        
+    } else {
+        if (![ticket isValidToday]) {
+            infoText = @"Gültig für eine andere Aufführung";
+            NSLog(@"ticket is not valid today");
+        } else if (ticket.cancelled) {
+            infoText = @"Ticket ist storniert";
+            NSLog(@"ticket has been cancelled");
+            
+        } else {
+            if (!ticket.checkIn) {
+                // TODO: components are already determined in ticket verifier, we should leverage this!
+                NSString *mediumString = [[barcodeContent componentsSeparatedByString:@"--"] lastObject];
+                NSNumber *medium = [mediumNumberFormatter numberFromString:mediumString];
+                [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:medium];
+                
+                fillColor = [UIColor greenColor];
+                vibration = successVibration;
+                
+                [stats addCheckIn:ticket.checkIn];
+                
+            } else {
+                fillColor = [UIColor yellowColor];
+                vibration = warningVibration;
+                
+                [stats addDuplicateCheckIn:ticket.checkIn];
+            }
+            
+            infoText = [NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type];
+            NSLog(@"ticket is valid: %@", ticket.number);
+        }
+    }
+    
+    if (fillColor == UIColor.redColor) {
+        [stats increaseDeniedScans];
+    }
+
+    barcodeLayer.fillColor = fillColor.CGColor;
+    barcodeLayer.hidden = NO;
+    [self setInfoLayerText:infoText withBackgroundColor:fillColor];
+    
+    [self vibrateWithPattern:vibration];
 }
 
 - (void)vibrateWithPattern:(NSDictionary *)pattern {
@@ -344,6 +374,17 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     
     infoLayer.backgroundColor = color.CGColor;
     infoLayer.hidden = NO;
+}
+
+- (void)clearRecentScanTimes {
+    NSArray *contents = recentScanTimes.allKeys;
+    for (NSString *content in contents) {
+        NSDate *time = recentScanTimes[content];
+        if ([time timeIntervalSinceNow] < -2) {
+            [recentScanTimes removeObjectForKey:content];
+            NSLog(@"removed recent scan");
+        }
+    }
 }
 
 - (void)longDoublePressRecognized
