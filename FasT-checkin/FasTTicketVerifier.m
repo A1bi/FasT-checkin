@@ -12,6 +12,7 @@
 #import <CommonCrypto/CommonHMAC.h>
 
 #define kLastApiResponseDefaultsKey @"lastApiResponse"
+#define kLastApiResponseDateDefaultsKey @"lastApiResponseDate"
 
 static NSDictionary *keys = nil;
 static NSDictionary *dates = nil;
@@ -22,7 +23,6 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 @interface FasTTicketVerifier ()
 
 + (NSDictionary *)verify:(NSString *)messageData;
-+ (void)fetchInfoFromServer;
 + (void)processApiResponse:(NSDictionary *)response;
 
 @end
@@ -36,7 +36,12 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     [ticketsByBarcode release];
     ticketsByBarcode = [[NSMutableDictionary alloc] init];
     
-    [self fetchInfoFromServer];
+    NSDictionary *response = [[NSUserDefaults standardUserDefaults] objectForKey:kLastApiResponseDefaultsKey];
+    if (response) {
+        [self processApiResponse:response];
+    } else {
+        [self refreshInfo:NULL];
+    }
 }
 
 + (FasTTicket *)getTicketByBarcode:(NSString *)messageData {
@@ -142,18 +147,17 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     return ticketInfoPayload;
 }
 
-+ (void)fetchInfoFromServer {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
++ (void)refreshInfo:(void (^)())completion {
     [FasTApi get:nil parameters:nil success:^(NSURLSessionDataTask *task, id response) {
         [self processApiResponse:response];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setObject:response forKey:kLastApiResponseDefaultsKey];
+        [defaults setObject:[NSDate date] forKey:kLastApiResponseDateDefaultsKey];
         [defaults synchronize];
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        NSDictionary *response = [defaults objectForKey:kLastApiResponseDefaultsKey];
-        if (response) {
-            [self processApiResponse:response];
+        if (completion) {
+            completion();
         }
-    }];
+    } failure:NULL];
 }
 
 + (void)processApiResponse:(NSDictionary *)response {
@@ -193,6 +197,11 @@ static NSMutableDictionary *ticketsByBarcode = nil;
         ticket.number = ticketInfo[@"number"];
         ticket.cancelled = ((NSNumber *)ticketInfo[@"cancelled"]).boolValue;
     }
+}
+
++ (NSDate *)lastRefresh
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kLastApiResponseDateDefaultsKey];
 }
 
 + (void)clearTickets

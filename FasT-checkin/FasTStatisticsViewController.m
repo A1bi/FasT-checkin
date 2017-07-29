@@ -22,6 +22,7 @@
 @property (retain, nonatomic) IBOutlet UILabel *duplicateScansLabel;
 @property (retain, nonatomic) IBOutlet UILabel *checkInsToSubmitLabel;
 @property (retain, nonatomic) IBOutlet UILabel *lastSubmissionDateLabel;
+@property (retain, nonatomic) IBOutlet UILabel *lastInfoRefreshLabel;
 
 - (IBAction)dismiss:(id)sender;
 - (void)refresh;
@@ -50,7 +51,7 @@
     _deniedScansLabel.text = [NSString stringWithFormat:@"%lu", (long)stats.deniedScans];
     _crashsLabel.text = [NSString stringWithFormat:@"%lu", (long)stats.crashs];
     _lastSubmissionDateLabel.text = checkIn.lastSubmissionDate.description;
-    [self.view setNeedsDisplay];
+    _lastInfoRefreshLabel.text = [FasTTicketVerifier lastRefresh].description;
 }
 
 - (void)dealloc {
@@ -62,6 +63,7 @@
     [_duplicateScansLabel release];
     [_checkInsToSubmitLabel release];
     [_lastSubmissionDateLabel release];
+    [_lastInfoRefreshLabel release];
     [super dealloc];
 }
 
@@ -91,6 +93,12 @@
 
 - (IBAction)resetCheckIns:(id)sender {
     [FasTTicketVerifier clearTickets];
+}
+
+- (IBAction)refreshInfo:(id)sender {
+    [FasTTicketVerifier refreshInfo:^{
+        [self refresh];
+    }];
 }
 
 @end
