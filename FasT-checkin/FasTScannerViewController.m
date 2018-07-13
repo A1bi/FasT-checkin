@@ -9,6 +9,7 @@
 #import "FasTScannerViewController.h"
 #import "FasTTicketVerifier.h"
 #import "FasTTicket.h"
+#import "FasTSignedInfoBinary.h"
 #import "FasTScannerBarcodeLayer.h"
 #import "FasTCheckIn.h"
 #import "FasTApi.h"
@@ -301,7 +302,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     
     FasTStatisticsManager *stats = [FasTStatisticsManager sharedManager];
 
-    FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent];
+    FasTSignedInfoBinary *signedInfo;
+    FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent signedInfo:&signedInfo];
     if (!ticket) {
         NSLog(@"barcode invalid");
         
@@ -315,10 +317,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
             
         } else {
             if (!ticket.checkIn) {
-                // TODO: components are already determined in ticket verifier, we should leverage this!
-                NSString *mediumString = [[barcodeContent componentsSeparatedByString:@"--"] lastObject];
-                NSNumber *medium = [mediumNumberFormatter numberFromString:mediumString];
-                [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:medium];
+                [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
                 
                 fillColor = [UIColor greenColor];
                 vibration = successVibration;

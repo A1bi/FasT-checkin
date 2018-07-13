@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@class FasTTicket;
+@class FasTTicket, FasTSignedInfoBinary;
 
 @interface FasTTicketVerifier : NSObject
 
 + (void)init;
-+ (FasTTicket *)getTicketByBarcode:(NSString *)messageData;
++ (FasTTicket *)getTicketByBarcode:(NSString *)messageData signedInfo:(FasTSignedInfoBinary **)signedInfo;
 + (void)refreshInfo:(void (^)())completion;
 + (NSDate *)lastRefresh;
 + (void)clearTickets;

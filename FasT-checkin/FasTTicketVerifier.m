@@ -8,6 +8,7 @@
 
 #import "FasTTicketVerifier.h"
 #import "FasTTicket.h"
+#import "FasTSignedInfoBinary.h"
 #import "FasTApi.h"
 #import <CommonCrypto/CommonHMAC.h>
 
@@ -22,7 +23,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 
 @interface FasTTicketVerifier ()
 
-+ (NSDictionary *)verify:(NSString *)messageData;
++ (FasTSignedInfoBinary *)verify:(NSString *)messageData;
 + (void)processApiResponse:(NSDictionary *)response;
 
 @end
@@ -44,28 +45,27 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     }
 }
 
-+ (FasTTicket *)getTicketByBarcode:(NSString *)messageData {
++ (FasTTicket *)getTicketByBarcode:(NSString *)messageData signedInfo:(FasTSignedInfoBinary **)_signedInfo {
     // check if this message has already been processed
     FasTTicket *ticket = ticketsByBarcode[messageData];
     if (!ticket) {
         // not yet processed -> verify
-        NSDictionary *ticketInfo = [self verify:messageData];
+        FasTSignedInfoBinary *signedInfo = [self verify:messageData];
         
-        if (ticketInfo) {
+        if (signedInfo) {
+            if (_signedInfo) {
+                *_signedInfo = signedInfo;
+            }
+            
             @try {
-                NSNumber *ticketId = ticketInfo[@"ti"];
-                // check if ticket is already in memory
-                ticket = ticketsById[ticketId];
-                if (!ticket) {
-                    // create new ticket instance
-                    ticket = [[[FasTTicket alloc] init] autorelease];
-                    ticket.ticketId = ticketId;
-                    ticket.date = dates[ticketInfo[@"da"]];
-                    ticket.type = ticketTypes[ticketInfo[@"ty"]];
-                    ticket.number = ticketInfo[@"no"];
-                    ticketsById[ticketId] = ticket;
-                }
+                ticket = [[[FasTTicket alloc] initWithInfoData:signedInfo.ticketData dates:dates types:ticketTypes] autorelease];
                 
+                // find updated ticket
+                FasTTicket *updatedTicket = ticketsById[ticket.ticketId];
+                if (updatedTicket) {
+                    ticket = updatedTicket;
+                }
+
             } @catch (NSException *exception) {
                 NSLog(@"ticket could not be validated, exception: %@", exception);
             }
@@ -81,47 +81,32 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     return ticket;
 }
 
-+ (NSDictionary *)verify:(NSString *)messageData {
++ (FasTSignedInfoBinary *)verify:(NSString *)messageData {
     NSLog(@"verifying barcode");
     
     // remove url
     messageData = [messageData componentsSeparatedByString:@"/"].lastObject;
     
     // revert url encoding
-    messageData = [messageData stringByReplacingOccurrencesOfString:@"~" withString:@"+"];
+    messageData = [messageData stringByReplacingOccurrencesOfString:@"-" withString:@"+"];
     messageData = [messageData stringByReplacingOccurrencesOfString:@"_" withString:@"/"];
-    messageData = [messageData stringByReplacingOccurrencesOfString:@"," withString:@"="];
     
-    // separate data and digest
-    NSArray *parts = [messageData componentsSeparatedByString:@"--"];
-    if (parts.count < 2) {
-        NSLog(@"ticket parts not found");
-        return nil;
-    }
-    NSString *ticketData = parts[0];
-    NSString *signature = parts[1];
+    // add padding
+    messageData = [messageData stringByAppendingString:@"="];
 
-    // decode ticket base64 and json data
-    NSError *error = nil;
-    NSData *ticketDataJson = [[[NSData alloc] initWithBase64EncodedString:ticketData options:0] autorelease];
-    NSDictionary *ticketInfo = [NSJSONSerialization JSONObjectWithData:ticketDataJson options:0 error:&error];
-    if (error) {
-        NSLog(@"error parsing ticket json data: %@", error);
+    // decode base64
+    NSData *signedInfoData = [[[NSData alloc] initWithBase64EncodedString:messageData options:NSDataBase64DecodingIgnoreUnknownCharacters] autorelease];
+    
+    // parse info data
+    FasTSignedInfoBinary *signedInfo = [[[FasTSignedInfoBinary alloc] initWithData:signedInfoData] autorelease];
+    if (!signedInfoData) {
+        NSLog(@"error parsing signed info");
         return nil;
     }
     
-    // get key id from ticket data
-    NSNumber *keyId = ticketInfo[@"k"];
-    NSDictionary *ticketInfoPayload = ticketInfo[@"d"];
-    if (!keyId || !ticketInfoPayload) {
-        NSLog(@"ticket lacks essential info");
-        return nil;
-    }
-    
+    // find signing key data
     NSData *keyData = nil;
-    if ([keyId isKindOfClass:[NSNumber class]]) {
-        keyData = keys[keyId];
-    }
+    keyData = keys[signedInfo.signingKeyId];
     if (!keyData) {
         NSLog(@"signing key not found");
         return nil;
@@ -129,22 +114,15 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     
     // generate hmac digest
     char digest[CC_SHA1_DIGEST_LENGTH];
-    CCHmac(kCCHmacAlgSHA1, keyData.bytes, keyData.length, ticketData.UTF8String, ticketData.length, digest);
+    CCHmac(kCCHmacAlgSHA1, keyData.bytes, keyData.length, signedInfo.signedData.bytes, signedInfo.signedData.length, digest);
     
     // compare generated with given digest (encoded as a hex string)
-    char signatureByte[3] = "";
-    char byte;
-    for (NSInteger i = 0; i < sizeof(digest); i++) {
-        signatureByte[0] = [signature characterAtIndex:i*2];
-        signatureByte[1] = [signature characterAtIndex:i*2+1];
-        byte = (char)strtol(signatureByte, NULL, 16);
-        if (byte != digest[i]) {
-            NSLog(@"signature invalid");
-            return nil;
-        }
+    if (strncmp(digest, signedInfo.signature.bytes, CC_SHA1_DIGEST_LENGTH)) {
+        NSLog(@"signature invalid");
+        return nil;
     }
 
-    return ticketInfoPayload;
+    return signedInfo;
 }
 
 + (void)refreshInfo:(void (^)())completion {

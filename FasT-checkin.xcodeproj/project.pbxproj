@@ -30,6 +30,7 @@
 		F0377C7E1D36860A00F4A668 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F0377C7D1D36860A00F4A668 /* Podfile */; };
 		F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */; };
 		F0667E131F1805DD0051AD14 /* FasTCheckInManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */; };
+		F074C74420F7B66600184557 /* FasTSignedInfoBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */; };
 		F0F46AA11D3912A800648897 /* FasTScannerBarcodeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */; };
 		F57C2855ED3EF18913746267 /* libPods-FasT-checkin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */; };
 /* End PBXBuildFile section */
@@ -74,6 +75,8 @@
 		F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		F0667E111F1805DD0051AD14 /* FasTCheckInManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTCheckInManager.h; sourceTree = "<group>"; };
 		F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTCheckInManager.m; sourceTree = "<group>"; };
+		F074C74220F7B66600184557 /* FasTSignedInfoBinary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTSignedInfoBinary.h; sourceTree = "<group>"; };
+		F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTSignedInfoBinary.m; sourceTree = "<group>"; };
 		F0F46A9F1D3912A800648897 /* FasTScannerBarcodeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerBarcodeLayer.h; sourceTree = "<group>"; };
 		F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerBarcodeLayer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -140,6 +143,8 @@
 				F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */,
 				F0377C721D35509500F4A668 /* FasTTicketVerifier.h */,
 				F0377C731D35509500F4A668 /* FasTTicketVerifier.m */,
+				F074C74220F7B66600184557 /* FasTSignedInfoBinary.h */,
+				F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */,
 				F0377C7A1D3665F300F4A668 /* FasTTicket.h */,
 				F0377C7B1D3665F300F4A668 /* FasTTicket.m */,
 				F02F87731D410A5300B5B0F3 /* FasTCheckIn.h */,
@@ -326,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
+				F074C74420F7B66600184557 /* FasTSignedInfoBinary.m in Sources */,
 				F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */,
 				F001229D1F2240570009B766 /* FasTStatisticsCheckInViewController.m in Sources */,
 				F00122971F21E8ED0009B766 /* FasTStatisticsViewController.m in Sources */,
