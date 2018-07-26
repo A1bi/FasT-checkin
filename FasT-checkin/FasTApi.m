@@ -7,7 +7,8 @@
 //
 
 #import "FasTApi.h"
-#import <AFNetworking.h>
+
+@import AFNetworking;
 
 #ifndef DEBUG
 #define API_HOST @"https://www.theater-kaisersesch.de"

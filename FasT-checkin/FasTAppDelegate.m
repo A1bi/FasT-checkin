@@ -9,6 +9,8 @@
 #import "FasTAppDelegate.h"
 #import "FasTScannerViewController.h"
 
+@import Sentry;
+
 @interface FasTAppDelegate ()
 {
     CGFloat previousScreenBrightness;
@@ -19,6 +21,14 @@
 @implementation FasTAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    NSError *error = nil;
+    SentryClient *client = [[SentryClient alloc] initWithDsn:@"https://6bf3236a5b364965bb1008e686e070a7@sentry.a0s.de/5" didFailWithError:&error];
+    SentryClient.sharedClient = client;
+    [SentryClient.sharedClient startCrashHandlerWithError:&error];
+    if (nil != error) {
+        NSLog(@"%@", error);
+    }
+
     return YES;
 }
 

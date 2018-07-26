@@ -32,7 +32,6 @@
 		F0667E131F1805DD0051AD14 /* FasTCheckInManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */; };
 		F074C74420F7B66600184557 /* FasTSignedInfoBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */; };
 		F0F46AA11D3912A800648897 /* FasTScannerBarcodeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */; };
-		F57C2855ED3EF18913746267 /* libPods-FasT-checkin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,7 +47,6 @@
 		610FCCD917B9977C000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		610FCCED17BA40EA000AAF97 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		610FD32117BAF491000AAF97 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FasT-checkin.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA14629DE5D7C1EF36DFBEA0 /* Pods-FasT-checkin.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FasT-checkin.release.xcconfig"; path = "Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin.release.xcconfig"; sourceTree = "<group>"; };
 		F00122951F21E8ED0009B766 /* FasTStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTStatisticsViewController.h; sourceTree = "<group>"; };
 		F00122961F21E8ED0009B766 /* FasTStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTStatisticsViewController.m; sourceTree = "<group>"; };
@@ -79,6 +77,7 @@
 		F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTSignedInfoBinary.m; sourceTree = "<group>"; };
 		F0F46A9F1D3912A800648897 /* FasTScannerBarcodeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerBarcodeLayer.h; sourceTree = "<group>"; };
 		F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerBarcodeLayer.m; sourceTree = "<group>"; };
+		F0FDB148210A469D00DC8CB1 /* Pods_FasT_checkin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_FasT_checkin.framework; path = "../../Library/Developer/Xcode/DerivedData/FasT-checkin-blowwejktzdwkhgqsajbfckufbop/Build/Products/Debug-iphoneos/Pods_FasT_checkin.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,7 +91,6 @@
 				F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */,
 				610FCAD217B8F522000AAF97 /* UIKit.framework in Frameworks */,
 				610FCAD417B8F522000AAF97 /* Foundation.framework in Frameworks */,
-				F57C2855ED3EF18913746267 /* libPods-FasT-checkin.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,13 +118,13 @@
 		610FCAD017B8F522000AAF97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F0FDB148210A469D00DC8CB1 /* Pods_FasT_checkin.framework */,
 				F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */,
 				F0377C751D35573200F4A668 /* Security.framework */,
 				F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */,
 				F015FFC81D34408000493E8E /* AVFoundation.framework */,
 				610FCAD117B8F522000AAF97 /* UIKit.framework */,
 				610FCAD317B8F522000AAF97 /* Foundation.framework */,
-				72F0B9419B0EFC69A5F91003 /* libPods-FasT-checkin.a */,
 			);
 			name = Frameworks;
 			path = ..;
@@ -201,8 +199,7 @@
 				610FCACB17B8F522000AAF97 /* Frameworks */,
 				610FCACC17B8F522000AAF97 /* Resources */,
 				610FCCDA17B99843000AAF97 /* ShellScript */,
-				33D690FE602B346FA10B44AF /* [CP] Embed Pods Frameworks */,
-				E0B152D25E06FCEE3ACEB09F /* [CP] Copy Pods Resources */,
+				37E3A2DF1FD197D965778451 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -264,15 +261,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		33D690FE602B346FA10B44AF /* [CP] Embed Pods Frameworks */ = {
+		37E3A2DF1FD197D965778451 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/KSCrash/KSCrash.framework",
+				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KSCrash.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -293,34 +297,22 @@
 			shellScript = "# This script automatically sets the version string of\n# an Xcode project from the Git repository containing the project.\n\nset -o errexit\nset -o nounset\n\nINFO_PLIST=\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Info\"\n\nVERSION=$(git --git-dir=\"${PROJECT_DIR}/.git\" --work-tree=\"${PROJECT_DIR}/\" rev-list master | wc -l)\n\ndefaults write $INFO_PLIST CFBundleVersion $VERSION\n\necho \"VERSION: ${VERSION}\"";
 			showEnvVarsInLog = 0;
 		};
-		E0B152D25E06FCEE3ACEB09F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		E38E70D0932C5FF07F06CE49 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FasT-checkin-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -372,9 +364,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -415,7 +409,7 @@
 					"\"$(SRCROOT)/submodules/ZBar/iphone/include\"/**",
 					"\"$(SRCROOT)/submodules/ZBar/include\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
@@ -429,9 +423,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -464,7 +460,7 @@
 					"\"$(SRCROOT)/submodules/ZBar/iphone/include\"/**",
 					"\"$(SRCROOT)/submodules/ZBar/include\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -495,7 +491,7 @@
 					"API_HOST=\"@\\\"http://ao-mbp.local:4000\\\"\"",
 				);
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.albisigns.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -518,7 +514,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.albisigns.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
