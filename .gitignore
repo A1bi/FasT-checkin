@@ -13,3 +13,5 @@ xcuserdata
 *.xcworkspacedata
 
 Pods/
+
+FasT-checkin/*.local.xcconfig

@@ -10,10 +10,6 @@
 
 @import AFNetworking;
 
-#ifndef DEBUG
-#define API_HOST @"https://www.theater-kaisersesch.de"
-#endif
-
 @interface FasTApi ()
 
 + (NSString *)urlForAction:(NSString *)action;

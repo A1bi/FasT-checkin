@@ -1,0 +1,3 @@
+// RELEASE CONFIGURATION
+
+API_HOST = "https:/$()/www.theater-kaisersesch.de"

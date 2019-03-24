@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0898AE29FA449A14119C2699 /* Pods_FasT_checkin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E2F663CE77377D65656E4B /* Pods_FasT_checkin.framework */; };
 		610FCAD217B8F522000AAF97 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAD117B8F522000AAF97 /* UIKit.framework */; };
 		610FCAD417B8F522000AAF97 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 610FCAD317B8F522000AAF97 /* Foundation.framework */; };
 		610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 610FCADA17B8F522000AAF97 /* InfoPlist.strings */; };
@@ -29,6 +30,8 @@
 		F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C7B1D3665F300F4A668 /* FasTTicket.m */; };
 		F0377C7E1D36860A00F4A668 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F0377C7D1D36860A00F4A668 /* Podfile */; };
 		F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */; };
+		F048DEDC2247B9620039E664 /* debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F048DEDB2247B9620039E664 /* debug.xcconfig */; };
+		F048DEDE2247B99D0039E664 /* debug.local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F048DEDD2247B99D0039E664 /* debug.local.xcconfig */; };
 		F0667E131F1805DD0051AD14 /* FasTCheckInManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */; };
 		F074C74420F7B66600184557 /* FasTSignedInfoBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */; };
 		F0F46AA11D3912A800648897 /* FasTScannerBarcodeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */; };
@@ -36,6 +39,7 @@
 
 /* Begin PBXFileReference section */
 		0AE9547D2FFE57C6B255F0F6 /* Pods-FasT-checkin.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FasT-checkin.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin.debug.xcconfig"; sourceTree = "<group>"; };
+		41E2F663CE77377D65656E4B /* Pods_FasT_checkin.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FasT_checkin.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		610FCACE17B8F522000AAF97 /* FasT-checkin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FasT-checkin.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		610FCAD117B8F522000AAF97 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		610FCAD317B8F522000AAF97 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -69,8 +73,11 @@
 		F0377C751D35573200F4A668 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		F0377C7A1D3665F300F4A668 /* FasTTicket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTTicket.h; sourceTree = "<group>"; };
 		F0377C7B1D3665F300F4A668 /* FasTTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTTicket.m; sourceTree = "<group>"; };
-		F0377C7D1D36860A00F4A668 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+		F0377C7D1D36860A00F4A668 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		F048DED92247B8C00039E664 /* release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = release.xcconfig; sourceTree = "<group>"; };
+		F048DEDB2247B9620039E664 /* debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = debug.xcconfig; sourceTree = "<group>"; };
+		F048DEDD2247B99D0039E664 /* debug.local.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = debug.local.xcconfig; sourceTree = "<group>"; };
 		F0667E111F1805DD0051AD14 /* FasTCheckInManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTCheckInManager.h; sourceTree = "<group>"; };
 		F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTCheckInManager.m; sourceTree = "<group>"; };
 		F074C74220F7B66600184557 /* FasTSignedInfoBinary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTSignedInfoBinary.h; sourceTree = "<group>"; };
@@ -91,12 +98,21 @@
 				F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */,
 				610FCAD217B8F522000AAF97 /* UIKit.framework in Frameworks */,
 				610FCAD417B8F522000AAF97 /* Foundation.framework in Frameworks */,
+				0898AE29FA449A14119C2699 /* Pods_FasT_checkin.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2AC9D82BDC1A60776BCFA11D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				41E2F663CE77377D65656E4B /* Pods_FasT_checkin.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		610FCAC517B8F522000AAF97 = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +120,7 @@
 				610FCACF17B8F522000AAF97 /* Products */,
 				F0377C7D1D36860A00F4A668 /* Podfile */,
 				6172CA03A02603468CECE4A6 /* Pods */,
+				2AC9D82BDC1A60776BCFA11D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -168,6 +185,7 @@
 		610FCAD817B8F522000AAF97 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				F048DEDA2247B8F30039E664 /* Config */,
 				610FCAD917B8F522000AAF97 /* FasT-checkin-Info.plist */,
 				610FCADA17B8F522000AAF97 /* InfoPlist.strings */,
 				610FCADD17B8F522000AAF97 /* main.m */,
@@ -185,6 +203,16 @@
 				EA14629DE5D7C1EF36DFBEA0 /* Pods-FasT-checkin.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		F048DEDA2247B8F30039E664 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				F048DEDB2247B9620039E664 /* debug.xcconfig */,
+				F048DEDD2247B99D0039E664 /* debug.local.xcconfig */,
+				F048DED92247B8C00039E664 /* release.xcconfig */,
+			);
+			name = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,6 +280,8 @@
 				F0377C7E1D36860A00F4A668 /* Podfile in Resources */,
 				610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */,
 				F015FFCD1D34432700493E8E /* Images.xcassets in Resources */,
+				F048DEDE2247B99D0039E664 /* debug.local.xcconfig in Resources */,
+				F048DEDC2247B9620039E664 /* debug.xcconfig in Resources */,
 				610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */,
 				610FD32017BAF491000AAF97 /* Localizable.strings in Resources */,
 				F015FFD11D3444B500493E8E /* Storyboard.storyboard in Resources */,
@@ -362,6 +392,7 @@
 /* Begin XCBuildConfiguration section */
 		610FCAE917B8F522000AAF97 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F048DEDB2247B9620039E664 /* debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -421,6 +452,7 @@
 		};
 		610FCAEA17B8F522000AAF97 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F048DEDD2247B99D0039E664 /* debug.local.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -487,13 +519,12 @@
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					"COCOAPODS=1",
-					"API_HOST=\"@\\\"http://ao-mbp.local:4000\\\"\"",
+					"API_HOST=@\"$(API_HOST)\"",
 				);
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.albisigns.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.a0s.${PRODUCT_NAME:rfc1034identifier}.debug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6ac67505-b572-44a3-b319-d2c067cd3062";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Development";
@@ -513,10 +544,14 @@
 				DEVELOPMENT_TEAM = V48L6BF6M3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"API_HOST=@\"$(API_HOST)\"",
+				);
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				PRODUCT_BUNDLE_IDENTIFIER = "de.albisigns.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = "de.a0s.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "4892eec6-8b0d-4aa8-b73b-ae7b84d9131f";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Adhoc";
