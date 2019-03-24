@@ -85,19 +85,34 @@
     }
 }
 
-- (IBAction)submitCheckIns:(id)sender {
-    [[FasTCheckInManager sharedManager] submitCheckIns:^{
-        [self refresh];
+- (IBAction)showActionSheet:(id)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *action;
+    action = [UIAlertAction actionWithTitle:@"Check-Ins übertragen" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[FasTCheckInManager sharedManager] submitCheckIns:^{
+            [self refresh];
+        }];
     }];
-}
-
-- (IBAction)resetCheckIns:(id)sender {
-    [FasTTicketVerifier clearTickets];
+    [alert addAction:action];
+    
+    action = [UIAlertAction actionWithTitle:@"Check-In-Status zurücksetzen" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [FasTTicketVerifier clearTickets];
+    }];
+    [alert addAction:action];
+    
+    action = [UIAlertAction actionWithTitle:@"abbrechen" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [alert dismissViewControllerAnimated:YES completion:NULL];
+    }];
+    [alert addAction:action];
+    
+    [self presentViewController:alert animated:YES completion:NULL];
 }
 
 - (IBAction)refreshInfo:(id)sender {
     [FasTTicketVerifier refreshInfo:^{
         [self refresh];
+        [self.refreshControl endRefreshing];
     }];
 }
 
