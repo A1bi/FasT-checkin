@@ -22,11 +22,17 @@
 }
 
 - (instancetype)initWithTicket:(FasTTicket *)ticket medium:(NSNumber *)medium {
-    return [self initWithTicketId:ticket.ticketId medium:medium date:[NSDate date]];
+    [self initWithTicketId:ticket.ticketId medium:medium date:[NSDate date]];
+    _ticket = [ticket retain];
+    return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)decoder {
     return [self initWithTicketId:[decoder decodeObjectForKey:@"ticketId"] medium:[decoder decodeObjectForKey:@"medium"] date:[decoder decodeObjectForKey:@"date"]];
+}
+
+- (NSString *)ticketNumberWithIdFallback {
+    return _ticket ? _ticket.number : [NSString stringWithFormat:@"%@", _ticketId];
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
@@ -37,6 +43,7 @@
 
 - (void)dealloc
 {
+    [_ticket release];
     [_ticketId release];
     [_medium release];
     [_date release];

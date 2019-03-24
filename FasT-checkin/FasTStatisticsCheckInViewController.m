@@ -22,7 +22,7 @@
 - (void)setCheckIns:(NSArray *)checkIns
 {
     [_checkIns release];
-    NSSortDescriptor *sorter = [NSSortDescriptor sortDescriptorWithKey:@"ticketId" ascending:YES];
+    NSSortDescriptor *sorter = [NSSortDescriptor sortDescriptorWithKey:@"ticketNumberWithIdFallback" ascending:YES];
     _checkIns = [[checkIns sortedArrayUsingDescriptors:@[sorter]] retain];
 }
 
@@ -39,7 +39,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CheckInCell" forIndexPath:indexPath];
     FasTCheckIn *checkIn = _checkIns[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@", checkIn.ticketId];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@", checkIn.ticketNumberWithIdFallback];
     cell.detailTextLabel.text = checkIn.date.description;
     
     return cell;
