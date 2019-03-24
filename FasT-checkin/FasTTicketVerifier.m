@@ -64,6 +64,8 @@ static NSMutableDictionary *ticketsByBarcode = nil;
                 FasTTicket *updatedTicket = ticketsById[ticket.ticketId];
                 if (updatedTicket) {
                     ticket = updatedTicket;
+                } else {
+                    ticketsById[ticket.ticketId] = ticket;
                 }
 
             } @catch (NSException *exception) {
