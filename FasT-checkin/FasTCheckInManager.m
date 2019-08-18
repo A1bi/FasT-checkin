@@ -79,21 +79,21 @@
     [defaults synchronize];
 }
 
-- (void)submitCheckIns:(void (^)())completion {
+- (void)submitCheckIns:(void (^)(void))completion {
     if (checkInsToSubmit.count > 0) {
+        NSISO8601DateFormatter *formatter = [[[NSISO8601DateFormatter alloc] init] autorelease];
         NSMutableArray *checkIns = [NSMutableArray array];
         for (FasTCheckIn *checkIn in checkInsToSubmit) {
-            NSDictionary *info = @{ @"ticket_id": checkIn.ticketId, @"date": @(checkIn.date.timeIntervalSince1970), @"medium": checkIn.medium };
+            NSDictionary *info = @{ @"ticket_id": checkIn.ticketId, @"date": [formatter stringFromDate:checkIn.date], @"medium": checkIn.medium };
             [checkIns addObject:info];
         }
         
         NSArray *_checkInsToSubmit = [[checkInsToSubmit copy] autorelease];
         [FasTApi post:nil parameters:@{ @"check_ins": checkIns } success:^(NSURLSessionDataTask *task, id response) {
-            if (((NSNumber *)response[@"ok"]).boolValue) {
-                [checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];
-                [self persistCheckIns];
-                [[FasTStatisticsManager sharedManager] addSubmittedCheckIns:_checkInsToSubmit];
-            }
+            [checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];
+            [self persistCheckIns];
+            [[FasTStatisticsManager sharedManager] addSubmittedCheckIns:_checkInsToSubmit];
+
             [self scheduleCheckInSubmission];
             
             [_lastSubmissionDate release];

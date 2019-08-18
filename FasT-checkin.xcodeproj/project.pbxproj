@@ -440,7 +440,7 @@
 					"\"$(SRCROOT)/submodules/ZBar/iphone/include\"/**",
 					"\"$(SRCROOT)/submodules/ZBar/include\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
@@ -452,7 +452,7 @@
 		};
 		610FCAEA17B8F522000AAF97 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F048DEDD2247B99D0039E664 /* debug.local.xcconfig */;
+			baseConfigurationReference = F048DED92247B8C00039E664 /* release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -492,7 +492,7 @@
 					"\"$(SRCROOT)/submodules/ZBar/iphone/include\"/**",
 					"\"$(SRCROOT)/submodules/ZBar/include\"",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -522,7 +522,7 @@
 					"API_HOST=@\"$(API_HOST)\"",
 				);
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.a0s.${PRODUCT_NAME:rfc1034identifier}.debug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -549,7 +549,7 @@
 					"API_HOST=@\"$(API_HOST)\"",
 				);
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "de.a0s.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";

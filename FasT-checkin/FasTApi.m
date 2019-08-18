@@ -37,7 +37,7 @@
 }
 
 + (NSString *)urlForAction:(NSString *)action {
-    NSString *url = [NSString stringWithFormat:@"%@/api/check_in", API_HOST];
+    NSString *url = [NSString stringWithFormat:@"%@/api/ticketing/check_ins", API_HOST];
     if (action) {
         url = [NSString stringWithFormat:@"%@/%@", url, action];
     }

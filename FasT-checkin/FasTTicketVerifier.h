@@ -14,7 +14,7 @@
 
 + (void)init;
 + (FasTTicket *)getTicketByBarcode:(NSString *)messageData signedInfo:(FasTSignedInfoBinary **)signedInfo;
-+ (void)refreshInfo:(void (^)())completion;
++ (void)refreshInfo:(void (^)(void))completion;
 + (NSDate *)lastRefresh;
 + (void)clearTickets;
 

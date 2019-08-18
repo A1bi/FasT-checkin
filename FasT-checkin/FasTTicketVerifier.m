@@ -37,7 +37,8 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     [ticketsByBarcode release];
     ticketsByBarcode = [[NSMutableDictionary alloc] init];
     
-    NSDictionary *response = [[NSUserDefaults standardUserDefaults] objectForKey:kLastApiResponseDefaultsKey];
+    NSData *responseData = [[NSUserDefaults standardUserDefaults] objectForKey:kLastApiResponseDefaultsKey];
+    NSDictionary *response = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:responseData];
     if (response) {
         [self processApiResponse:response];
     } else {
@@ -127,11 +128,15 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     return signedInfo;
 }
 
-+ (void)refreshInfo:(void (^)())completion {
++ (void)refreshInfo:(void (^)(void))completion {
     [FasTApi get:nil parameters:nil success:^(NSURLSessionDataTask *task, id response) {
         [self processApiResponse:response];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setObject:response forKey:kLastApiResponseDefaultsKey];
+        // we can't save the dictionary directly in user defaults since it doesn't allow null values
+        // some IDs in the response might be null
+        // we therefore need to convert it to data first
+        NSData *responseData = [NSKeyedArchiver archivedDataWithRootObject:response];
+        [defaults setObject:responseData forKey:kLastApiResponseDefaultsKey];
         [defaults setObject:[NSDate date] forKey:kLastApiResponseDateDefaultsKey];
         [defaults synchronize];
         if (completion) {

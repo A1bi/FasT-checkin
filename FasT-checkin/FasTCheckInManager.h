@@ -18,6 +18,6 @@
 + (instancetype)sharedManager;
 
 - (void)checkInTicket:(FasTTicket *)ticket withMedium:(NSNumber *)medium;
-- (void)submitCheckIns:(void (^)())completion;
+- (void)submitCheckIns:(void (^)(void))completion;
 
 @end
