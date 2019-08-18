@@ -122,21 +122,24 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
 - (void)initCaptureSession {
     session = [[AVCaptureSession alloc] init];
-    
-    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    if (devices.count < 1) {
+
+    AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithDeviceType: AVCaptureDeviceTypeBuiltInWideAngleCamera
+                                                                 mediaType: AVMediaTypeVideo
+                                                                  position: AVCaptureDevicePositionBack];
+
+    if (!device) {
         NSLog(@"no capture devices found");
         return;
     }
-    captureDevice = devices[0];
     
     NSError *error;
-    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:captureDevice error:&error];
-    if (!error) {
-        [session addInput:input];
-    } else {
+    AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+    if (error) {
         NSLog(@"error setting up capture device input: %@", error);
+        return;
     }
+
+    [session addInput:input];
 }
 
 - (void)initCapturePreview {
