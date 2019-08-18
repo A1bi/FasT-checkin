@@ -155,9 +155,12 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     keys = [_keys copy];
     
     // dates
+    NSISO8601DateFormatter *formatter = [[[NSISO8601DateFormatter alloc] init] autorelease];
+    [formatter setFormatOptions:NSISO8601DateFormatWithInternetDateTime + NSISO8601DateFormatWithFractionalSeconds];
+
     NSMutableDictionary *_dates = [NSMutableDictionary dictionary];
     for (NSDictionary *date in response[@"dates"]) {
-        _dates[date[@"id"]] = [NSDate dateWithTimeIntervalSince1970:((NSNumber *)date[@"date"]).integerValue];
+        _dates[date[@"id"]] = [formatter dateFromString:date[@"date"]];
     }
     [dates release];
     dates = [_dates copy];
