@@ -30,8 +30,6 @@
 		F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C7B1D3665F300F4A668 /* FasTTicket.m */; };
 		F0377C7E1D36860A00F4A668 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F0377C7D1D36860A00F4A668 /* Podfile */; };
 		F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */; };
-		F048DEDC2247B9620039E664 /* debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F048DEDB2247B9620039E664 /* debug.xcconfig */; };
-		F048DEDE2247B99D0039E664 /* debug.local.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = F048DEDD2247B99D0039E664 /* debug.local.xcconfig */; };
 		F0667E131F1805DD0051AD14 /* FasTCheckInManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */; };
 		F074C74420F7B66600184557 /* FasTSignedInfoBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */; };
 		F0F46AA11D3912A800648897 /* FasTScannerBarcodeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */; };
@@ -245,7 +243,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = FasT;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = Albisigns;
 				TargetAttributes = {
 					610FCACD17B8F522000AAF97 = {
@@ -259,6 +257,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				de,
 			);
@@ -280,8 +279,6 @@
 				F0377C7E1D36860A00F4A668 /* Podfile in Resources */,
 				610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */,
 				F015FFCD1D34432700493E8E /* Images.xcassets in Resources */,
-				F048DEDE2247B99D0039E664 /* debug.local.xcconfig in Resources */,
-				F048DEDC2247B9620039E664 /* debug.xcconfig in Resources */,
 				610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */,
 				610FD32017BAF491000AAF97 /* Localizable.strings in Resources */,
 				F015FFD11D3444B500493E8E /* Storyboard.storyboard in Resources */,
@@ -297,20 +294,18 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/KSCrash/KSCrash.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KSCrash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FasT-checkin/Pods-FasT-checkin-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		610FCCDA17B99843000AAF97 /* ShellScript */ = {

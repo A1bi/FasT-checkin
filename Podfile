@@ -4,5 +4,5 @@ use_frameworks!
 
 target 'FasT-checkin' do
     pod 'AFNetworking', '~> 3.2.1'
-    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '3.13.1'
+    pod 'Sentry', '~> 4.4.0'
 end
