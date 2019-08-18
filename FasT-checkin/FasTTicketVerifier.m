@@ -128,7 +128,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     return signedInfo;
 }
 
-+ (void)refreshInfo:(void (^)(void))completion {
++ (void)refreshInfo:(void (^)(NSError *error))completion {
     [FasTApi get:nil parameters:nil success:^(NSURLSessionDataTask *task, id response) {
         [self processApiResponse:response];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -139,10 +139,11 @@ static NSMutableDictionary *ticketsByBarcode = nil;
         [defaults setObject:responseData forKey:kLastApiResponseDefaultsKey];
         [defaults setObject:[NSDate date] forKey:kLastApiResponseDateDefaultsKey];
         [defaults synchronize];
-        if (completion) {
-            completion();
-        }
-    } failure:NULL];
+
+        if (completion) completion(nil);
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        if (completion) completion(error);
+    }];
 }
 
 + (void)processApiResponse:(NSDictionary *)response {

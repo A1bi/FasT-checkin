@@ -14,23 +14,27 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - MBProgressHUD (1.1.0)
   - Sentry (4.4.0):
     - Sentry/Core (= 4.4.0)
   - Sentry/Core (4.4.0)
 
 DEPENDENCIES:
   - AFNetworking (~> 3.2.1)
+  - MBProgressHUD (~> 1.1.0)
   - Sentry (~> 4.4.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
+    - MBProgressHUD
     - Sentry
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   Sentry: 26650184fe71eb7476dfd2737acb5ea6cc64b4b1
 
-PODFILE CHECKSUM: e84b3845a50fa315053a864d97ee6d8b40c7ef16
+PODFILE CHECKSUM: ae34353a153f3da702b7b0c3fcda6a32fff91955
 
 COCOAPODS: 1.7.5

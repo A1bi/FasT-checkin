@@ -79,7 +79,7 @@
     [defaults synchronize];
 }
 
-- (void)submitCheckIns:(void (^)(void))completion {
+- (void)submitCheckIns:(void (^)(NSError *error))completion {
     if (checkInsToSubmit.count > 0) {
         NSISO8601DateFormatter *formatter = [[[NSISO8601DateFormatter alloc] init] autorelease];
         NSMutableArray *checkIns = [NSMutableArray array];
@@ -99,12 +99,10 @@
             [_lastSubmissionDate release];
             _lastSubmissionDate = [[NSDate dateWithTimeIntervalSinceNow:0] retain];
             
-            if (completion) {
-                completion();
-            }
+            if (completion) completion(nil);
             
         } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [self scheduleCheckInSubmission];
+            if (completion) completion(error);
         }];
     
     } else {
@@ -113,9 +111,7 @@
         [_lastSubmissionDate release];
         _lastSubmissionDate = [[NSDate dateWithTimeIntervalSinceNow:0] retain];
         
-        if (completion) {
-            completion();
-        }
+        if (completion) completion(nil);
     }
 }
 

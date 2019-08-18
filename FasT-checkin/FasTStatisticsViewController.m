@@ -12,6 +12,8 @@
 #import "FasTStatisticsCheckInViewController.h"
 #import "FasTTicketVerifier.h"
 
+@import MBProgressHUD;
+
 @interface FasTStatisticsViewController ()
 
 @property (retain, nonatomic) IBOutlet UILabel *scanAttemptsLabel;
@@ -26,6 +28,7 @@
 
 - (IBAction)dismiss:(id)sender;
 - (void)refresh;
+- (void)presentError:(NSError *)error;
 
 @end
 
@@ -89,8 +92,17 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction *action;
-    action = [UIAlertAction actionWithTitle:@"Check-Ins übertragen" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[FasTCheckInManager sharedManager] submitCheckIns:^{
+    action = [UIAlertAction actionWithTitle:@"Check-Ins übertragen" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+
+        [[FasTCheckInManager sharedManager] submitCheckIns:^(NSError *error) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            if (error) {
+                [self presentError:error];
+                return;
+            }
+            
             [self refresh];
         }];
     }];
@@ -110,10 +122,23 @@
 }
 
 - (IBAction)refreshInfo:(id)sender {
-    [FasTTicketVerifier refreshInfo:^{
-        [self refresh];
+    [FasTTicketVerifier refreshInfo:^(NSError *error) {
         [self.refreshControl endRefreshing];
+
+        if (error) {
+            [self presentError:error];
+            return;
+        }
+
+        [self refresh];
     }];
+}
+
+- (void)presentError:(NSError *)error {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Fehler bei der Aktualisierung" message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:NULL];
+    [alert addAction:ok];
+    [self presentViewController:alert animated:YES completion:NULL];
 }
 
 @end
