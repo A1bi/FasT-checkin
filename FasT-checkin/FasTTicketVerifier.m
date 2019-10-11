@@ -199,4 +199,9 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     [ticketsByBarcode removeAllObjects];
 }
 
++ (NSArray *)dates
+{
+    return dates.allValues;
+}
+
 @end

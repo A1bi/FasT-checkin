@@ -20,6 +20,6 @@
 @property (strong) FasTCheckIn *checkIn;
 
 - (instancetype)initWithInfoData:(NSData *)data dates:(NSDictionary *)dates types:(NSDictionary *)types;
-- (BOOL)isValidToday;
+- (BOOL)isValidForDate:(NSDate *)date;
 
 @end

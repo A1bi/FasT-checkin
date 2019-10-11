@@ -18,6 +18,9 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+#define kMinutesBeforeDateAllowedForCheckIn 90
+#define kMinutesAfterDateAllowedForCheckIn 45
+
 void AudioServicesStopSystemSound(SystemSoundID soundId);
 void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NSDictionary *vibrationPattern);
 
@@ -50,6 +53,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)setInfoLayerText:(NSString *)text withBackgroundColor:(UIColor *)color;
 - (void)clearRecentScanTimes;
 - (IBAction)longDoublePressRecognized;
+- (NSDate *)currentDate;
 
 @end
 
@@ -311,9 +315,10 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
         NSLog(@"barcode invalid");
         
     } else {
-        if (![ticket isValidToday]) {
-            infoText = @"Gültig für eine andere Aufführung";
+        if (![ticket isValidForDate:[self currentDate]]) {
+            infoText = @"Gültig für einen anderen Termin";
             NSLog(@"ticket is not valid today");
+
         } else if (ticket.cancelled) {
             infoText = @"Ticket ist storniert";
             NSLog(@"ticket has been cancelled");
@@ -394,6 +399,18 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     if (longPressRecognizer.state == UIGestureRecognizerStateBegan) {
         [self performSegueWithIdentifier:@"InfoSegue" sender:nil];
     }
+}
+
+- (NSDate *)currentDate
+{
+    for (NSDate *date in [FasTTicketVerifier dates]) {
+        NSDate *startDate = [NSDate dateWithTimeInterval:-kMinutesBeforeDateAllowedForCheckIn * 60 sinceDate:date];
+        NSDate *endDate = [NSDate dateWithTimeInterval:kMinutesAfterDateAllowedForCheckIn * 60 sinceDate:date];
+        NSDateInterval *interval = [[[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate] autorelease];
+        if ([interval containsDate:NSDate.date]) return date;
+    }
+
+    return nil;
 }
 
 @end
