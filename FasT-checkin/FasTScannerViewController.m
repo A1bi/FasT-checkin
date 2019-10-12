@@ -27,7 +27,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 @interface FasTScannerViewController ()
 {
     AVCaptureSession *session;
-    AVCaptureDevice *captureDevice;
     AVCaptureVideoPreviewLayer *preview;
     AVCaptureMetadataOutput *metadataOutput;
     NSDictionary *successVibration, *warningVibration, *failVibration;
@@ -45,9 +44,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)initCapturePreview;
 - (void)initBarcodeDetection;
 - (void)initLayers;
-- (void)configureCaptureDeviceForFocusPoint:(CGPoint)focusPoint;
-- (void)configureCaptureDeviceForAutoFocus;
-- (void)configureCaptureDevice:(AVCaptureFocusMode)focusMode exposureMode:(AVCaptureExposureMode)exposureMode focusPoint:(CGPoint)focusPoint;
 - (void)stopScanning;
 - (void)vibrateWithPattern:(NSDictionary *)pattern;
 - (void)setInfoLayerText:(NSString *)text withBackgroundColor:(UIColor *)color;
@@ -93,7 +89,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
 - (void)dealloc {
     [session release];
-    [captureDevice release];
     [metadataOutput release];
     [successVibration release];
     [warningVibration release];
@@ -135,8 +130,21 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
         NSLog(@"no capture devices found");
         return;
     }
-    
+
     NSError *error;
+    if ([device lockForConfiguration:&error]) {
+        if ([device isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
+            device.focusMode = AVCaptureFocusModeContinuousAutoFocus;
+        }
+        if ([device isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]) {
+            device.exposureMode = AVCaptureExposureModeContinuousAutoExposure;
+        }
+        [device unlockForConfiguration];
+
+    } else {
+        NSLog(@"error locking capture device configuration: %@", error);
+    }
+
     AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
     if (error) {
         NSLog(@"error setting up capture device input: %@", error);
@@ -198,35 +206,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [targetLayer addSublayer:infoTextLayer];
 }
 
-- (void)configureCaptureDeviceForFocusPoint:(CGPoint)focusPoint {
-    [self configureCaptureDevice:AVCaptureFocusModeAutoFocus exposureMode:AVCaptureExposureModeAutoExpose focusPoint:focusPoint];
-}
-
-- (void)configureCaptureDeviceForAutoFocus {
-    [self configureCaptureDevice:AVCaptureFocusModeContinuousAutoFocus exposureMode:AVCaptureExposureModeContinuousAutoExposure focusPoint:CGPointZero];
-}
-
-- (void)configureCaptureDevice:(AVCaptureFocusMode)focusMode exposureMode:(AVCaptureExposureMode)exposureMode focusPoint:(CGPoint)focusPoint {
-    if (captureDevice) {
-        NSError *error;
-        if ([captureDevice lockForConfiguration:&error]) {
-            if ([captureDevice isFocusModeSupported:focusMode]) {
-                captureDevice.focusMode = focusMode;
-            }
-            if (focusMode == AVCaptureFocusModeAutoFocus && [captureDevice isFocusPointOfInterestSupported]) {
-                captureDevice.focusPointOfInterest = focusPoint;
-            }
-            if ([captureDevice isExposureModeSupported:exposureMode]) {
-                captureDevice.exposureMode = exposureMode;
-            }
-            [captureDevice unlockForConfiguration];
-            
-        } else {
-            NSLog(@"error locking capture device configuration: %@", error);
-        }
-    }
-}
-
 - (void)stopScanning
 {
     [metadataOutput setMetadataObjectsDelegate:nil queue:dispatch_get_main_queue()];
@@ -241,8 +220,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [lastBarcodeContent release];
     lastBarcodeContent = nil;
     
-    [self configureCaptureDeviceForAutoFocus];
-    
     barcodeLayer.hidden = YES;
     infoLayer.hidden = YES;
     infoTextLayer.hidden = YES;
@@ -254,12 +231,7 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
         scanningTouch = touches.anyObject;
         longPressRecognizer.enabled = YES;
         
-        CGPoint location = [scanningTouch locationInView:self.view];
-        location = [preview captureDevicePointOfInterestForPoint:location];
-        
         [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-        
-        [self configureCaptureDeviceForFocusPoint:location];
         
         [[FasTStatisticsManager sharedManager] increaseScanAttempts];
     }
@@ -275,11 +247,11 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
 {
     if (!scanningTouch || metadataObjects.count < 1) return;
-    
+
     AVMetadataMachineReadableCodeObject *targetBarcode = nil;
     for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
         BOOL theSameAsBefore = lastBarcodeContent && [lastBarcodeContent isEqualToString:object.stringValue];
-        BOOL newScanAndNewBarcode = !lastBarcodeContent && !recentScanTimes[object.stringValue];
+        BOOL newScanAndNewBarcode = !lastBarcodeContent && (metadataObjects.count == 1 || !recentScanTimes[object.stringValue]);
         if (theSameAsBefore || newScanAndNewBarcode) {
             targetBarcode = object;
             break;
