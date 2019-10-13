@@ -15,6 +15,7 @@
 
 #define kMinutesBeforeDateAllowedForCheckIn 90
 #define kMinutesAfterDateAllowedForCheckIn 45
+#define kFrameMargin 20
 
 typedef enum {
     FasTScannerResultTypeSuccess,
@@ -22,8 +23,15 @@ typedef enum {
     FasTScannerResultTypeError
 } FasTScannerResultType;
 
+typedef enum {
+    FasTScannerResultViewStateHidden,
+    FasTScannerResultViewStateSimple,
+    FasTScannerResultViewStateDetailed
+} FasTScannerResultViewState;
+
 @interface FasTScannerResultViewController () {
     CGRect originalFrame;
+    FasTScannerResultViewState viewState;
 }
 
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
@@ -33,8 +41,11 @@ typedef enum {
 - (void)setErrorTitle:(NSString *)title description:(NSString *)description;
 - (void)setResultType:(FasTScannerResultType)type;
 - (void)setTitle:(NSString *)title description:(NSString *)description;
+- (void)toggleSimpleView:(BOOL)toggle;
 - (void)toggleDetailedView:(BOOL)toggle;
+- (void)updateDetailedSize;
 - (NSDate *)currentDate;
+- (IBAction)dismissDetailedView;
 
 @end
 
@@ -47,14 +58,15 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    originalFrame = self.view.layer.frame;
-
-    self.view.layer.hidden = YES;
     self.view.layer.anchorPoint = CGPointZero;
+    [self toggleSimpleView:NO];
+    [self dismissDetailedView];
 }
 
 - (void)presentInCorners:(NSArray *)corners {
-    if (corners.count < 1) return;
+    if (corners.count < 1 || viewState == FasTScannerResultViewStateDetailed) return;
+
+    if (viewState == FasTScannerResultViewStateHidden) [self updateDetailedSize];
 
     CGPoint points[corners.count];
     for (int i = 0; i < corners.count; i++) {
@@ -63,13 +75,16 @@ typedef enum {
         points[i] = point;
     }
 
+    // I'm using 3D transforms because with 2D transform I encountered an
+    // animation bug that caused the animation to jump at the start
+    // see https://stackoverflow.com/questions/27931421
+    // seems to be fixed in iOS 13, though, so we could go back to CGAffineTransform
+
     // we assume that these rects are all squares so we calculate only width and use it as height
     CGFloat width = sqrt(pow(points[3].x - points[0].x, 2) + pow(points[3].y - points[0].y, 2));
     CGFloat scale = width / originalFrame.size.width;
-    CGAffineTransform scaling = CGAffineTransformMakeScale(scale, scale);
-
-    CGAffineTransform translation = CGAffineTransformMakeTranslation(-CGRectGetMidX(originalFrame) + points[0].x,
-                                                                     -CGRectGetMidY(originalFrame) + points[0].y);
+    CATransform3D scaling = CATransform3DMakeScale(scale, scale, 1);
+    CATransform3D translation = CATransform3DMakeTranslation(points[0].x, points[0].y, 1);
 
     CGFloat deltaX = points[0].x - points[1].x;
     CGFloat deltaY = points[0].y - points[1].y;
@@ -77,17 +92,23 @@ typedef enum {
     if (deltaY > 0) {
         angle += M_PI;
     }
-    CGAffineTransform rotation = CGAffineTransformMakeRotation(angle);
+    CATransform3D rotation = CATransform3DMakeRotation(angle, 0, 0, 1);
 
-    CGAffineTransform transform = CGAffineTransformConcat(rotation, scaling);
-    transform = CGAffineTransformConcat(transform, translation);
+    CATransform3D transform = CATransform3DConcat(rotation, scaling);
+    transform = CATransform3DConcat(transform, translation);
 
-    NSTimeInterval duration = self.view.layer.hidden ? 0 : 0.2;
+    NSTimeInterval duration = viewState == FasTScannerResultViewStateHidden ? 0 : 0.2;
     [UIView animateWithDuration:duration animations:^{
-        self.view.layer.affineTransform = transform;
+        self.view.layer.transform = transform;
     } completion:NULL];
 
-    self.view.layer.hidden = NO;
+    if (viewState == FasTScannerResultViewStateHidden) {
+        [self toggleSimpleView:YES];
+
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self toggleDetailedView:YES];
+        });
+    }
 }
 
 - (void)showForBarcodeContent:(NSString *)content {
@@ -159,11 +180,44 @@ typedef enum {
     _titleLabel.text = title;
 }
 
+- (void)toggleSimpleView:(BOOL)toggle {
+    viewState = toggle ? FasTScannerResultViewStateSimple : FasTScannerResultViewStateHidden;
+
+    self.view.layer.opacity = toggle ? 0.9 : 0;
+    _titleLabel.layer.opacity = 0;
+    _dismissButton.layer.opacity = 0;
+}
+
 - (void)toggleDetailedView:(BOOL)toggle {
-    [UIView animateWithDuration:1.0 delay:1.0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-        _titleLabel.layer.opacity = 1.0;
-        _dismissButton.layer.opacity = 1.0;
+    viewState = toggle ? FasTScannerResultViewStateDetailed : FasTScannerResultViewStateHidden;
+
+    if (toggle) {
+        [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            CGFloat y = (self.view.superview.frame.size.height - originalFrame.size.width) / 2;
+
+            CATransform3D transform = CATransform3DIdentity;
+            transform = CATransform3DScale(transform, 1, 1, 1);
+            transform = CATransform3DTranslate(transform, kFrameMargin, y, 1);
+            self.view.layer.transform = transform;
+        } completion:NULL];
+    }
+
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.layer.opacity = toggle ? 1 : 0;
+        _titleLabel.layer.opacity = toggle ? 1 : 0;
+        _dismissButton.layer.opacity = toggle ? 1 : 0;
     } completion:NULL];
+}
+
+- (IBAction)dismissDetailedView {
+    [self toggleDetailedView:NO];
+}
+
+- (void)updateDetailedSize {
+    CGSize parentSize = self.view.superview.frame.size;
+    CGFloat width = parentSize.width - kFrameMargin * 2;
+    self.view.frame = CGRectMake(0, 0, width, width);
+    originalFrame = self.view.frame;
 }
 
 - (NSDate *)currentDate
