@@ -12,6 +12,7 @@
 #import "FasTStatisticsManager.h"
 #import "FasTTicket.h"
 #import "FasTTicketVerifier.h"
+#import "FasTAudioFeedbackManager.h"
 
 #define kMinutesBeforeDateAllowedForCheckIn 90
 #define kMinutesAfterDateAllowedForCheckIn 45
@@ -52,6 +53,7 @@ typedef enum {
 @implementation FasTScannerResultViewController
 
 - (instancetype)init {
+    [FasTAudioFeedbackManager initialize];
     return [super initWithNibName:@"FasTScannerResultViewController" bundle:nil];
 }
 
@@ -129,15 +131,12 @@ typedef enum {
         } else {
             if (!ticket.checkIn) {
                 [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
+                [stats addCheckIn:ticket.checkIn];
 
                 [self setErrorTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type]];
-//                vibration = successVibration;
-
-                [stats addCheckIn:ticket.checkIn];
 
             } else {
                 [self setResultType:FasTScannerResultTypeWarning];
-//                vibration = warningVibration;
 
                 [stats addDuplicateCheckIn:ticket.checkIn];
             }
@@ -164,14 +163,17 @@ typedef enum {
     switch (type) {
         case FasTScannerResultTypeSuccess:
             color = [UIColor systemGreenColor];
+            [FasTAudioFeedbackManager indicateSuccess];
             break;
 
         case FasTScannerResultTypeWarning:
             color = [UIColor systemYellowColor];
+            [FasTAudioFeedbackManager indicateWarning];
             break;
 
         default:
             color = [UIColor systemRedColor];
+            [FasTAudioFeedbackManager indicateError];
     }
     self.view.backgroundColor = color;
 }

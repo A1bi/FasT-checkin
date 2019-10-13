@@ -11,17 +11,11 @@
 #import "FasTApi.h"
 #import "FasTStatisticsManager.h"
 
-#import <AudioToolbox/AudioToolbox.h>
-
-void AudioServicesStopSystemSound(SystemSoundID soundId);
-void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NSDictionary *vibrationPattern);
-
 @interface FasTScannerViewController ()
 {
     AVCaptureSession *session;
     AVCaptureVideoPreviewLayer *preview;
     AVCaptureMetadataOutput *metadataOutput;
-    NSDictionary *successVibration, *warningVibration, *failVibration;
     CALayer *targetLayer;
     NSString *lastBarcodeContent;
     UITouch *scanningTouch;
@@ -35,7 +29,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)initBarcodeDetection;
 - (void)initLayers;
 - (void)stopScanning;
-- (void)vibrateWithPattern:(NSDictionary *)pattern;
 - (void)clearRecentScanTimes;
 - (IBAction)longDoublePressRecognized;
 
@@ -56,13 +49,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [self initBarcodeDetection];
     [self initLayers];
     
-    [successVibration release];
-    successVibration = [@{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @100 ] } retain];
-    [warningVibration release];
-    warningVibration = [@{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @50, @NO, @50, @YES, @50, @NO, @50, @YES, @50 ] } retain];
-    [failVibration release];
-    failVibration = [@{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @500 ] } retain];
-    
     [recentScanTimes release];
     recentScanTimes = [[NSMutableDictionary alloc] init];
     
@@ -72,9 +58,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)dealloc {
     [session release];
     [metadataOutput release];
-    [successVibration release];
-    [warningVibration release];
-    [failVibration release];
     [lastBarcodeContent release];
     [longPressRecognizer release];
     [recentScanTimes release];
@@ -231,10 +214,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     lastBarcodeContent = [barcodeContent retain];
 
     [barcodeResultController showForBarcodeContent:barcodeContent];
-}
-
-- (void)vibrateWithPattern:(NSDictionary *)pattern {
-    AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, pattern);
 }
 
 - (void)clearRecentScanTimes {
