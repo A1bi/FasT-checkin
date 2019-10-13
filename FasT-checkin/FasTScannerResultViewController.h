@@ -16,7 +16,17 @@ typedef enum {
     FasTScannerResultAlertTypeError
 } FasTScannerResultAlertType;
 
+@protocol FasTScannerResultViewControllerDelegate <NSObject>
+
+@optional
+
+- (void)scannerResultChangedModalViewState:(BOOL)modal;
+
+@end
+
 @interface FasTScannerResultViewController : UIViewController
+
+@property (strong) NSObject<FasTScannerResultViewControllerDelegate> *delegate;
 
 - (void)presentInCorners:(NSArray *)corners;
 - (void)showForBarcodeContent:(NSString *)content;

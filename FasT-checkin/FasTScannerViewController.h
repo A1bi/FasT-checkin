@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import "FasTScannerResultViewController.h"
 
-@interface FasTScannerViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate>
+@interface FasTScannerViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate, FasTScannerResultViewControllerDelegate>
 
 @end

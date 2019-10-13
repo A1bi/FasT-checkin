@@ -7,7 +7,6 @@
 //
 
 #import "FasTScannerViewController.h"
-#import "FasTScannerResultViewController.h"
 #import "FasTApi.h"
 #import "FasTStatisticsManager.h"
 
@@ -22,6 +21,7 @@
     IBOutlet UILongPressGestureRecognizer *longPressRecognizer;
     NSMutableDictionary *recentScanTimes;
     FasTScannerResultViewController *barcodeResultController;
+    BOOL scanningBlocked;
 }
 
 - (void)initCaptureSession;
@@ -144,6 +144,7 @@
 - (void)initLayers
 {
     barcodeResultController = [[FasTScannerResultViewController alloc] init];
+    barcodeResultController.delegate = self;
     [self.view addSubview:barcodeResultController.view];
 }
 
@@ -166,14 +167,14 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    if (!scanningTouch) {
-        scanningTouch = touches.anyObject;
-        longPressRecognizer.enabled = YES;
-        
-        [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
-        
-        [[FasTStatisticsManager sharedManager] increaseScanAttempts];
-    }
+    if (scanningBlocked || scanningTouch) return;
+
+    scanningTouch = touches.anyObject;
+    longPressRecognizer.enabled = YES;
+
+    [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+
+    [[FasTStatisticsManager sharedManager] increaseScanAttempts];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -231,6 +232,11 @@
     if (longPressRecognizer.state == UIGestureRecognizerStateBegan) {
         [self performSegueWithIdentifier:@"InfoSegue" sender:nil];
     }
+}
+
+- (void)scannerResultChangedModalViewState:(BOOL)modal {
+    if (modal) [self stopScanning];
+    scanningBlocked = modal;
 }
 
 @end

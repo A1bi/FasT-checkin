@@ -243,6 +243,8 @@ typedef enum {
     } completion:NULL];
 
     self.view.userInteractionEnabled = toggle;
+
+    [self.delegate scannerResultChangedModalViewState:toggle];
 }
 
 - (IBAction)dismissDetailedView {
