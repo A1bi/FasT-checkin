@@ -8,6 +8,7 @@
 
 #import "FasTAppDelegate.h"
 #import "FasTScannerViewController.h"
+#import "FasTTicketVerifier.h"
 
 @import Sentry;
 
@@ -28,6 +29,8 @@
     if (nil != error) {
         NSLog(@"%@", error);
     }
+
+    [FasTTicketVerifier init];
 
     return YES;
 }

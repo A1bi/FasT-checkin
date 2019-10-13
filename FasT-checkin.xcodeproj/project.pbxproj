@@ -32,7 +32,8 @@
 		F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */; };
 		F0667E131F1805DD0051AD14 /* FasTCheckInManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */; };
 		F074C74420F7B66600184557 /* FasTSignedInfoBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */; };
-		F0F46AA11D3912A800648897 /* FasTScannerBarcodeLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */; };
+		F07C6FA4235248D5002289FF /* FasTScannerResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F07C6FA2235248D5002289FF /* FasTScannerResultViewController.m */; };
+		F07C6FA5235248D5002289FF /* FasTScannerResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,8 +81,9 @@
 		F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTCheckInManager.m; sourceTree = "<group>"; };
 		F074C74220F7B66600184557 /* FasTSignedInfoBinary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTSignedInfoBinary.h; sourceTree = "<group>"; };
 		F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTSignedInfoBinary.m; sourceTree = "<group>"; };
-		F0F46A9F1D3912A800648897 /* FasTScannerBarcodeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerBarcodeLayer.h; sourceTree = "<group>"; };
-		F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerBarcodeLayer.m; sourceTree = "<group>"; };
+		F07C6FA1235248D5002289FF /* FasTScannerResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTScannerResultViewController.h; sourceTree = "<group>"; };
+		F07C6FA2235248D5002289FF /* FasTScannerResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTScannerResultViewController.m; sourceTree = "<group>"; };
+		F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FasTScannerResultViewController.xib; sourceTree = "<group>"; };
 		F0FDB148210A469D00DC8CB1 /* Pods_FasT_checkin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_FasT_checkin.framework; path = "../../Library/Developer/Xcode/DerivedData/FasT-checkin-blowwejktzdwkhgqsajbfckufbop/Build/Products/Debug-iphoneos/Pods_FasT_checkin.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -152,8 +154,9 @@
 				610FCAE117B8F522000AAF97 /* FasTAppDelegate.m */,
 				F015FFC51D343F0800493E8E /* FasTScannerViewController.h */,
 				F015FFC61D343F0800493E8E /* FasTScannerViewController.m */,
-				F0F46A9F1D3912A800648897 /* FasTScannerBarcodeLayer.h */,
-				F0F46AA01D3912A800648897 /* FasTScannerBarcodeLayer.m */,
+				F07C6FA1235248D5002289FF /* FasTScannerResultViewController.h */,
+				F07C6FA2235248D5002289FF /* FasTScannerResultViewController.m */,
+				F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */,
 				F0377C721D35509500F4A668 /* FasTTicketVerifier.h */,
 				F0377C731D35509500F4A668 /* FasTTicketVerifier.m */,
 				F074C74220F7B66600184557 /* FasTSignedInfoBinary.h */,
@@ -276,6 +279,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F07C6FA5235248D5002289FF /* FasTScannerResultViewController.xib in Resources */,
 				F0377C7E1D36860A00F4A668 /* Podfile in Resources */,
 				610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */,
 				F015FFCD1D34432700493E8E /* Images.xcassets in Resources */,
@@ -359,9 +363,9 @@
 				F02F87751D410A5300B5B0F3 /* FasTCheckIn.m in Sources */,
 				F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */,
 				F0667E131F1805DD0051AD14 /* FasTCheckInManager.m in Sources */,
-				F0F46AA11D3912A800648897 /* FasTScannerBarcodeLayer.m in Sources */,
 				F02F87721D41020000B5B0F3 /* FasTApi.m in Sources */,
 				F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */,
+				F07C6FA4235248D5002289FF /* FasTScannerResultViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

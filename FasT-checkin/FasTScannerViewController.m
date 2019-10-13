@@ -7,19 +7,11 @@
 //
 
 #import "FasTScannerViewController.h"
-#import "FasTTicketVerifier.h"
-#import "FasTTicket.h"
-#import "FasTSignedInfoBinary.h"
-#import "FasTScannerBarcodeLayer.h"
-#import "FasTCheckIn.h"
+#import "FasTScannerResultViewController.h"
 #import "FasTApi.h"
-#import "FasTCheckInManager.h"
 #import "FasTStatisticsManager.h"
 
 #import <AudioToolbox/AudioToolbox.h>
-
-#define kMinutesBeforeDateAllowedForCheckIn 90
-#define kMinutesAfterDateAllowedForCheckIn 45
 
 void AudioServicesStopSystemSound(SystemSoundID soundId);
 void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NSDictionary *vibrationPattern);
@@ -30,14 +22,12 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     AVCaptureVideoPreviewLayer *preview;
     AVCaptureMetadataOutput *metadataOutput;
     NSDictionary *successVibration, *warningVibration, *failVibration;
-    CALayer *targetLayer, *infoLayer;
-    CATextLayer *infoTextLayer;
-    FasTScannerBarcodeLayer *barcodeLayer;
-    NSNumberFormatter *mediumNumberFormatter;
+    CALayer *targetLayer;
     NSString *lastBarcodeContent;
     UITouch *scanningTouch;
     IBOutlet UILongPressGestureRecognizer *longPressRecognizer;
     NSMutableDictionary *recentScanTimes;
+    FasTScannerResultViewController *barcodeResultController;
 }
 
 - (void)initCaptureSession;
@@ -46,10 +36,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 - (void)initLayers;
 - (void)stopScanning;
 - (void)vibrateWithPattern:(NSDictionary *)pattern;
-- (void)setInfoLayerText:(NSString *)text withBackgroundColor:(UIColor *)color;
 - (void)clearRecentScanTimes;
 - (IBAction)longDoublePressRecognized;
-- (NSDate *)currentDate;
 
 @end
 
@@ -75,16 +63,10 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [failVibration release];
     failVibration = [@{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @500 ] } retain];
     
-    mediumNumberFormatter = [[NSNumberFormatter alloc] init];
-    mediumNumberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-    
     [recentScanTimes release];
     recentScanTimes = [[NSMutableDictionary alloc] init];
     
-    
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(clearRecentScanTimes) userInfo:nil repeats:YES];
-    
-    [FasTTicketVerifier init];
 }
 
 - (void)dealloc {
@@ -93,13 +75,10 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     [successVibration release];
     [warningVibration release];
     [failVibration release];
-    [barcodeLayer release];
-    [mediumNumberFormatter release];
     [lastBarcodeContent release];
-    [infoLayer release];
-    [infoTextLayer release];
     [longPressRecognizer release];
     [recentScanTimes release];
+    [barcodeResultController release];
     [super dealloc];
 }
 
@@ -181,29 +160,8 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
 
 - (void)initLayers
 {
-    [barcodeLayer removeFromSuperlayer];
-    [barcodeLayer release];
-    barcodeLayer = [[FasTScannerBarcodeLayer layer] retain];
-    [targetLayer addSublayer:barcodeLayer];
-    
-    [infoLayer removeFromSuperlayer];
-    [infoLayer release];
-    infoLayer = [[CALayer layer] retain];
-    infoLayer.backgroundColor = [UIColor blueColor].CGColor;
-    infoLayer.opacity = 0.75;
-    infoLayer.frame = CGRectMake(0, 0, self.view.frame.size.width, 65);
-    infoLayer.hidden = YES;
-    [targetLayer addSublayer:infoLayer];
-    
-    [infoTextLayer removeFromSuperlayer];
-    [infoTextLayer release];
-    infoTextLayer = [[CATextLayer layer] retain];
-    infoTextLayer.fontSize = 28;
-    infoTextLayer.alignmentMode = kCAAlignmentCenter;
-    infoTextLayer.frame = CGRectMake(10, 20, infoLayer.frame.size.width - 20, 40);
-    infoTextLayer.contentsScale = [[UIScreen mainScreen] scale];
-    infoTextLayer.hidden = YES;
-    [targetLayer addSublayer:infoTextLayer];
+    barcodeResultController = [[FasTScannerResultViewController alloc] init];
+    [self.view addSubview:barcodeResultController.view];
 }
 
 - (void)stopScanning
@@ -219,10 +177,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     
     [lastBarcodeContent release];
     lastBarcodeContent = nil;
-    
-    barcodeLayer.hidden = YES;
-    infoLayer.hidden = YES;
-    infoTextLayer.hidden = YES;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -268,91 +222,19 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     
     BOOL showLayer = !lastBarcodeContent || [barcodeContent isEqualToString:lastBarcodeContent];
     if (showLayer) {
-        [barcodeLayer setCorners:transformedObject.corners];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [barcodeResultController presentInCorners:transformedObject.corners];
+        });
     }
-    barcodeLayer.hidden = !showLayer;
     
     if (lastBarcodeContent) return;
     lastBarcodeContent = [barcodeContent retain];
-    
-    UIColor *fillColor = [UIColor redColor];
-    NSString *infoText = @"Ungültiger Barcode";
-    NSDictionary *vibration = failVibration;
-    
-    FasTStatisticsManager *stats = [FasTStatisticsManager sharedManager];
 
-    FasTSignedInfoBinary *signedInfo;
-    FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:barcodeContent signedInfo:&signedInfo];
-    if (!ticket) {
-        NSLog(@"barcode invalid");
-        
-    } else {
-        if (![ticket isValidForDate:[self currentDate]]) {
-            infoText = @"Gültig für einen anderen Termin";
-            NSLog(@"ticket is not valid today");
-
-        } else if (ticket.cancelled) {
-            infoText = @"Ticket ist storniert";
-            NSLog(@"ticket has been cancelled");
-            
-        } else {
-            if (!ticket.checkIn) {
-                [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
-                
-                fillColor = [UIColor greenColor];
-                vibration = successVibration;
-                
-                [stats addCheckIn:ticket.checkIn];
-                
-            } else {
-                fillColor = [UIColor yellowColor];
-                vibration = warningVibration;
-                
-                [stats addDuplicateCheckIn:ticket.checkIn];
-            }
-            
-            infoText = [NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type];
-            NSLog(@"ticket is valid: %@", ticket.number);
-        }
-    }
-    
-    if (fillColor == UIColor.redColor) {
-        [stats increaseDeniedScans];
-    }
-
-    barcodeLayer.fillColor = fillColor.CGColor;
-    barcodeLayer.hidden = NO;
-    [self setInfoLayerText:infoText withBackgroundColor:fillColor];
-    
-    [self vibrateWithPattern:vibration];
+    [barcodeResultController showForBarcodeContent:barcodeContent];
 }
 
 - (void)vibrateWithPattern:(NSDictionary *)pattern {
     AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, pattern);
-}
-
-- (void)setInfoLayerText:(NSString *)text withBackgroundColor:(UIColor *)color
-{
-    float fontSize = 28;
-    CGSize fontBounds = CGSizeMake(1000, 1000);
-    while (fontBounds.width >= infoTextLayer.frame.size.width - 10) {
-        fontSize -= 0.1f;
-        UIFont *font = [UIFont systemFontOfSize:fontSize];
-        fontBounds = [text sizeWithAttributes:@{NSFontAttributeName: font}];
-    }
-    
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    
-    infoTextLayer.fontSize = fontSize;
-    infoTextLayer.string = text;
-    
-    [CATransaction commit];
-    
-    infoTextLayer.hidden = NO;
-    
-    infoLayer.backgroundColor = color.CGColor;
-    infoLayer.hidden = NO;
 }
 
 - (void)clearRecentScanTimes {
@@ -371,18 +253,6 @@ void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NS
     if (longPressRecognizer.state == UIGestureRecognizerStateBegan) {
         [self performSegueWithIdentifier:@"InfoSegue" sender:nil];
     }
-}
-
-- (NSDate *)currentDate
-{
-    for (NSDate *date in [FasTTicketVerifier dates]) {
-        NSDate *startDate = [NSDate dateWithTimeInterval:-kMinutesBeforeDateAllowedForCheckIn * 60 sinceDate:date];
-        NSDate *endDate = [NSDate dateWithTimeInterval:kMinutesAfterDateAllowedForCheckIn * 60 sinceDate:date];
-        NSDateInterval *interval = [[[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate] autorelease];
-        if ([interval containsDate:NSDate.date]) return date;
-    }
-
-    return nil;
 }
 
 @end
