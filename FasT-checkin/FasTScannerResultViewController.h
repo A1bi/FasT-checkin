@@ -20,5 +20,7 @@ typedef enum {
 
 - (void)presentInCorners:(NSArray *)corners;
 - (void)showForBarcodeContent:(NSString *)content;
+- (void)fadeOutWithCompletion;
+- (void)cancelFadeOut;
 
 @end

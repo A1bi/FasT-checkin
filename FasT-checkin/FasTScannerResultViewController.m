@@ -53,8 +53,11 @@ typedef enum {
 @implementation FasTScannerResultViewController
 
 - (instancetype)init {
-    [FasTAudioFeedbackManager initialize];
-    return [super initWithNibName:@"FasTScannerResultViewController" bundle:nil];
+    self = [super initWithNibName:@"FasTScannerResultViewController" bundle:nil];
+    if (self) {
+        [FasTAudioFeedbackManager initialize];
+    }
+    return self;
 }
 
 - (void)viewDidLoad {
@@ -65,10 +68,15 @@ typedef enum {
     [self dismissDetailedView];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [self updateDetailedSize];
+}
+
 - (void)presentInCorners:(NSArray *)corners {
     if (corners.count < 1 || viewState == FasTScannerResultViewStateDetailed) return;
-
-    if (viewState == FasTScannerResultViewStateHidden) [self updateDetailedSize];
 
     CGPoint points[corners.count];
     for (int i = 0; i < corners.count; i++) {
@@ -120,13 +128,16 @@ typedef enum {
     FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:content signedInfo:&signedInfo];
     if (!ticket) {
         [self setErrorTitle:@"Ticket ungültig" description:@"Barcode ungültig."];
+        [stats increaseDeniedScans];
 
     } else {
         if (![ticket isValidForDate:[self currentDate]]) {
             [self setErrorTitle:@"Ticket ungültig" description:@"Ticket gilt für einen anderen Termin."];
+            [stats increaseDeniedScans];
 
         } else if (ticket.cancelled) {
             [self setErrorTitle:@"Ticket ungültig" description:@"Ticket wurde storniert."];
+            [stats increaseDeniedScans];
 
         } else {
             if (!ticket.checkIn) {
@@ -143,9 +154,29 @@ typedef enum {
         }
     }
 
-//    if (fillColor == UIColor.redColor) {
-//        [stats increaseDeniedScans];
-//    }
+    [self cancelFadeOut];
+}
+
+- (void)fadeOutWithCompletion {
+    if (viewState != FasTScannerResultViewStateSimple) return;
+
+    [UIView animateWithDuration:1.0 animations:^{
+        self.view.layer.opacity = 0;
+
+    } completion:^(BOOL finished) {
+        // animation was cancelled midway?
+        if (!finished) {
+            // restore layer
+            [self toggleSimpleView:YES];
+            return;
+        }
+        
+        [self toggleSimpleView:NO];
+    }];
+}
+
+- (void)cancelFadeOut {
+    [self.view.layer removeAllAnimations];
 }
 
 - (void)setSuccessTitle:(NSString *)title description:(NSString *)description {
@@ -186,6 +217,7 @@ typedef enum {
     viewState = toggle ? FasTScannerResultViewStateSimple : FasTScannerResultViewStateHidden;
 
     self.view.layer.opacity = toggle ? 0.9 : 0;
+    self.view.userInteractionEnabled = NO;
     _titleLabel.layer.opacity = 0;
     _dismissButton.layer.opacity = 0;
 }
@@ -209,6 +241,8 @@ typedef enum {
         _titleLabel.layer.opacity = toggle ? 1 : 0;
         _dismissButton.layer.opacity = toggle ? 1 : 0;
     } completion:NULL];
+
+    self.view.userInteractionEnabled = toggle;
 }
 
 - (IBAction)dismissDetailedView {

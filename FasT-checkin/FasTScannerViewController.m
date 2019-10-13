@@ -160,6 +160,8 @@
     
     [lastBarcodeContent release];
     lastBarcodeContent = nil;
+
+    [barcodeResultController fadeOutWithCompletion];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -187,8 +189,9 @@
 
     AVMetadataMachineReadableCodeObject *targetBarcode = nil;
     for (AVMetadataMachineReadableCodeObject *object in metadataObjects) {
-        BOOL theSameAsBefore = lastBarcodeContent && [lastBarcodeContent isEqualToString:object.stringValue];
-        BOOL newScanAndNewBarcode = !lastBarcodeContent && (metadataObjects.count == 1 || !recentScanTimes[object.stringValue]);
+        NSString *barcodeContent = object.stringValue;
+        BOOL theSameAsBefore = [lastBarcodeContent isEqualToString:barcodeContent];
+        BOOL newScanAndNewBarcode = !lastBarcodeContent && !recentScanTimes[barcodeContent];
         if (theSameAsBefore || newScanAndNewBarcode) {
             targetBarcode = object;
             break;
@@ -200,19 +203,15 @@
     }
     
     AVMetadataMachineReadableCodeObject *transformedObject = (AVMetadataMachineReadableCodeObject *)[preview transformedMetadataObjectForMetadataObject:targetBarcode];
-    
-    NSString *barcodeContent = targetBarcode.stringValue;
-    
-    BOOL showLayer = !lastBarcodeContent || [barcodeContent isEqualToString:lastBarcodeContent];
-    if (showLayer) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [barcodeResultController presentInCorners:transformedObject.corners];
-        });
-    }
-    
-    if (lastBarcodeContent) return;
-    lastBarcodeContent = [barcodeContent retain];
 
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [barcodeResultController presentInCorners:transformedObject.corners];
+    });
+
+    NSString *barcodeContent = targetBarcode.stringValue;
+    if (lastBarcodeContent) return;
+
+    lastBarcodeContent = [barcodeContent retain];
     [barcodeResultController showForBarcodeContent:barcodeContent];
 }
 
