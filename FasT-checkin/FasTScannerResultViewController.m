@@ -37,6 +37,7 @@ typedef enum {
 }
 
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
+@property (retain, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (retain, nonatomic) IBOutlet UIButton *dismissButton;
 
 - (void)setSuccessTitle:(NSString *)title description:(NSString *)description;
@@ -215,7 +216,10 @@ typedef enum {
 }
 
 - (void)setTitle:(NSString *)title description:(NSString *)description {
-    _titleLabel.text = title;
+    [self runOnMainThread:^{
+        _titleLabel.text = title;
+        _descriptionLabel.text = description;
+    }];
 }
 
 - (void)toggleSimpleView:(BOOL)toggle {
@@ -225,6 +229,7 @@ typedef enum {
         self.view.layer.opacity = toggle ? 0.9 : 0;
         self.view.userInteractionEnabled = NO;
         _titleLabel.layer.opacity = 0;
+        _descriptionLabel.layer.opacity = 0;
         _dismissButton.layer.opacity = 0;
     }];
 }
@@ -250,6 +255,7 @@ typedef enum {
             self.view.layer.opacity = toggle ? 1 : 0;
             self.view.layer.cornerRadius = toggle ? 20 : 0;
             _titleLabel.layer.opacity = toggle ? 1 : 0;
+            _descriptionLabel.layer.opacity = toggle ? 1 : 0;
             _dismissButton.layer.opacity = toggle ? 1 : 0;
         } completion:NULL];
 
@@ -297,6 +303,7 @@ typedef enum {
 - (void)dealloc {
     [_titleLabel release];
     [_dismissButton release];
+    [_descriptionLabel release];
     [super dealloc];
 }
 
