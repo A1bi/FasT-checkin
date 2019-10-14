@@ -33,6 +33,7 @@ typedef enum {
 @interface FasTScannerResultViewController () {
     CGRect originalFrame;
     FasTScannerResultViewState viewState;
+    BOOL transitioningToDetailedView;
 }
 
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
@@ -44,9 +45,11 @@ typedef enum {
 - (void)setTitle:(NSString *)title description:(NSString *)description;
 - (void)toggleSimpleView:(BOOL)toggle;
 - (void)toggleDetailedView:(BOOL)toggle;
+- (void)transitionToDetailedView;
 - (void)updateDetailedSize;
 - (NSDate *)currentDate;
 - (IBAction)dismissDetailedView;
+- (void)runOnMainThread:(void (^)(void))block;
 
 @end
 
@@ -64,6 +67,8 @@ typedef enum {
     [super viewDidLoad];
 
     self.view.layer.anchorPoint = CGPointZero;
+    // prevent initial flashing
+    self.view.layer.opacity = 0;
     [self toggleSimpleView:NO];
     [self dismissDetailedView];
 }
@@ -108,17 +113,13 @@ typedef enum {
     transform = CATransform3DConcat(transform, translation);
 
     NSTimeInterval duration = viewState == FasTScannerResultViewStateHidden ? 0 : 0.2;
-    [UIView animateWithDuration:duration animations:^{
-        self.view.layer.transform = transform;
-    } completion:NULL];
+    [self runOnMainThread:^{
+        [UIView animateWithDuration:duration animations:^{
+            self.view.layer.transform = transform;
+        } completion:NULL];
+    }];
 
-    if (viewState == FasTScannerResultViewStateHidden) {
-        [self toggleSimpleView:YES];
-
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self toggleDetailedView:YES];
-        });
-    }
+    [self toggleSimpleView:YES];
 }
 
 - (void)showForBarcodeContent:(NSString *)content {
@@ -158,20 +159,17 @@ typedef enum {
 }
 
 - (void)fadeOutWithCompletion {
-    if (viewState != FasTScannerResultViewStateSimple) return;
+    if (transitioningToDetailedView || viewState != FasTScannerResultViewStateSimple) return;
 
-    [UIView animateWithDuration:1.0 animations:^{
-        self.view.layer.opacity = 0;
+    [self runOnMainThread:^{
+        [UIView animateWithDuration:1.0 animations:^{
+            self.view.layer.opacity = 0;
 
-    } completion:^(BOOL finished) {
-        // animation was cancelled midway?
-        if (!finished) {
-            // restore layer
-            [self toggleSimpleView:YES];
-            return;
-        }
-        
-        [self toggleSimpleView:NO];
+        } completion:^(BOOL finished) {
+            if (!finished) return;
+
+            [self toggleSimpleView:NO];
+        }];
     }];
 }
 
@@ -206,7 +204,14 @@ typedef enum {
             color = [UIColor systemRedColor];
             [FasTAudioFeedbackManager indicateError];
     }
-    self.view.backgroundColor = color;
+
+    [self runOnMainThread:^{
+        self.view.backgroundColor = color;
+    }];
+
+    if (type != FasTScannerResultTypeSuccess) {
+        [self transitionToDetailedView];
+    }
 }
 
 - (void)setTitle:(NSString *)title description:(NSString *)description {
@@ -216,39 +221,54 @@ typedef enum {
 - (void)toggleSimpleView:(BOOL)toggle {
     viewState = toggle ? FasTScannerResultViewStateSimple : FasTScannerResultViewStateHidden;
 
-    self.view.layer.opacity = toggle ? 0.9 : 0;
-    self.view.userInteractionEnabled = NO;
-    _titleLabel.layer.opacity = 0;
-    _dismissButton.layer.opacity = 0;
+    [self runOnMainThread:^{
+        self.view.layer.opacity = toggle ? 0.9 : 0;
+        self.view.userInteractionEnabled = NO;
+        _titleLabel.layer.opacity = 0;
+        _dismissButton.layer.opacity = 0;
+    }];
 }
 
 - (void)toggleDetailedView:(BOOL)toggle {
     viewState = toggle ? FasTScannerResultViewStateDetailed : FasTScannerResultViewStateHidden;
 
-    if (toggle) {
-        [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            CGFloat y = (self.view.superview.frame.size.height - originalFrame.size.width) / 2;
+    [self runOnMainThread:^{
+        if (toggle) {
+            [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                CGFloat y = (self.view.superview.frame.size.height - originalFrame.size.width) / 2;
 
-            CATransform3D transform = CATransform3DIdentity;
-            transform = CATransform3DScale(transform, 1, 1, 1);
-            transform = CATransform3DTranslate(transform, kFrameMargin, y, 1);
-            self.view.layer.transform = transform;
+                CATransform3D transform = CATransform3DIdentity;
+                transform = CATransform3DScale(transform, 1, 1, 1);
+                transform = CATransform3DTranslate(transform, kFrameMargin, y, 1);
+                self.view.layer.transform = transform;
+            } completion:^(BOOL finished) {
+                transitioningToDetailedView = NO;
+            }];
+        }
+
+        [UIView animateWithDuration:toggle ? 0.3 : 0.2 animations:^{
+            self.view.layer.opacity = toggle ? 1 : 0;
+            self.view.layer.cornerRadius = toggle ? 20 : 0;
+            _titleLabel.layer.opacity = toggle ? 1 : 0;
+            _dismissButton.layer.opacity = toggle ? 1 : 0;
         } completion:NULL];
-    }
 
-    [UIView animateWithDuration:0.3 animations:^{
-        self.view.layer.opacity = toggle ? 1 : 0;
-        _titleLabel.layer.opacity = toggle ? 1 : 0;
-        _dismissButton.layer.opacity = toggle ? 1 : 0;
-    } completion:NULL];
+        self.view.userInteractionEnabled = toggle;
+    }];
+}
 
-    self.view.userInteractionEnabled = toggle;
+- (void)transitionToDetailedView {
+    transitioningToDetailedView = YES;
+    [self.delegate scannerResultChangedModalViewState:YES];
 
-    [self.delegate scannerResultChangedModalViewState:toggle];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self toggleDetailedView:YES];
+    });
 }
 
 - (IBAction)dismissDetailedView {
     [self toggleDetailedView:NO];
+    [self.delegate scannerResultChangedModalViewState:NO];
 }
 
 - (void)updateDetailedSize {
@@ -256,6 +276,10 @@ typedef enum {
     CGFloat width = parentSize.width - kFrameMargin * 2;
     self.view.frame = CGRectMake(0, 0, width, width);
     originalFrame = self.view.frame;
+}
+
+- (void)runOnMainThread:(void (^)(void))block {
+    dispatch_async(dispatch_get_main_queue(), block);
 }
 
 - (NSDate *)currentDate
@@ -275,4 +299,5 @@ typedef enum {
     [_dismissButton release];
     [super dealloc];
 }
+
 @end

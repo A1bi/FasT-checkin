@@ -205,9 +205,7 @@
     
     AVMetadataMachineReadableCodeObject *transformedObject = (AVMetadataMachineReadableCodeObject *)[preview transformedMetadataObjectForMetadataObject:targetBarcode];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [barcodeResultController presentInCorners:transformedObject.corners];
-    });
+    [barcodeResultController presentInCorners:transformedObject.corners];
 
     NSString *barcodeContent = targetBarcode.stringValue;
     if (lastBarcodeContent) return;
