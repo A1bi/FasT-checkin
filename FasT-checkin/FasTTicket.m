@@ -10,7 +10,7 @@
 
 @implementation FasTTicket
 
-- (instancetype)initWithInfoData:(NSData *)data dates:(NSDictionary *)dates types:(NSDictionary *)types {
+- (instancetype)initWithInfoData:(NSData *)data dates:(NSDictionary *)dates types:(NSDictionary *)types entrances:(NSDictionary *)entrances {
     self = [super init];
     if (self) {
         unsigned char *values = (unsigned char *)data.bytes;
@@ -31,7 +31,8 @@
         char typeId = (char)(values[6] << 4 | values[7] >> 4);
         self.type = types[@(typeId)];
         // seat id - bits 60-71
-//        short seatId = (char)(values[7] << 4 | values[8]);
+        short seatId = (char)(values[7] << 4 | values[8]);
+        self.entrance = entrances[@(seatId)];
     }
     return self;
 }
@@ -40,12 +41,19 @@
     return [_date isEqualToDate:date];
 }
 
+- (BOOL)isValidAtEntrance:(NSString *)entrance {
+    return !_entrance || _entrance.length == 0 ||
+           !entrance || entrance.length == 0 ||
+           [_entrance isEqualToString:entrance];
+}
+
 - (void)dealloc
 {
     [_ticketId release];
     [_date release];
     [_number release];
     [_type release];
+    [_entrance release];
     [_checkIn release];
     [super dealloc];
 }

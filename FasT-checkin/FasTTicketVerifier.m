@@ -14,10 +14,13 @@
 
 #define kLastApiResponseDefaultsKey @"lastApiResponse"
 #define kLastApiResponseDateDefaultsKey @"lastApiResponseDate"
+#define kMinutesBeforeDateAllowedForCheckIn 90
+#define kMinutesAfterDateAllowedForCheckIn 45
 
 static NSDictionary *keys = nil;
 static NSDictionary *dates = nil;
 static NSDictionary *ticketTypes = nil;
+static NSDictionary *seatEntrances = nil;
 static NSMutableDictionary *ticketsById = nil;
 static NSMutableDictionary *ticketsByBarcode = nil;
 
@@ -59,7 +62,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
             }
             
             @try {
-                ticket = [[[FasTTicket alloc] initWithInfoData:signedInfo.ticketData dates:dates types:ticketTypes] autorelease];
+                ticket = [[[FasTTicket alloc] initWithInfoData:signedInfo.ticketData dates:dates types:ticketTypes entrances:seatEntrances] autorelease];
                 
                 // find updated ticket
                 FasTTicket *updatedTicket = ticketsById[ticket.ticketId];
@@ -172,6 +175,18 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     }
     [ticketTypes release];
     ticketTypes = [_ticketTypes copy];
+
+    NSMutableDictionary *blockEntrances = [NSMutableDictionary dictionary];
+    for (NSDictionary *block in response[@"blocks"]) {
+        blockEntrances[block[@"id"]] = block[@"entrance"];
+    }
+
+    NSMutableDictionary *_seatEntrances = [NSMutableDictionary dictionary];
+    for (NSDictionary *seat in response[@"seats"]) {
+        _seatEntrances[seat[@"id"]] = blockEntrances[seat[@"block_id"]];
+    }
+    [seatEntrances release];
+    seatEntrances = [_seatEntrances copy];
     
     // changed tickets
     for (NSDictionary *ticketInfo in response[@"changed_tickets"]) {
@@ -183,6 +198,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
         ticket.ticketId = ticketInfo[@"id"];
         ticket.date = dates[ticketInfo[@"date_id"]];
         ticket.type = ticketTypes[ticketInfo[@"type_id"]];
+        ticket.entrance = seatEntrances[ticketInfo[@"seat_id"]];
         ticket.number = ticketInfo[@"number"];
         ticket.cancelled = ((NSNumber *)ticketInfo[@"cancelled"]).boolValue;
     }
@@ -199,9 +215,16 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     [ticketsByBarcode removeAllObjects];
 }
 
-+ (NSArray *)dates
++ (NSDate *)currentDate
 {
-    return dates.allValues;
+    for (NSDate *date in dates.allValues) {
+        NSDate *startDate = [NSDate dateWithTimeInterval:-kMinutesBeforeDateAllowedForCheckIn * 60 sinceDate:date];
+        NSDate *endDate = [NSDate dateWithTimeInterval:kMinutesAfterDateAllowedForCheckIn * 60 sinceDate:date];
+        NSDateInterval *interval = [[[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate] autorelease];
+        if ([interval containsDate:NSDate.date]) return date;
+    }
+
+    return nil;
 }
 
 @end

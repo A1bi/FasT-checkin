@@ -14,9 +14,8 @@
 #import "FasTTicketVerifier.h"
 #import "FasTAudioFeedbackManager.h"
 
-#define kMinutesBeforeDateAllowedForCheckIn 90
-#define kMinutesAfterDateAllowedForCheckIn 45
 #define kFrameMargin 20
+#define kCurrentEntranceDefaultsKey @"currentEntrance"
 
 typedef enum {
     FasTScannerResultTypeSuccess,
@@ -41,6 +40,7 @@ typedef enum {
 @property (retain, nonatomic) IBOutlet UIButton *dismissButton;
 
 - (void)setSuccessTitle:(NSString *)title description:(NSString *)description;
+- (void)setWarningTitle:(NSString *)title description:(NSString *)description;
 - (void)setErrorTitle:(NSString *)title description:(NSString *)description;
 - (void)setResultType:(FasTScannerResultType)type;
 - (void)setTitle:(NSString *)title description:(NSString *)description;
@@ -48,9 +48,9 @@ typedef enum {
 - (void)toggleDetailedView:(BOOL)toggle;
 - (void)transitionToDetailedView;
 - (void)updateDetailedSize;
-- (NSDate *)currentDate;
 - (IBAction)dismissDetailedView;
 - (void)runOnMainThread:(void (^)(void))block;
+- (NSString *)currentEntrance;
 
 @end
 
@@ -133,7 +133,7 @@ typedef enum {
         [stats increaseDeniedScans];
 
     } else {
-        if (![ticket isValidForDate:[self currentDate]]) {
+        if (![ticket isValidForDate:[FasTTicketVerifier currentDate]]) {
             [self setErrorTitle:@"Ticket ungültig" description:@"Ticket gilt für einen anderen Termin."];
             [stats increaseDeniedScans];
 
@@ -141,15 +141,19 @@ typedef enum {
             [self setErrorTitle:@"Ticket ungültig" description:@"Ticket wurde storniert."];
             [stats increaseDeniedScans];
 
+        } else if (![ticket isValidAtEntrance:[self currentEntrance]]) {
+            [self setErrorTitle:@"Falscher Eingang" description:[NSString stringWithFormat:@"Der Sitzplatz dieses Tickets ist nicht über diesen Eingang erreichbar.\nDieses Ticket wird nur am Eingang „%@“ akzeptiert.", ticket.entrance]];
+            [stats increaseDeniedScans];
+
         } else {
             if (!ticket.checkIn) {
                 [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
                 [stats addCheckIn:ticket.checkIn];
 
-                [self setErrorTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type]];
+                [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type]];
 
             } else {
-                [self setResultType:FasTScannerResultTypeWarning];
+                [self setWarningTitle:@"Ticket bereits gescannt" description:@"Dieses Ticket ist zwar gültig, wurde jedoch bereits vor Kurzem von diesem Gerät gescannt."];
 
                 [stats addDuplicateCheckIn:ticket.checkIn];
             }
@@ -175,11 +179,18 @@ typedef enum {
 }
 
 - (void)cancelFadeOut {
-    [self.view.layer removeAllAnimations];
+    [self runOnMainThread:^{
+        [self.view.layer removeAllAnimations];
+    }];
 }
 
 - (void)setSuccessTitle:(NSString *)title description:(NSString *)description {
     [self setResultType:FasTScannerResultTypeSuccess];
+    [self setTitle:title description:description];
+}
+
+- (void)setWarningTitle:(NSString *)title description:(NSString *)description {
+    [self setResultType:FasTScannerResultTypeWarning];
     [self setTitle:title description:description];
 }
 
@@ -288,16 +299,8 @@ typedef enum {
     dispatch_async(dispatch_get_main_queue(), block);
 }
 
-- (NSDate *)currentDate
-{
-    for (NSDate *date in [FasTTicketVerifier dates]) {
-        NSDate *startDate = [NSDate dateWithTimeInterval:-kMinutesBeforeDateAllowedForCheckIn * 60 sinceDate:date];
-        NSDate *endDate = [NSDate dateWithTimeInterval:kMinutesAfterDateAllowedForCheckIn * 60 sinceDate:date];
-        NSDateInterval *interval = [[[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate] autorelease];
-        if ([interval containsDate:NSDate.date]) return date;
-    }
-
-    return nil;
+- (NSString *)currentEntrance {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:kCurrentEntranceDefaultsKey];
 }
 
 - (void)dealloc {

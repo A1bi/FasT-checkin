@@ -17,6 +17,6 @@
 + (void)refreshInfo:(void (^)(NSError *error))completion;
 + (NSDate *)lastRefresh;
 + (void)clearTickets;
-+ (NSArray *)dates;
++ (NSDate *)currentDate;
 
 @end
