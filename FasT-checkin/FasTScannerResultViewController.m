@@ -20,7 +20,8 @@
 typedef enum {
     FasTScannerResultTypeSuccess,
     FasTScannerResultTypeWarning,
-    FasTScannerResultTypeError
+    FasTScannerResultTypeError,
+    FasTScannerResultTypePending
 } FasTScannerResultType;
 
 typedef enum {
@@ -31,6 +32,7 @@ typedef enum {
 
 @interface FasTScannerResultViewController () {
     CGRect originalFrame;
+    FasTScannerResultType resultType;
     FasTScannerResultViewState viewState;
     BOOL transitioningToDetailedView;
 }
@@ -38,6 +40,7 @@ typedef enum {
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (retain, nonatomic) IBOutlet UIButton *dismissButton;
+@property (retain, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (void)setSuccessTitle:(NSString *)title description:(NSString *)description;
 - (void)setWarningTitle:(NSString *)title description:(NSString *)description;
@@ -125,37 +128,90 @@ typedef enum {
 
 - (void)showForBarcodeContent:(NSString *)content {
     FasTStatisticsManager *stats = [FasTStatisticsManager sharedManager];
-
-    FasTSignedInfoBinary *signedInfo;
-    FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:content signedInfo:&signedInfo];
-    if (!ticket) {
-        [self setErrorTitle:@"Ticket ungültig" description:@"Barcode ungültig."];
-        [stats increaseDeniedScans];
-
+    
+    if ([content characterAtIndex:0] == '{') {
+        NSError *error = nil;
+        NSDictionary *instruction = [NSJSONSerialization JSONObjectWithData:[content dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        if (error) {
+            [self setErrorTitle:@"Barcode ungültig" description:@"Instruction Code konnte nicht gelesen werden."];
+        
+        } else {
+            if ([instruction[@"action"] isEqualToString:@"set_entrance"]) {
+                NSString *entrance = instruction[@"entrance"];
+                
+                [[NSUserDefaults standardUserDefaults] setObject:entrance forKey:kCurrentEntranceDefaultsKey];
+                
+                [self setSuccessTitle:@"Eingang geändert" description:[NSString stringWithFormat:@"Der aktuelle Eingang wurde geändert auf „%@“.", entrance]];
+            
+            } else if ([instruction[@"action"] isEqualToString:@"submit_check_ins"]) {
+                [self setResultType:FasTScannerResultTypePending];
+                
+                FasTCheckInManager *manager = [FasTCheckInManager sharedManager];
+                NSInteger numCheckIns = manager.checkInsToSubmit.count;
+                
+                [manager submitCheckIns:^(NSError *error) {
+                    NSString *description;
+                    
+                    if (error) {
+                        description = [NSString stringWithFormat:@"Bei der Übertragung der Check-Ins ist folgender Fehler aufgetreten: %@", error];
+                        [self setErrorTitle:@"Fehler bei der Übertragung" description:description];
+                    
+                    } else {
+                        description = [NSString stringWithFormat:@"Es wurden erfolgreich %ld Check-Ins übertragen.", (long)numCheckIns];
+                        [self setSuccessTitle:@"Check-Ins übertragen" description:description];
+                    }
+                }];
+            
+            } else if ([instruction[@"action"] isEqualToString:@"refresh_info"]) {
+                [self setResultType:FasTScannerResultTypePending];
+                
+                [FasTTicketVerifier refreshInfo:^(NSError *error) {
+                    if (error) {
+                        NSString *description = [NSString stringWithFormat:@"Bei der Aktualisierung der Daten ist folgender Fehler aufgetreten: %@", error];
+                        [self setErrorTitle:@"Fehler bei der Aktualisierung" description:description];
+                    
+                    } else {
+                        [self setSuccessTitle:@"Daten aktualisiert" description:@"Die Daten wurden erfolgreich aktualisiert."];
+                    }
+                }];
+            }
+            
+            [self transitionToDetailedView];
+        }
+    
     } else {
-        if (![ticket isValidForDate:[FasTTicketVerifier currentDate]]) {
-            [self setErrorTitle:@"Ticket ungültig" description:@"Ticket gilt für einen anderen Termin."];
-            [stats increaseDeniedScans];
-
-        } else if (ticket.cancelled) {
-            [self setErrorTitle:@"Ticket ungültig" description:@"Ticket wurde storniert."];
-            [stats increaseDeniedScans];
-
-        } else if (![ticket isValidAtEntrance:[self currentEntrance]]) {
-            [self setErrorTitle:@"Falscher Eingang" description:[NSString stringWithFormat:@"Der Sitzplatz dieses Tickets ist nicht über diesen Eingang erreichbar.\nDieses Ticket wird nur am Eingang „%@“ akzeptiert.", ticket.entrance]];
+        FasTSignedInfoBinary *signedInfo;
+        FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:content signedInfo:&signedInfo];
+        if (!ticket) {
+            [self setErrorTitle:@"Ticket ungültig" description:@"Barcode ungültig."];
             [stats increaseDeniedScans];
 
         } else {
-            if (!ticket.checkIn) {
-                [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
-                [stats addCheckIn:ticket.checkIn];
+            if (![ticket isValidForDate:[FasTTicketVerifier currentDate]]) {
+                [self setErrorTitle:@"Ticket ungültig" description:@"Ticket gilt für einen anderen Termin."];
+                [stats increaseDeniedScans];
 
-                [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type]];
+            } else if (ticket.cancelled) {
+                [self setErrorTitle:@"Ticket ungültig" description:@"Ticket wurde storniert."];
+                [stats increaseDeniedScans];
+
+            } else if (![ticket isValidAtEntrance:[self currentEntrance]]) {
+                [self setErrorTitle:@"Falscher Eingang" description:[NSString stringWithFormat:@"Der Sitzplatz dieses Tickets ist nicht über diesen Eingang erreichbar.\nDieses Ticket wird nur am Eingang „%@“ akzeptiert.", ticket.entrance]];
+                [stats increaseDeniedScans];
 
             } else {
-                [self setWarningTitle:@"Ticket bereits gescannt" description:@"Dieses Ticket ist zwar gültig, wurde jedoch bereits vor Kurzem von diesem Gerät gescannt."];
+                if (!ticket.checkIn) {
+                    [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
+                    [stats addCheckIn:ticket.checkIn];
 
-                [stats addDuplicateCheckIn:ticket.checkIn];
+                    [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type]];
+
+                } else {
+                    [self setWarningTitle:@"Ticket bereits gescannt" description:@"Dieses Ticket ist zwar gültig, wurde jedoch bereits vor Kurzem von diesem Gerät gescannt."];
+
+                    [stats addDuplicateCheckIn:ticket.checkIn];
+                }
             }
         }
     }
@@ -211,6 +267,10 @@ typedef enum {
             color = [UIColor systemYellowColor];
             [FasTAudioFeedbackManager indicateWarning];
             break;
+            
+        case FasTScannerResultTypePending:
+            color = [UIColor systemBlueColor];
+            break;
 
         default:
             color = [UIColor systemRedColor];
@@ -221,9 +281,11 @@ typedef enum {
         self.view.backgroundColor = color;
     }];
 
-    if (type != FasTScannerResultTypeSuccess) {
+    if (type != FasTScannerResultTypeSuccess || resultType == FasTScannerResultTypePending) {
         [self transitionToDetailedView];
     }
+    
+    resultType = type;
 }
 
 - (void)setTitle:(NSString *)title description:(NSString *)description {
@@ -242,6 +304,7 @@ typedef enum {
         _titleLabel.layer.opacity = 0;
         _descriptionLabel.layer.opacity = 0;
         _dismissButton.layer.opacity = 0;
+        [_activityIndicator stopAnimating];
     }];
 }
 
@@ -265,9 +328,20 @@ typedef enum {
         [UIView animateWithDuration:toggle ? 0.3 : 0.2 animations:^{
             self.view.layer.opacity = toggle ? 1 : 0;
             self.view.layer.cornerRadius = toggle ? 20 : 0;
-            _titleLabel.layer.opacity = toggle ? 1 : 0;
-            _descriptionLabel.layer.opacity = toggle ? 1 : 0;
-            _dismissButton.layer.opacity = toggle ? 1 : 0;
+            
+            BOOL inDetailedView = viewState == FasTScannerResultViewStateDetailed;
+            BOOL isPending = resultType == FasTScannerResultTypePending;
+            BOOL showLabelsAndButtons = inDetailedView && !isPending;
+            
+            _titleLabel.layer.opacity = showLabelsAndButtons ? 1 : 0;
+            _descriptionLabel.layer.opacity = showLabelsAndButtons ? 1 : 0;
+            _dismissButton.layer.opacity = showLabelsAndButtons ? 1 : 0;
+            
+            if (inDetailedView && isPending) {
+                [_activityIndicator startAnimating];
+            } else {
+                [_activityIndicator stopAnimating];
+            }
         } completion:NULL];
 
         self.view.userInteractionEnabled = toggle;
@@ -275,6 +349,11 @@ typedef enum {
 }
 
 - (void)transitionToDetailedView {
+    if (viewState == FasTScannerResultViewStateDetailed) {
+        [self toggleDetailedView:YES];
+        return;
+    }
+    
     transitioningToDetailedView = YES;
     [self.delegate scannerResultChangedModalViewState:YES];
 
@@ -307,6 +386,7 @@ typedef enum {
     [_titleLabel release];
     [_dismissButton release];
     [_descriptionLabel release];
+    [_activityIndicator release];
     [super dealloc];
 }
 
