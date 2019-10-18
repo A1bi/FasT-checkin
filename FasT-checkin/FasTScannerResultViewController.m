@@ -175,6 +175,9 @@ typedef enum {
                         [self setSuccessTitle:@"Daten aktualisiert" description:@"Die Daten wurden erfolgreich aktualisiert."];
                     }
                 }];
+            
+            } else {
+                [self setErrorTitle:@"Barcode ungültig" description:@"Die Aktion des Instruction Codes ist nicht bekannt."];
             }
             
             [self transitionToDetailedView];
