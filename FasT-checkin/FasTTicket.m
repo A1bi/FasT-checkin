@@ -21,17 +21,17 @@
         // order number - bits 16-35
         unsigned long orderNumber = values[2] << 12 | values[3] << 4 | values[4] >> 4;
         // order index - bits 36-43
-        char orderIndex = (char)(values[4] << 4 | values[5] >> 4);
+        unsigned char orderIndex = (unsigned char)(values[4] << 4 | values[5] >> 4);
         self.number = [NSString stringWithFormat:@"%lu-%d", orderNumber, orderIndex];
         
         // date id - bits 44-51
-        char dateId = (char)(values[5] << 4 | values[6] >> 4);
+        unsigned char dateId = (unsigned char)(values[5] << 4 | values[6] >> 4);
         self.date = dates[@(dateId)];
         // type id - bits 52-59
-        char typeId = (char)(values[6] << 4 | values[7] >> 4);
+        unsigned char typeId = (unsigned char)(values[6] << 4 | values[7] >> 4);
         self.type = types[@(typeId)];
         // seat id - bits 60-71
-        short seatId = (char)(values[7] << 4 | values[8]);
+        unsigned short seatId = (unsigned short)((values[7] & 0xf) << 8 | values[8]);
         self.entrance = entrances[@(seatId)];
     }
     return self;

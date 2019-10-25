@@ -178,6 +178,8 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 
     NSMutableDictionary *blockEntrances = [NSMutableDictionary dictionary];
     for (NSDictionary *block in response[@"blocks"]) {
+        if ([block[@"entrance"] isKindOfClass:[NSNull class]]) continue;
+        
         blockEntrances[block[@"id"]] = block[@"entrance"];
     }
 
