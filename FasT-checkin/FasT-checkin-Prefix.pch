@@ -15,6 +15,9 @@
 
 #define NSLocalizedStringByKey(key) NSLocalizedString(key, nil)
 
+#define NSStringize_helper(x) #x
+#define NSStringize(x) @NSStringize_helper(x)
+
 #ifndef DEBUG
 #define NSLog(...);
 #endif
