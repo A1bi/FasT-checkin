@@ -208,7 +208,11 @@ typedef enum {
                     [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
                     [stats addCheckIn:ticket.checkIn];
 
-                    [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@ – OK", ticket.number, ticket.type]];
+                    if (ticket.seatNumber) {
+                        [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@\n\nab Sitzplatz %@", ticket.number, ticket.type, ticket.seatNumber]];
+                    } else {
+                        [self setSuccessTitle:nil description:nil];
+                    }
 
                 } else {
                     [self setWarningTitle:@"Ticket bereits gescannt" description:@"Dieses Ticket ist zwar gültig, wurde jedoch bereits vor Kurzem von diesem Gerät gescannt."];
@@ -283,10 +287,6 @@ typedef enum {
     [self runOnMainThread:^{
         self.view.backgroundColor = color;
     }];
-
-    if (type != FasTScannerResultTypeSuccess || resultType == FasTScannerResultTypePending) {
-        [self transitionToDetailedView];
-    }
     
     resultType = type;
 }
@@ -296,6 +296,10 @@ typedef enum {
         _titleLabel.text = title;
         _descriptionLabel.text = description;
     }];
+    
+    if (title || description) {
+        [self transitionToDetailedView];
+    }
 }
 
 - (void)toggleSimpleView:(BOOL)toggle {

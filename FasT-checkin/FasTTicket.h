@@ -16,6 +16,7 @@
 @property (strong) NSDate *date;
 @property (strong) NSString *number;
 @property (strong) NSString *type;
+@property (strong) NSString *seatNumber;
 @property (strong) NSString *entrance;
 @property BOOL cancelled;
 @property (strong) FasTCheckIn *checkIn;
