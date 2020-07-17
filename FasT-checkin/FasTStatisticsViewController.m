@@ -26,7 +26,6 @@
 @property (retain, nonatomic) IBOutlet UILabel *lastSubmissionDateLabel;
 @property (retain, nonatomic) IBOutlet UILabel *lastInfoRefreshLabel;
 
-- (IBAction)dismiss:(id)sender;
 - (void)refresh;
 - (void)presentError:(NSError *)error;
 
@@ -37,10 +36,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self refresh];
-}
-
-- (IBAction)dismiss:(id)sender {
-    [self.parentViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)refresh {

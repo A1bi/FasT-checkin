@@ -30,7 +30,9 @@
 - (void)initLayers;
 - (void)stopScanning;
 - (void)clearRecentScanTimes;
+- (void)setScanningBlocked:(BOOL)blocked;
 - (IBAction)longDoublePressRecognized;
+- (IBAction)dismissPopover:(UIStoryboardSegue *)unwindSegue;
 
 @end
 
@@ -232,9 +234,33 @@
     }
 }
 
+- (void)dismissPopover:(UIStoryboardSegue *)unwindSegue {
+    [self setScanningBlocked:NO];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    segue.destinationViewController.presentationController.delegate = self;
+}
+
+- (void)setScanningBlocked:(BOOL)blocked {
+    if (blocked) [self stopScanning];
+    scanningBlocked = blocked;
+}
+
+#pragma mark presentation controller delegate
+
+- (void)presentationController:(UIPresentationController *)presentationController willPresentWithAdaptiveStyle:(UIModalPresentationStyle)style transitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transitionCoordinator {
+    [self setScanningBlocked:YES];
+}
+
+- (void)presentationControllerWillDismiss:(UIPresentationController *)presentationController {
+    [self setScanningBlocked:NO];
+}
+
+#pragma mark scanner result delegate
+
 - (void)scannerResultChangedModalViewState:(BOOL)modal {
-    if (modal) [self stopScanning];
-    scanningBlocked = modal;
+    [self setScanningBlocked:modal];
 }
 
 @end

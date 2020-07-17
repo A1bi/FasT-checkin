@@ -10,6 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "FasTScannerResultViewController.h"
 
-@interface FasTScannerViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate, FasTScannerResultViewControllerDelegate>
+@interface FasTScannerViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate, FasTScannerResultViewControllerDelegate, UIAdaptivePresentationControllerDelegate>
 
 @end
