@@ -10,10 +10,23 @@
 #import "FasTCheckIn.h"
 
 @interface FasTStatisticsCheckInViewController ()
+{
+    NSDateFormatter *dateFormatter;
+}
 
 @end
 
 @implementation FasTStatisticsCheckInViewController
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    if (self) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,7 +53,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CheckInCell" forIndexPath:indexPath];
     FasTCheckIn *checkIn = _checkIns[indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"%@", checkIn.ticketNumberWithIdFallback];
-    cell.detailTextLabel.text = checkIn.date.description;
+    cell.detailTextLabel.text = [dateFormatter stringFromDate:checkIn.date];
     
     return cell;
 }
@@ -48,6 +61,7 @@
 - (void)dealloc
 {
     [_checkIns release];
+    [dateFormatter release];
     [super dealloc];
 }
 

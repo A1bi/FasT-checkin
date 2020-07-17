@@ -15,6 +15,9 @@
 @import MBProgressHUD;
 
 @interface FasTStatisticsViewController ()
+{
+    NSDateFormatter *dateFormatter;
+}
 
 @property (retain, nonatomic) IBOutlet UILabel *scanAttemptsLabel;
 @property (retain, nonatomic) IBOutlet UILabel *successfulScansLabel;
@@ -28,10 +31,21 @@
 
 - (void)refresh;
 - (void)presentError:(NSError *)error;
+- (NSString *)formattedDate:(NSDate *)date;
 
 @end
 
 @implementation FasTStatisticsViewController
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    if (self) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -48,8 +62,8 @@
     _checkInsToSubmitLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)checkIn.checkInsToSubmit.count];
     _deniedScansLabel.text = [NSString stringWithFormat:@"%lu", (long)stats.deniedScans];
     _crashsLabel.text = [NSString stringWithFormat:@"%lu", (long)stats.crashs];
-    _lastSubmissionDateLabel.text = checkIn.lastSubmissionDate.description;
-    _lastInfoRefreshLabel.text = [FasTTicketVerifier lastRefresh].description;
+    _lastSubmissionDateLabel.text = [self formattedDate:checkIn.lastSubmissionDate];
+    _lastInfoRefreshLabel.text = [self formattedDate:[FasTTicketVerifier lastRefresh]];
 }
 
 - (void)dealloc {
@@ -62,6 +76,7 @@
     [_checkInsToSubmitLabel release];
     [_lastSubmissionDateLabel release];
     [_lastInfoRefreshLabel release];
+    [dateFormatter release];
     [super dealloc];
 }
 
@@ -134,6 +149,14 @@
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:NULL];
     [alert addAction:ok];
     [self presentViewController:alert animated:YES completion:NULL];
+}
+
+- (NSString *)formattedDate:(NSDate *)date {
+    if (date) {
+        return [dateFormatter stringFromDate:date];
+    } else {
+        return @"noch nie";
+    }
 }
 
 @end
