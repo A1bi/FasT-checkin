@@ -208,8 +208,16 @@ typedef enum {
                     [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
                     [stats addCheckIn:ticket.checkIn];
 
-                    if (ticket.seatNumber) {
-                        [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@\n\nab Sitzplatz %@", ticket.number, ticket.type, ticket.seatNumber]];
+                    if (ticket.seatRange) {
+                        NSNumber *start = ticket.seatRange.firstObject;
+                        NSNumber *end = ticket.seatRange.lastObject;
+                        NSString *range;
+                        if ([start isEqualToNumber:end]) {
+                            range = [NSString stringWithFormat:@"Sitzplatz %@", start];
+                        } else {
+                            range = [NSString stringWithFormat:@"Sitzplätze %@ bis %@", start, end];
+                        }
+                        [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@\n\n%@", ticket.number, ticket.type, range]];
                     } else {
                         [self setSuccessTitle:nil description:nil];
                     }

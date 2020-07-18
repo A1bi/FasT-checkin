@@ -203,7 +203,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
         ticket.entrance = seatEntrances[ticketInfo[@"seat_id"]];
         ticket.number = ticketInfo[@"number"];
         ticket.cancelled = ((NSNumber *)ticketInfo[@"cancelled"]).boolValue;
-        ticket.seatNumber = ticketInfo[@"seat_number"];
+        ticket.seatRange = ticketInfo[@"seat_range"];
     }
 }
 
