@@ -64,6 +64,7 @@
     [longPressRecognizer release];
     [recentScanTimes release];
     [barcodeResultController release];
+    [scanningTouch release];
     [super dealloc];
 }
 
@@ -154,6 +155,7 @@
 {
     [metadataOutput setMetadataObjectsDelegate:nil queue:dispatch_get_main_queue()];
     
+    [scanningTouch release];
     scanningTouch = nil;
     longPressRecognizer.enabled = NO;
     
@@ -171,7 +173,7 @@
 {
     if (scanningBlocked || scanningTouch) return;
 
-    scanningTouch = touches.anyObject;
+    scanningTouch = [touches.anyObject retain];
     longPressRecognizer.enabled = YES;
 
     [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
@@ -184,6 +186,11 @@
     if ([touches containsObject:scanningTouch]) {
         [self stopScanning];
     }
+}
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self stopScanning];
 }
 
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection
