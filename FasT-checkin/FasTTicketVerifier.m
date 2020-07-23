@@ -34,10 +34,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 @implementation FasTTicketVerifier
 
 + (void)init {
-    [ticketsById release];
     ticketsById = [[NSMutableDictionary alloc] init];
-    
-    [ticketsByBarcode release];
     ticketsByBarcode = [[NSMutableDictionary alloc] init];
     
     NSData *responseData = [[NSUserDefaults standardUserDefaults] objectForKey:kLastApiResponseDefaultsKey];
@@ -62,7 +59,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
             }
             
             @try {
-                ticket = [[[FasTTicket alloc] initWithInfoData:signedInfo.ticketData dates:dates types:ticketTypes entrances:seatEntrances] autorelease];
+                ticket = [[FasTTicket alloc] initWithInfoData:signedInfo.ticketData dates:dates types:ticketTypes entrances:seatEntrances];
                 
                 // find updated ticket
                 FasTTicket *updatedTicket = ticketsById[ticket.ticketId];
@@ -101,10 +98,10 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     messageData = [messageData stringByAppendingString:@"="];
 
     // decode base64
-    NSData *signedInfoData = [[[NSData alloc] initWithBase64EncodedString:messageData options:NSDataBase64DecodingIgnoreUnknownCharacters] autorelease];
+    NSData *signedInfoData = [[NSData alloc] initWithBase64EncodedString:messageData options:NSDataBase64DecodingIgnoreUnknownCharacters];
     
     // parse info data
-    FasTSignedInfoBinary *signedInfo = [[[FasTSignedInfoBinary alloc] initWithData:signedInfoData] autorelease];
+    FasTSignedInfoBinary *signedInfo = [[FasTSignedInfoBinary alloc] initWithData:signedInfoData];
     if (!signedInfoData) {
         NSLog(@"error parsing signed info");
         return nil;
@@ -155,25 +152,22 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     for (NSDictionary *key in response[@"signing_keys"]) {
         _keys[key[@"id"]] = [key[@"secret"] dataUsingEncoding:NSUTF8StringEncoding];
     }
-    [keys release];
     keys = [_keys copy];
     
     // dates
-    NSISO8601DateFormatter *formatter = [[[NSISO8601DateFormatter alloc] init] autorelease];
+    NSISO8601DateFormatter *formatter = [[NSISO8601DateFormatter alloc] init];
     [formatter setFormatOptions:NSISO8601DateFormatWithInternetDateTime + NSISO8601DateFormatWithFractionalSeconds];
 
     NSMutableDictionary *_dates = [NSMutableDictionary dictionary];
     for (NSDictionary *date in response[@"dates"]) {
         _dates[date[@"id"]] = [formatter dateFromString:date[@"date"]];
     }
-    [dates release];
     dates = [_dates copy];
     
     NSMutableDictionary *_ticketTypes = [NSMutableDictionary dictionary];
     for (NSDictionary *type in response[@"ticket_types"]) {
         _ticketTypes[type[@"id"]] = type[@"name"];
     }
-    [ticketTypes release];
     ticketTypes = [_ticketTypes copy];
 
     NSMutableDictionary *blockEntrances = [NSMutableDictionary dictionary];
@@ -187,14 +181,13 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     for (NSDictionary *seat in response[@"seats"]) {
         _seatEntrances[seat[@"id"]] = blockEntrances[seat[@"block_id"]];
     }
-    [seatEntrances release];
     seatEntrances = [_seatEntrances copy];
     
     // changed tickets
     for (NSDictionary *ticketInfo in response[@"changed_tickets"]) {
         FasTTicket *ticket = ticketsById[ticketInfo[@"id"]];
         if (!ticket) {
-            ticket = [[[FasTTicket alloc] init] autorelease];
+            ticket = [[FasTTicket alloc] init];
             ticketsById[ticketInfo[@"id"]] = ticket;
         }
         ticket.ticketId = ticketInfo[@"id"];
@@ -223,7 +216,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     for (NSDate *date in dates.allValues) {
         NSDate *startDate = [NSDate dateWithTimeInterval:-kMinutesBeforeDateAllowedForCheckIn * 60 sinceDate:date];
         NSDate *endDate = [NSDate dateWithTimeInterval:kMinutesAfterDateAllowedForCheckIn * 60 sinceDate:date];
-        NSDateInterval *interval = [[[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate] autorelease];
+        NSDateInterval *interval = [[NSDateInterval alloc] initWithStartDate:startDate endDate:endDate];
         if ([interval containsDate:NSDate.date]) return date;
     }
 

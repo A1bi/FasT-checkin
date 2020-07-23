@@ -26,7 +26,6 @@
     SentryClient *client = [[SentryClient alloc] initWithDsn:@"https://6bf3236a5b364965bb1008e686e070a7@sentry.a0s.de/5" didFailWithError:&error];
     SentryClient.sharedClient = client;
     [SentryClient.sharedClient startCrashHandlerWithError:&error];
-    [client release];
     if (nil != error) {
         NSLog(@"%@", error);
     }
@@ -51,12 +50,6 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     [self applicationWillResignActive:application];
-}
-
-- (void)dealloc
-{
-    [_window release];
-    [super dealloc];
 }
 
 @end

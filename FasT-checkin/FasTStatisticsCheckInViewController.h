@@ -10,6 +10,6 @@
 
 @interface FasTStatisticsCheckInViewController : UITableViewController
 
-@property (nonatomic, retain) NSArray *checkIns;
+@property (nonatomic) NSArray *checkIns;
 
 @end

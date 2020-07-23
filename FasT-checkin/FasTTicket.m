@@ -47,16 +47,4 @@
            [_entrance isEqualToString:entrance];
 }
 
-- (void)dealloc
-{
-    [_ticketId release];
-    [_date release];
-    [_number release];
-    [_type release];
-    [_seatRange release];
-    [_entrance release];
-    [_checkIn release];
-    [super dealloc];
-}
-
 @end

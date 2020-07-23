@@ -43,19 +43,19 @@
         
         NSData *checkIns = stats[@"checkIns"];
         if (checkIns) {
-            _checkIns = [[NSKeyedUnarchiver unarchiveObjectWithData:checkIns] retain];
+            _checkIns = [NSKeyedUnarchiver unarchiveObjectWithData:checkIns];
         } else {
             _checkIns = [[NSMutableArray alloc] init];
         }
         checkIns = stats[@"duplicateCheckIns"];
         if (checkIns) {
-            _duplicateCheckIns = [[NSKeyedUnarchiver unarchiveObjectWithData:checkIns] retain];
+            _duplicateCheckIns = [NSKeyedUnarchiver unarchiveObjectWithData:checkIns];
         } else {
             _duplicateCheckIns = [[NSMutableArray alloc] init];
         }
         checkIns = stats[@"submittedCheckIns"];
         if (checkIns) {
-            _submittedCheckIns = [[NSKeyedUnarchiver unarchiveObjectWithData:checkIns] retain];
+            _submittedCheckIns = [NSKeyedUnarchiver unarchiveObjectWithData:checkIns];
         } else {
             _submittedCheckIns = [[NSMutableArray alloc] init];
         }
@@ -85,14 +85,6 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:stats forKey:kStatisticsDefaultsKey];
     [defaults synchronize];
-}
-
-- (void)dealloc
-{
-    [_checkIns release];
-    [_duplicateCheckIns release];
-    [_submittedCheckIns release];
-    [super dealloc];
 }
 
 - (void)increaseScanAttempts

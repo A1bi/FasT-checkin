@@ -12,14 +12,14 @@
 
 @interface FasTTicket : NSObject
 
-@property (strong) NSNumber *ticketId;
-@property (strong) NSDate *date;
-@property (strong) NSString *number;
-@property (strong) NSString *type;
-@property (strong) NSArray *seatRange;
-@property (strong) NSString *entrance;
+@property (nonatomic) NSNumber *ticketId;
+@property (nonatomic) NSDate *date;
+@property (nonatomic) NSString *number;
+@property (nonatomic) NSString *type;
+@property (nonatomic) NSArray *seatRange;
+@property (nonatomic) NSString *entrance;
 @property BOOL cancelled;
-@property (strong) FasTCheckIn *checkIn;
+@property (nonatomic, weak) FasTCheckIn *checkIn;
 
 - (instancetype)initWithInfoData:(NSData *)data dates:(NSDictionary *)dates types:(NSDictionary *)types entrances:(NSDictionary *)entrances;
 - (BOOL)isValidForDate:(NSDate *)date;

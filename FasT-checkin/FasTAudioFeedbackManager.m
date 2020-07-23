@@ -27,13 +27,8 @@ static NSDictionary *errorVibrationPattern;
 
 + (void)initialize {
     successVibrationPattern = @{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @100 ] };
-    [successVibrationPattern retain];
-
     warningVibrationPattern = @{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @50, @NO, @50, @YES, @50, @NO, @50, @YES, @50 ] };
-    [warningVibrationPattern retain];
-
     errorVibrationPattern = @{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @500 ] };
-    [errorVibrationPattern retain];
 }
 
 + (void)vibrateWithPattern:(NSDictionary *)pattern {

@@ -10,12 +10,12 @@
 
 @interface FasTSignedInfoBinary : NSObject
 
-@property (readonly) NSNumber *signingKeyId;
-@property (readonly) NSData *ticketData;
-@property (readonly) BOOL authenticated;
-@property (readonly) NSNumber *medium;
-@property (readonly) NSData *signature;
-@property (readonly) NSData *signedData;
+@property (nonatomic, readonly) NSNumber *signingKeyId;
+@property (nonatomic, readonly) NSData *ticketData;
+@property (nonatomic, readonly) BOOL authenticated;
+@property (nonatomic, readonly) NSNumber *medium;
+@property (nonatomic, readonly) NSData *signature;
+@property (nonatomic, readonly) NSData *signedData;
 
 - (instancetype)initWithData:(NSData *)data;
 

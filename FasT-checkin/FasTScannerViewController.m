@@ -51,21 +51,9 @@
     [self initBarcodeDetection];
     [self initLayers];
     
-    [recentScanTimes release];
     recentScanTimes = [[NSMutableDictionary alloc] init];
     
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(clearRecentScanTimes) userInfo:nil repeats:YES];
-}
-
-- (void)dealloc {
-    [session release];
-    [metadataOutput release];
-    [lastBarcodeContent release];
-    [longPressRecognizer release];
-    [recentScanTimes release];
-    [barcodeResultController release];
-    [scanningTouch release];
-    [super dealloc];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -120,8 +108,7 @@
 }
 
 - (void)initCapturePreview {
-    [preview release];
-    preview = [[AVCaptureVideoPreviewLayer layerWithSession:session] retain];
+    preview = [AVCaptureVideoPreviewLayer layerWithSession:session];
     preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
     preview.frame = self.view.bounds;
     
@@ -135,7 +122,6 @@
 }
 
 - (void)initBarcodeDetection {
-    [metadataOutput release];
     metadataOutput = [[AVCaptureMetadataOutput alloc] init];
     // add output first so qr code will be available as metadata object type
     [session addOutput:metadataOutput];
@@ -155,7 +141,6 @@
 {
     [metadataOutput setMetadataObjectsDelegate:nil queue:dispatch_get_main_queue()];
     
-    [scanningTouch release];
     scanningTouch = nil;
     longPressRecognizer.enabled = NO;
     
@@ -163,7 +148,6 @@
         recentScanTimes[lastBarcodeContent] = [NSDate date];
     }
     
-    [lastBarcodeContent release];
     lastBarcodeContent = nil;
 
     [barcodeResultController fadeOutWithCompletion];
@@ -173,7 +157,7 @@
 {
     if (scanningBlocked || scanningTouch) return;
 
-    scanningTouch = [touches.anyObject retain];
+    scanningTouch = touches.anyObject;
     longPressRecognizer.enabled = YES;
 
     [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
@@ -219,7 +203,7 @@
     NSString *barcodeContent = targetBarcode.stringValue;
     if (lastBarcodeContent) return;
 
-    lastBarcodeContent = [barcodeContent retain];
+    lastBarcodeContent = barcodeContent;
     [barcodeResultController showForBarcodeContent:barcodeContent];
 }
 
