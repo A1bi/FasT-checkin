@@ -1,12 +1,12 @@
 PODS:
   - MBProgressHUD (1.2.0)
-  - Sentry (4.4.0):
-    - Sentry/Core (= 4.4.0)
-  - Sentry/Core (4.4.0)
+  - Sentry (5.1.10):
+    - Sentry/Core (= 5.1.10)
+  - Sentry/Core (5.1.10)
 
 DEPENDENCIES:
   - MBProgressHUD (~> 1.2.0)
-  - Sentry (~> 4.4.0)
+  - Sentry (~> 5.1)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -15,8 +15,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
-  Sentry: 26650184fe71eb7476dfd2737acb5ea6cc64b4b1
+  Sentry: 8715e88b813bde9ad37aead365d5b04ac7302153
 
-PODFILE CHECKSUM: 91e17d5b24542d0336e9d39b4826b1ec92fd7f36
+PODFILE CHECKSUM: 30c2c77505f0cac77e5bb609e6734b7f93324b6e
 
 COCOAPODS: 1.9.3

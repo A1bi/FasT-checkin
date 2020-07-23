@@ -17,19 +17,15 @@
     CGFloat previousScreenBrightness;
 }
 
+- (void)setupSentry;
+
 @end
 
 @implementation FasTAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    NSError *error = nil;
-    SentryClient *client = [[SentryClient alloc] initWithDsn:@"https://6bf3236a5b364965bb1008e686e070a7@sentry.a0s.de/5" didFailWithError:&error];
-    SentryClient.sharedClient = client;
-    [SentryClient.sharedClient startCrashHandlerWithError:&error];
-    if (nil != error) {
-        NSLog(@"%@", error);
-    }
-
+    [self setupSentry];
+    
     [FasTTicketVerifier init];
 
     return YES;
@@ -50,6 +46,12 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     [self applicationWillResignActive:application];
+}
+
+- (void)setupSentry {
+    [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
+        options.dsn = @"https://6bf3236a5b364965bb1008e686e070a7@sentry.a0s.de/5";
+    }];
 }
 
 @end
