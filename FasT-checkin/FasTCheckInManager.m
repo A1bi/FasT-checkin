@@ -82,7 +82,12 @@
         }
         
         NSArray *_checkInsToSubmit = [checkInsToSubmit copy];
-        [FasTApi post:nil parameters:@{ @"check_ins": checkIns } success:^(NSURLSessionDataTask *task, id response) {
+        [FasTApi post:nil data:@{ @"check_ins": checkIns } completion:^(id  _Nullable data, NSError * _Nullable error) {
+            if (error) {
+                if (completion) completion(error);
+                return;
+            }
+
             [self->checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];
             [self persistCheckIns];
             [[FasTStatisticsManager sharedManager] addSubmittedCheckIns:_checkInsToSubmit];
@@ -92,9 +97,6 @@
             self->_lastSubmissionDate = [NSDate dateWithTimeIntervalSinceNow:0];
             
             if (completion) completion(nil);
-            
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            if (completion) completion(error);
         }];
     
     } else {

@@ -92,14 +92,16 @@
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 
         [[FasTCheckInManager sharedManager] submitCheckIns:^(NSError *error) {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-            
-            if (error) {
-                [self presentError:error];
-                return;
-            }
-            
-            [self refresh];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
+                if (error) {
+                    [self presentError:error];
+                    return;
+                }
+                
+                [self refresh];
+            });
         }];
     }];
     [alert addAction:action];
@@ -119,14 +121,16 @@
 
 - (IBAction)refreshInfo:(id)sender {
     [FasTTicketVerifier refreshInfo:^(NSError *error) {
-        [self.refreshControl endRefreshing];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.refreshControl endRefreshing];
 
-        if (error) {
-            [self presentError:error];
-            return;
-        }
+            if (error) {
+                [self presentError:error];
+                return;
+            }
 
-        [self refresh];
+            [self refresh];
+        });
     }];
 }
 

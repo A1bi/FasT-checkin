@@ -129,7 +129,12 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 }
 
 + (void)refreshInfo:(void (^)(NSError *error))completion {
-    [FasTApi get:nil parameters:nil success:^(NSURLSessionDataTask *task, id response) {
+    [FasTApi get:nil parameters:nil completion:^(id _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            if (completion) completion(error);
+            return;
+        }
+        
         [self processApiResponse:response];
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         // we can't save the dictionary directly in user defaults since it doesn't allow null values
@@ -141,8 +146,6 @@ static NSMutableDictionary *ticketsByBarcode = nil;
         [defaults synchronize];
 
         if (completion) completion(nil);
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        if (completion) completion(error);
     }];
 }
 

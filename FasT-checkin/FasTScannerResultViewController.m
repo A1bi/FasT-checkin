@@ -329,24 +329,22 @@ typedef enum {
     BOOL inDetailedView = viewState == FasTScannerResultViewStateDetailed;
     BOOL isPending = resultType == FasTScannerResultTypePending;
     BOOL showLabelsAndButtons = inDetailedView && !isPending;
-    
-    if (toggle) {
-        CGFloat y = (self.view.superview.frame.size.height - originalFrame.size.width) / 2;
 
-        CATransform3D transform = CATransform3DIdentity;
-        transform = CATransform3DScale(transform, 1, 1, 1);
-        transform = CATransform3DTranslate(transform, kFrameMargin, y, 1);
-        
-        [self runOnMainThread:^{
+    [self runOnMainThread:^{
+        if (toggle) {
+            CGFloat y = (self.view.superview.frame.size.height - self->originalFrame.size.width) / 2;
+
+            CATransform3D transform = CATransform3DIdentity;
+            transform = CATransform3DScale(transform, 1, 1, 1);
+            transform = CATransform3DTranslate(transform, kFrameMargin, y, 1);
+            
             [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 self.view.layer.transform = transform;
             } completion:^(BOOL finished) {
                 self->transitioningToDetailedView = NO;
             }];
-        }];
-    }
-
-    [self runOnMainThread:^{
+        }
+        
         [UIView animateWithDuration:toggle ? 0.3 : 0.2 animations:^{
             self.view.layer.opacity = toggle ? 1 : 0;
             self.view.layer.cornerRadius = toggle ? 20 : 0;

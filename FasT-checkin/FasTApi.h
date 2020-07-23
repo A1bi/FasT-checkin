@@ -10,14 +10,8 @@
 
 @interface FasTApi : NSObject
 
-+ (void)get:(nullable NSString *)action
- parameters:(nullable id)params
-    success:(nullable void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
-    failure:(nullable void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure;
++ (void)get:(nullable NSString *)action parameters:(nullable NSDictionary *)params completion:(nullable void (^)(id _Nullable data, NSError * _Nullable error))completion;
 
-+ (void)post:(nullable NSString *)action
- parameters:(nullable id)params
-    success:(nullable void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success
-    failure:(nullable void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure;
++ (void)post:(nullable NSString *)action data:(nullable NSDictionary *)data completion:(nullable void (^)(id _Nullable data, NSError * _Nullable error))completion;
 
 @end
