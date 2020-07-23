@@ -301,8 +301,8 @@ typedef enum {
 
 - (void)setTitle:(NSString *)title description:(NSString *)description {
     [self runOnMainThread:^{
-        _titleLabel.text = title;
-        _descriptionLabel.text = description;
+        self->_titleLabel.text = title;
+        self->_descriptionLabel.text = description;
     }];
     
     if (title || description) {
@@ -316,46 +316,49 @@ typedef enum {
     [self runOnMainThread:^{
         self.view.layer.opacity = toggle ? 0.9 : 0;
         self.view.userInteractionEnabled = NO;
-        _titleLabel.layer.opacity = 0;
-        _descriptionLabel.layer.opacity = 0;
-        _dismissButton.layer.opacity = 0;
-        [_activityIndicator stopAnimating];
+        self->_titleLabel.layer.opacity = 0;
+        self->_descriptionLabel.layer.opacity = 0;
+        self->_dismissButton.layer.opacity = 0;
+        [self->_activityIndicator stopAnimating];
     }];
 }
 
 - (void)toggleDetailedView:(BOOL)toggle {
     viewState = toggle ? FasTScannerResultViewStateDetailed : FasTScannerResultViewStateHidden;
+    
+    BOOL inDetailedView = viewState == FasTScannerResultViewStateDetailed;
+    BOOL isPending = resultType == FasTScannerResultTypePending;
+    BOOL showLabelsAndButtons = inDetailedView && !isPending;
+    
+    if (toggle) {
+        CGFloat y = (self.view.superview.frame.size.height - originalFrame.size.width) / 2;
 
-    [self runOnMainThread:^{
-        if (toggle) {
+        CATransform3D transform = CATransform3DIdentity;
+        transform = CATransform3DScale(transform, 1, 1, 1);
+        transform = CATransform3DTranslate(transform, kFrameMargin, y, 1);
+        
+        [self runOnMainThread:^{
             [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:0.5 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                CGFloat y = (self.view.superview.frame.size.height - originalFrame.size.width) / 2;
-
-                CATransform3D transform = CATransform3DIdentity;
-                transform = CATransform3DScale(transform, 1, 1, 1);
-                transform = CATransform3DTranslate(transform, kFrameMargin, y, 1);
                 self.view.layer.transform = transform;
             } completion:^(BOOL finished) {
-                transitioningToDetailedView = NO;
+                self->transitioningToDetailedView = NO;
             }];
-        }
+        }];
+    }
 
+    [self runOnMainThread:^{
         [UIView animateWithDuration:toggle ? 0.3 : 0.2 animations:^{
             self.view.layer.opacity = toggle ? 1 : 0;
             self.view.layer.cornerRadius = toggle ? 20 : 0;
             
-            BOOL inDetailedView = viewState == FasTScannerResultViewStateDetailed;
-            BOOL isPending = resultType == FasTScannerResultTypePending;
-            BOOL showLabelsAndButtons = inDetailedView && !isPending;
-            
-            _titleLabel.layer.opacity = showLabelsAndButtons ? 1 : 0;
-            _descriptionLabel.layer.opacity = showLabelsAndButtons ? 1 : 0;
-            _dismissButton.layer.opacity = showLabelsAndButtons ? 1 : 0;
+            self->_titleLabel.layer.opacity = showLabelsAndButtons ? 1 : 0;
+            self->_descriptionLabel.layer.opacity = showLabelsAndButtons ? 1 : 0;
+            self->_dismissButton.layer.opacity = showLabelsAndButtons ? 1 : 0;
             
             if (inDetailedView && isPending) {
-                [_activityIndicator startAnimating];
+                [self->_activityIndicator startAnimating];
             } else {
-                [_activityIndicator stopAnimating];
+                [self->_activityIndicator stopAnimating];
             }
         } completion:NULL];
 
@@ -395,15 +398,6 @@ typedef enum {
 
 - (NSString *)currentEntrance {
     return [[NSUserDefaults standardUserDefaults] objectForKey:kCurrentEntranceDefaultsKey];
-}
-
-- (void)dealloc {
-    [_titleLabel release];
-    [_dismissButton release];
-    [_descriptionLabel release];
-    [_activityIndicator release];
-    [_delegate release];
-    [super dealloc];
 }
 
 @end

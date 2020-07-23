@@ -12,10 +12,10 @@
 
 @interface FasTCheckIn : NSObject <NSCoding>
 
-@property (readonly) NSDate *date;
-@property (readonly) FasTTicket *ticket;
-@property (readonly) NSNumber *ticketId;
-@property (readonly) NSNumber *medium;
+@property (nonatomic, readonly) NSDate *date;
+@property (nonatomic, readonly) FasTTicket *ticket;
+@property (nonatomic, readonly) NSNumber *ticketId;
+@property (nonatomic, readonly) NSNumber *medium;
 
 - (instancetype)initWithTicketId:(NSNumber *)ticketId medium:(NSNumber *)medium date:(NSDate *)date;
 - (instancetype)initWithTicket:(FasTTicket *)ticket medium:(NSNumber *)medium;

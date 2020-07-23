@@ -26,7 +26,7 @@ typedef enum {
 
 @interface FasTScannerResultViewController : UIViewController
 
-@property (strong) NSObject<FasTScannerResultViewControllerDelegate> *delegate;
+@property (weak) NSObject<FasTScannerResultViewControllerDelegate> *delegate;
 
 - (void)presentInCorners:(NSArray *)corners;
 - (void)showForBarcodeContent:(NSString *)content;

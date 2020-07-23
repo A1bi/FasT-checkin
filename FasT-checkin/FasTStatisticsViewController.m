@@ -66,20 +66,6 @@
     _lastInfoRefreshLabel.text = [self formattedDate:[FasTTicketVerifier lastRefresh]];
 }
 
-- (void)dealloc {
-    [_scanAttemptsLabel release];
-    [_successfulScansLabel release];
-    [_deniedScansLabel release];
-    [_submittedScansLabel release];
-    [_crashsLabel release];
-    [_duplicateScansLabel release];
-    [_checkInsToSubmitLabel release];
-    [_lastSubmissionDateLabel release];
-    [_lastInfoRefreshLabel release];
-    [dateFormatter release];
-    [super dealloc];
-}
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     FasTStatisticsManager *stats = [FasTStatisticsManager sharedManager];
     FasTStatisticsCheckInViewController *vc = segue.destinationViewController;

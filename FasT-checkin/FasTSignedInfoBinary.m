@@ -39,7 +39,7 @@
         }
         
         // ticket data - 9 bytes
-        _ticketData = [[data subdataWithRange:NSMakeRange(2, 9)] retain];
+        _ticketData = [data subdataWithRange:NSMakeRange(2, 9)];
         
         [data getBytes:&part range:NSMakeRange(11, 1)];
         
@@ -50,22 +50,12 @@
         _medium = @(part);
         
         // signature - 20 bytes
-        _signature = [[data subdataWithRange:NSMakeRange(12, 20)] retain];
+        _signature = [data subdataWithRange:NSMakeRange(12, 20)];
         
         // signed data - everything except the signature
-        _signedData = [[data subdataWithRange:NSMakeRange(0, 12)] retain];
+        _signedData = [data subdataWithRange:NSMakeRange(0, 12)];
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [_signingKeyId release];
-    [_ticketData release];
-    [_medium release];
-    [_signature release];
-    [_signedData release];
-    [super dealloc];
 }
 
 @end

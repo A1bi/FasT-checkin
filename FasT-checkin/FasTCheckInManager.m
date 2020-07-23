@@ -57,16 +57,9 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [checkInsToSubmit release];
-    [_lastSubmissionDate release];
-    [super dealloc];
-}
-
 - (void)checkInTicket:(FasTTicket *)ticket withMedium:(NSNumber *)medium
 {
-    FasTCheckIn *checkIn = [[[FasTCheckIn alloc] initWithTicket:ticket medium:medium] autorelease];
+    FasTCheckIn *checkIn = [[FasTCheckIn alloc] initWithTicket:ticket medium:medium];
     ticket.checkIn = checkIn;
     [checkInsToSubmit addObject:ticket.checkIn];
 }
@@ -81,23 +74,22 @@
 
 - (void)submitCheckIns:(void (^)(NSError *error))completion {
     if (checkInsToSubmit.count > 0) {
-        NSISO8601DateFormatter *formatter = [[[NSISO8601DateFormatter alloc] init] autorelease];
+        NSISO8601DateFormatter *formatter = [[NSISO8601DateFormatter alloc] init];
         NSMutableArray *checkIns = [NSMutableArray array];
         for (FasTCheckIn *checkIn in checkInsToSubmit) {
             NSDictionary *info = @{ @"ticket_id": checkIn.ticketId, @"date": [formatter stringFromDate:checkIn.date], @"medium": checkIn.medium };
             [checkIns addObject:info];
         }
         
-        NSArray *_checkInsToSubmit = [[checkInsToSubmit copy] autorelease];
+        NSArray *_checkInsToSubmit = [checkInsToSubmit copy];
         [FasTApi post:nil parameters:@{ @"check_ins": checkIns } success:^(NSURLSessionDataTask *task, id response) {
-            [checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];
+            [self->checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];
             [self persistCheckIns];
             [[FasTStatisticsManager sharedManager] addSubmittedCheckIns:_checkInsToSubmit];
 
             [self scheduleCheckInSubmission];
             
-            [_lastSubmissionDate release];
-            _lastSubmissionDate = [[NSDate dateWithTimeIntervalSinceNow:0] retain];
+            self->_lastSubmissionDate = [NSDate dateWithTimeIntervalSinceNow:0];
             
             if (completion) completion(nil);
             
@@ -108,8 +100,7 @@
     } else {
         [self scheduleCheckInSubmission];
         
-        [_lastSubmissionDate release];
-        _lastSubmissionDate = [[NSDate dateWithTimeIntervalSinceNow:0] retain];
+        _lastSubmissionDate = [NSDate dateWithTimeIntervalSinceNow:0];
         
         if (completion) completion(nil);
     }
@@ -124,14 +115,12 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     // are there check ins from older sessions yet to submit ?
     NSData *checkInData = [defaults objectForKey:kCheckInsToSubmitDefaultsKey];
-    [checkInsToSubmit release];
-    checkInsToSubmit = [[NSKeyedUnarchiver unarchiveObjectWithData:checkInData] retain];
+    checkInsToSubmit = [NSKeyedUnarchiver unarchiveObjectWithData:checkInData];
     if (!checkInsToSubmit) {
         checkInsToSubmit = [[NSMutableArray alloc] init];
     }
     
-    [_lastSubmissionDate release];
-    _lastSubmissionDate = [[defaults objectForKey:kLastSubmissionDateDefaultsKey] retain];
+    _lastSubmissionDate = [defaults objectForKey:kLastSubmissionDateDefaultsKey];
 }
 
 @end

@@ -14,9 +14,9 @@
 - (instancetype)initWithTicketId:(NSNumber *)ticketId medium:(NSNumber *)medium date:(NSDate *)date {
     self = [super init];
     if (self) {
-        _ticketId = [ticketId retain];
-        _medium = [medium retain];
-        _date = [date retain];
+        _ticketId = ticketId;
+        _medium = medium;
+        _date = date;
     }
     return self;
 }
@@ -24,7 +24,7 @@
 - (instancetype)initWithTicket:(FasTTicket *)ticket medium:(NSNumber *)medium {
     self = [self initWithTicketId:ticket.ticketId medium:medium date:[NSDate date]];
     if (self) {
-        _ticket = [ticket retain];
+        _ticket = ticket;
     }
     return self;
 }
@@ -41,15 +41,6 @@
     [encoder encodeObject:_ticketId forKey:@"ticketId"];
     [encoder encodeObject:_medium forKey:@"medium"];
     [encoder encodeObject:_date forKey:@"date"];
-}
-
-- (void)dealloc
-{
-    [_ticket release];
-    [_ticketId release];
-    [_medium release];
-    [_date release];
-    [super dealloc];
 }
 
 @end

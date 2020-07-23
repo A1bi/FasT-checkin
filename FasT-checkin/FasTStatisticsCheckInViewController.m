@@ -34,9 +34,8 @@
 
 - (void)setCheckIns:(NSArray *)checkIns
 {
-    [_checkIns release];
     NSSortDescriptor *sorter = [NSSortDescriptor sortDescriptorWithKey:@"ticketNumberWithIdFallback" ascending:YES];
-    _checkIns = [[checkIns sortedArrayUsingDescriptors:@[sorter]] retain];
+    _checkIns = [checkIns sortedArrayUsingDescriptors:@[sorter]];
 }
 
 #pragma mark - Table view data source
@@ -56,13 +55,6 @@
     cell.detailTextLabel.text = [dateFormatter stringFromDate:checkIn.date];
     
     return cell;
-}
-
-- (void)dealloc
-{
-    [_checkIns release];
-    [dateFormatter release];
-    [super dealloc];
 }
 
 @end
