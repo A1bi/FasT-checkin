@@ -85,10 +85,10 @@ typedef enum {
 }
 
 - (void)presentInCorners:(NSArray *)corners {
-    if (corners.count < 1 || viewState == FasTScannerResultViewStateDetailed) return;
+    if (corners.count != 4 || viewState == FasTScannerResultViewStateDetailed) return;
 
-    CGPoint points[corners.count];
-    for (int i = 0; i < corners.count; i++) {
+    CGPoint points[4];
+    for (int i = 0; i < 4; i++) {
         CGPoint point;
         CGPointMakeWithDictionaryRepresentation((CFDictionaryRef)corners[i], &point);
         points[i] = point;
@@ -402,6 +402,7 @@ typedef enum {
     [_dismissButton release];
     [_descriptionLabel release];
     [_activityIndicator release];
+    [_delegate release];
     [super dealloc];
 }
 
