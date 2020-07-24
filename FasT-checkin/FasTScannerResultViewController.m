@@ -39,6 +39,7 @@ typedef enum {
 
 @property (retain, nonatomic) IBOutlet UILabel *titleLabel;
 @property (retain, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (retain, nonatomic) IBOutlet UILabel *additionalInfoLabel;
 @property (retain, nonatomic) IBOutlet UIButton *dismissButton;
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -207,6 +208,8 @@ typedef enum {
                 if (!ticket.checkIn) {
                     [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
                     [stats addCheckIn:ticket.checkIn];
+                    
+                    [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@\n%@", ticket.number, ticket.type]];
 
                     if (ticket.seatRange) {
                         NSNumber *start = ticket.seatRange.firstObject;
@@ -217,9 +220,9 @@ typedef enum {
                         } else {
                             range = [NSString stringWithFormat:@"Sitzplätze %@ bis %@", start, end];
                         }
-                        [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@ – %@\n\n%@", ticket.number, ticket.type, range]];
-                    } else {
-                        [self setSuccessTitle:nil description:nil];
+                        [self runOnMainThread:^{
+                            self->_additionalInfoLabel.text = range;
+                        }];
                     }
 
                 } else {
@@ -303,6 +306,7 @@ typedef enum {
     [self runOnMainThread:^{
         self->_titleLabel.text = title;
         self->_descriptionLabel.text = description;
+        self->_additionalInfoLabel.text = nil;
     }];
     
     if (title || description) {
