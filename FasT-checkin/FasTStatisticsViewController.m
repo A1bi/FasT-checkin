@@ -19,15 +19,15 @@
     NSDateFormatter *dateFormatter;
 }
 
-@property (retain, nonatomic) IBOutlet UILabel *scanAttemptsLabel;
-@property (retain, nonatomic) IBOutlet UILabel *successfulScansLabel;
-@property (retain, nonatomic) IBOutlet UILabel *deniedScansLabel;
-@property (retain, nonatomic) IBOutlet UILabel *submittedScansLabel;
-@property (retain, nonatomic) IBOutlet UILabel *crashsLabel;
-@property (retain, nonatomic) IBOutlet UILabel *duplicateScansLabel;
-@property (retain, nonatomic) IBOutlet UILabel *checkInsToSubmitLabel;
-@property (retain, nonatomic) IBOutlet UILabel *lastSubmissionDateLabel;
-@property (retain, nonatomic) IBOutlet UILabel *lastInfoRefreshLabel;
+@property (nonatomic) IBOutlet UILabel *scanAttemptsLabel;
+@property (nonatomic) IBOutlet UILabel *successfulScansLabel;
+@property (nonatomic) IBOutlet UILabel *deniedScansLabel;
+@property (nonatomic) IBOutlet UILabel *submittedScansLabel;
+@property (nonatomic) IBOutlet UILabel *crashsLabel;
+@property (nonatomic) IBOutlet UILabel *duplicateScansLabel;
+@property (nonatomic) IBOutlet UILabel *checkInsToSubmitLabel;
+@property (nonatomic) IBOutlet UILabel *lastSubmissionDateLabel;
+@property (nonatomic) IBOutlet UILabel *lastInfoRefreshLabel;
 
 - (void)refresh;
 - (void)presentError:(NSError *)error;

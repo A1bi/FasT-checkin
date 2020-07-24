@@ -18,11 +18,12 @@
     CALayer *targetLayer;
     NSString *lastBarcodeContent;
     UITouch *scanningTouch;
-    IBOutlet UILongPressGestureRecognizer *longPressRecognizer;
     NSMutableDictionary *recentScanTimes;
     FasTScannerResultViewController *barcodeResultController;
     BOOL scanningBlocked;
 }
+
+@property (nonatomic) IBOutlet UILongPressGestureRecognizer *longPressRecognizer;
 
 - (void)initCaptureSession;
 - (void)initCapturePreview;
@@ -142,7 +143,7 @@
     [metadataOutput setMetadataObjectsDelegate:nil queue:dispatch_get_main_queue()];
     
     scanningTouch = nil;
-    longPressRecognizer.enabled = NO;
+    _longPressRecognizer.enabled = NO;
     
     if (lastBarcodeContent) {
         recentScanTimes[lastBarcodeContent] = [NSDate date];
@@ -158,7 +159,7 @@
     if (scanningBlocked || scanningTouch) return;
 
     scanningTouch = touches.anyObject;
-    longPressRecognizer.enabled = YES;
+    _longPressRecognizer.enabled = YES;
 
     [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
 
@@ -220,7 +221,7 @@
 
 - (void)longDoublePressRecognized
 {
-    if (longPressRecognizer.state == UIGestureRecognizerStateBegan) {
+    if (_longPressRecognizer.state == UIGestureRecognizerStateBegan) {
         [self performSegueWithIdentifier:@"InfoSegue" sender:nil];
     }
 }

@@ -37,11 +37,11 @@ typedef enum {
     BOOL transitioningToDetailedView;
 }
 
-@property (retain, nonatomic) IBOutlet UILabel *titleLabel;
-@property (retain, nonatomic) IBOutlet UILabel *descriptionLabel;
-@property (retain, nonatomic) IBOutlet UILabel *additionalInfoLabel;
-@property (retain, nonatomic) IBOutlet UIButton *dismissButton;
-@property (retain, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic) IBOutlet UILabel *titleLabel;
+@property (nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (nonatomic) IBOutlet UILabel *additionalInfoLabel;
+@property (nonatomic) IBOutlet UIButton *dismissButton;
+@property (nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 - (void)setSuccessTitle:(NSString *)title description:(NSString *)description;
 - (void)setWarningTitle:(NSString *)title description:(NSString *)description;

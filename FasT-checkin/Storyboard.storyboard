@@ -25,7 +25,7 @@
                         </connections>
                     </view>
                     <connections>
-                        <outlet property="longPressRecognizer" destination="IJR-gL-aqY" id="ZLW-ox-DJM"/>
+                        <outlet property="longPressRecognizer" destination="IJR-gL-aqY" id="oKF-nK-gQc"/>
                         <segue destination="Nr5-bU-syy" kind="presentation" identifier="InfoSegue" id="uJL-Lx-jaV"/>
                     </connections>
                 </viewController>
