@@ -4,5 +4,5 @@ use_frameworks!
 
 target 'FasT-checkin' do
     pod 'MBProgressHUD', '~> 1.2.0'
-    pod 'Sentry', '~> 5.1'
+    pod 'Sentry', '~> 7.1'
 end
