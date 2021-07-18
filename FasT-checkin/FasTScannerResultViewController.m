@@ -208,8 +208,6 @@ typedef enum {
                 if (!ticket.checkIn) {
                     [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
                     [stats addCheckIn:ticket.checkIn];
-                    
-                    [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@\n%@", ticket.number, ticket.type]];
 
                     if (ticket.seatRange) {
                         NSNumber *start = ticket.seatRange.firstObject;
@@ -223,6 +221,11 @@ typedef enum {
                         [self runOnMainThread:^{
                             self->_additionalInfoLabel.text = range;
                         }];
+                        
+                        [self setSuccessTitle:@"Ticket gültig" description:[NSString stringWithFormat:@"%@\n%@", ticket.number, ticket.type]];
+                        
+                    } else {
+                        [self setResultType:FasTScannerResultTypeSuccess];
                     }
 
                 } else {
@@ -322,6 +325,7 @@ typedef enum {
         self.view.userInteractionEnabled = NO;
         self->_titleLabel.layer.opacity = 0;
         self->_descriptionLabel.layer.opacity = 0;
+        self->_additionalInfoLabel.layer.opacity = 0;
         self->_dismissButton.layer.opacity = 0;
         [self->_activityIndicator stopAnimating];
     }];
@@ -355,6 +359,7 @@ typedef enum {
             
             self->_titleLabel.layer.opacity = showLabelsAndButtons ? 1 : 0;
             self->_descriptionLabel.layer.opacity = showLabelsAndButtons ? 1 : 0;
+            self->_additionalInfoLabel.layer.opacity = showLabelsAndButtons ? 1 : 0;
             self->_dismissButton.layer.opacity = showLabelsAndButtons ? 1 : 0;
             
             if (inDetailedView && isPending) {
