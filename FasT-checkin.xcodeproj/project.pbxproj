@@ -87,6 +87,7 @@
 		F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FasTScannerResultViewController.xib; sourceTree = "<group>"; };
 		F07C6FA62353758A002289FF /* FasTAudioFeedbackManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTAudioFeedbackManager.h; sourceTree = "<group>"; };
 		F07C6FA72353758A002289FF /* FasTAudioFeedbackManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTAudioFeedbackManager.m; sourceTree = "<group>"; };
+		F0E0DD6923E3371500A3F06C /* release.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = release.local.xcconfig; sourceTree = "<group>"; };
 		F0FDB148210A469D00DC8CB1 /* Pods_FasT_checkin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_FasT_checkin.framework; path = "../../Library/Developer/Xcode/DerivedData/FasT-checkin-blowwejktzdwkhgqsajbfckufbop/Build/Products/Debug-iphoneos/Pods_FasT_checkin.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -217,6 +218,7 @@
 				F048DEDB2247B9620039E664 /* debug.xcconfig */,
 				F048DEDD2247B99D0039E664 /* debug.local.xcconfig */,
 				F048DED92247B8C00039E664 /* release.xcconfig */,
+				F0E0DD6923E3371500A3F06C /* release.local.xcconfig */,
 			);
 			name = Config;
 			sourceTree = "<group>";

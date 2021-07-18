@@ -1,3 +1,5 @@
 // RELEASE CONFIGURATION
 
-API_HOST = "https:\/\/www.theater-kaisersesch.de"
+API_HOST = "https:\\/\\/www.theater-kaisersesch.de"
+
+#include? "release.local.xcconfig"
