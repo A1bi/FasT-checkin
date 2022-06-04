@@ -9,7 +9,7 @@ DEPENDENCIES:
   - Sentry (~> 7.1)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - MBProgressHUD
     - Sentry
 
@@ -17,6 +17,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   Sentry: 6d963d64804dd06d96e778be729613f481394312
 
-PODFILE CHECKSUM: dab199db7556df7578e0f7a0c7ee22af33f5038a
+PODFILE CHECKSUM: 25ae2dda486c0f328239d97226413ebe5be282c9
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.3
