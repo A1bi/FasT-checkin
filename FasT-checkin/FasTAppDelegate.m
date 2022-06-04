@@ -50,7 +50,7 @@
 
 - (void)setupSentry {
     [SentrySDK startWithConfigureOptions:^(SentryOptions *options) {
-        options.dsn = @"https://6bf3236a5b364965bb1008e686e070a7@sentry.a0s.de/5";
+        options.dsn = @"https://897b1d6771e14f6eb657133429cde4e1@glitchtip.a0s.de/8";
     }];
 }
 
