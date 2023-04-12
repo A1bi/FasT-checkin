@@ -32,6 +32,9 @@
 		F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */; };
 		F0667E131F1805DD0051AD14 /* FasTCheckInManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */; };
 		F074C74420F7B66600184557 /* FasTSignedInfoBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */; };
+		F0760BC028E9BE930054FB82 /* success.aif in Resources */ = {isa = PBXBuildFile; fileRef = F0760BBB28E9BB8F0054FB82 /* success.aif */; };
+		F0760BC128E9BE930054FB82 /* warning.aif in Resources */ = {isa = PBXBuildFile; fileRef = F0760BBC28E9BB8F0054FB82 /* warning.aif */; };
+		F0760BC228E9BE930054FB82 /* failure.aif in Resources */ = {isa = PBXBuildFile; fileRef = F0760BBF28E9BCB10054FB82 /* failure.aif */; };
 		F07C6FA4235248D5002289FF /* FasTScannerResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F07C6FA2235248D5002289FF /* FasTScannerResultViewController.m */; };
 		F07C6FA5235248D5002289FF /* FasTScannerResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */; };
 		F07C6FA82353758A002289FF /* FasTAudioFeedbackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07C6FA72353758A002289FF /* FasTAudioFeedbackManager.m */; };
@@ -82,6 +85,9 @@
 		F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTCheckInManager.m; sourceTree = "<group>"; };
 		F074C74220F7B66600184557 /* FasTSignedInfoBinary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTSignedInfoBinary.h; sourceTree = "<group>"; };
 		F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTSignedInfoBinary.m; sourceTree = "<group>"; };
+		F0760BBB28E9BB8F0054FB82 /* success.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = success.aif; sourceTree = "<group>"; };
+		F0760BBC28E9BB8F0054FB82 /* warning.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = warning.aif; sourceTree = "<group>"; };
+		F0760BBF28E9BCB10054FB82 /* failure.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = failure.aif; sourceTree = "<group>"; };
 		F07C6FA1235248D5002289FF /* FasTScannerResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTScannerResultViewController.h; sourceTree = "<group>"; };
 		F07C6FA2235248D5002289FF /* FasTScannerResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTScannerResultViewController.m; sourceTree = "<group>"; };
 		F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FasTScannerResultViewController.xib; sourceTree = "<group>"; };
@@ -183,6 +189,7 @@
 				F07C6FA72353758A002289FF /* FasTAudioFeedbackManager.m */,
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
 				F015FFCC1D34432700493E8E /* Images.xcassets */,
+				F0760BBA28E9BB7A0054FB82 /* sounds */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
 				610FCAD017B8F522000AAF97 /* Frameworks */,
 			);
@@ -221,6 +228,16 @@
 				F0E0DD6923E3371500A3F06C /* release.local.xcconfig */,
 			);
 			name = Config;
+			sourceTree = "<group>";
+		};
+		F0760BBA28E9BB7A0054FB82 /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				F0760BBB28E9BB8F0054FB82 /* success.aif */,
+				F0760BBC28E9BB8F0054FB82 /* warning.aif */,
+				F0760BBF28E9BCB10054FB82 /* failure.aif */,
+			);
+			path = sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -286,6 +303,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0760BC028E9BE930054FB82 /* success.aif in Resources */,
+				F0760BC128E9BE930054FB82 /* warning.aif in Resources */,
+				F0760BC228E9BE930054FB82 /* failure.aif in Resources */,
 				F07C6FA5235248D5002289FF /* FasTScannerResultViewController.xib in Resources */,
 				F0377C7E1D36860A00F4A668 /* Podfile in Resources */,
 				610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */,
@@ -524,7 +544,8 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1.8.5;
-				DEVELOPMENT_TEAM = V48L6BF6M3;
+				DEVELOPMENT_TEAM = YBNG5Y8L6M;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = V48L6BF6M3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -540,6 +561,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6ac67505-b572-44a3-b319-d2c067cd3062";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Development";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "iOS Development";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -554,7 +576,8 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1.8.5;
-				DEVELOPMENT_TEAM = V48L6BF6M3;
+				DEVELOPMENT_TEAM = YBNG5Y8L6M;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = V48L6BF6M3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -570,6 +593,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "4892eec6-8b0d-4aa8-b73b-ae7b84d9131f";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Adhoc";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "iOS Adhoc";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
