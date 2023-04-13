@@ -274,7 +274,7 @@
 				ORGANIZATIONNAME = Albisigns;
 				TargetAttributes = {
 					610FCACD17B8F522000AAF97 = {
-						DevelopmentTeam = V48L6BF6M3;
+						DevelopmentTeam = YBNG5Y8L6M;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -545,7 +545,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1.8.5;
 				DEVELOPMENT_TEAM = YBNG5Y8L6M;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = V48L6BF6M3;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YBNG5Y8L6M;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -561,7 +561,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6ac67505-b572-44a3-b319-d2c067cd3062";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Development";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "iOS Development";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Wildcard Development";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -577,7 +577,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1.8.5;
 				DEVELOPMENT_TEAM = YBNG5Y8L6M;
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = V48L6BF6M3;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YBNG5Y8L6M;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -593,7 +593,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "4892eec6-8b0d-4aa8-b73b-ae7b84d9131f";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Adhoc";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "iOS Adhoc";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "FasT-checkin Distribution";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
