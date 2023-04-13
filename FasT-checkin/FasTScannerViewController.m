@@ -15,7 +15,6 @@
     AVCaptureSession *session;
     AVCaptureVideoPreviewLayer *preview;
     AVCaptureMetadataOutput *metadataOutput;
-    CALayer *targetLayer;
     NSString *lastBarcodeContent;
     UITouch *scanningTouch;
     NSMutableDictionary *recentScanTimes;
@@ -24,12 +23,14 @@
 }
 
 @property (nonatomic) IBOutlet UILongPressGestureRecognizer *longPressRecognizer;
+@property (weak, nonatomic) IBOutlet UIImageView *scanArea;
 
 - (void)initCaptureSession;
 - (void)initCapturePreview;
 - (void)initBarcodeDetection;
 - (void)initLayers;
 - (void)stopScanning;
+- (void)captureSessionDidStart;
 - (void)clearRecentScanTimes;
 - (void)setScanningBlocked:(BOOL)blocked;
 - (IBAction)longDoublePressRecognized;
@@ -104,6 +105,10 @@
         NSLog(@"error setting up capture device input: %@", error);
         return;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(captureSessionDidStart)
+                                                 name:AVCaptureSessionDidStartRunningNotification object:nil];
 
     [session addInput:input];
 }
@@ -113,11 +118,7 @@
     preview.videoGravity = AVLayerVideoGravityResizeAspectFill;
     preview.frame = self.view.bounds;
     
-    [self.view.layer addSublayer:preview];
-    
-    targetLayer = [CALayer layer];
-    targetLayer.frame = self.view.bounds;
-    [self.view.layer addSublayer:targetLayer];
+    [self.view.layer insertSublayer:preview below:_scanArea.layer];
     
     self.view.multipleTouchEnabled = YES;
 }
@@ -152,6 +153,11 @@
     lastBarcodeContent = nil;
 
     [barcodeResultController fadeOutWithCompletion];
+}
+
+- (void)captureSessionDidStart
+{
+    metadataOutput.rectOfInterest = [preview metadataOutputRectOfInterestForRect:_scanArea.frame];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
