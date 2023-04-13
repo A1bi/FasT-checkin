@@ -60,8 +60,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [session startRunning];
     [self stopScanning];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self->session startRunning];
+    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -157,7 +159,9 @@
 
 - (void)captureSessionDidStart
 {
-    metadataOutput.rectOfInterest = [preview metadataOutputRectOfInterestForRect:_scanArea.frame];
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+        self->metadataOutput.rectOfInterest = [self->preview metadataOutputRectOfInterestForRect:self->_scanArea.frame];
+    });
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
