@@ -66,6 +66,12 @@
     _lastInfoRefreshLabel.text = [self formattedDate:[FasTTicketVerifier lastRefresh]];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *build = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+    return [NSString stringWithFormat:@"FasT-checkin v%@ (%@)", version, build];
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     FasTStatisticsManager *stats = [FasTStatisticsManager sharedManager];
     FasTStatisticsCheckInViewController *vc = segue.destinationViewController;
