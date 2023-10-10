@@ -41,8 +41,6 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     NSDictionary *response = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:responseData];
     if (response) {
         [self processApiResponse:response];
-    } else {
-        [self refreshInfo:NULL];
     }
 }
 

@@ -30,6 +30,7 @@
 		F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C7B1D3665F300F4A668 /* FasTTicket.m */; };
 		F0377C7E1D36860A00F4A668 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F0377C7D1D36860A00F4A668 /* Podfile */; };
 		F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */; };
+		F045495C2AD55CFB00C8B4A4 /* FasTBackgroundWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = F045495B2AD55CFB00C8B4A4 /* FasTBackgroundWorker.m */; };
 		F0667E131F1805DD0051AD14 /* FasTCheckInManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */; };
 		F074C74420F7B66600184557 /* FasTSignedInfoBinary.m in Sources */ = {isa = PBXBuildFile; fileRef = F074C74320F7B66600184557 /* FasTSignedInfoBinary.m */; };
 		F0760BC028E9BE930054FB82 /* success.aif in Resources */ = {isa = PBXBuildFile; fileRef = F0760BBB28E9BB8F0054FB82 /* success.aif */; };
@@ -78,6 +79,8 @@
 		F0377C7B1D3665F300F4A668 /* FasTTicket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTTicket.m; sourceTree = "<group>"; };
 		F0377C7D1D36860A00F4A668 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		F0377C7F1D370BD000F4A668 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		F045495A2AD55CFB00C8B4A4 /* FasTBackgroundWorker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTBackgroundWorker.h; sourceTree = "<group>"; };
+		F045495B2AD55CFB00C8B4A4 /* FasTBackgroundWorker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTBackgroundWorker.m; sourceTree = "<group>"; };
 		F048DED92247B8C00039E664 /* release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = release.xcconfig; sourceTree = "<group>"; };
 		F048DEDB2247B9620039E664 /* debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = debug.xcconfig; sourceTree = "<group>"; };
 		F048DEDD2247B99D0039E664 /* debug.local.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = debug.local.xcconfig; sourceTree = "<group>"; };
@@ -179,6 +182,8 @@
 				F0667E121F1805DD0051AD14 /* FasTCheckInManager.m */,
 				F02F87701D41020000B5B0F3 /* FasTApi.h */,
 				F02F87711D41020000B5B0F3 /* FasTApi.m */,
+				F045495A2AD55CFB00C8B4A4 /* FasTBackgroundWorker.h */,
+				F045495B2AD55CFB00C8B4A4 /* FasTBackgroundWorker.m */,
 				F00122981F21EBC90009B766 /* FasTStatisticsManager.h */,
 				F00122991F21EBC90009B766 /* FasTStatisticsManager.m */,
 				F00122951F21E8ED0009B766 /* FasTStatisticsViewController.h */,
@@ -385,6 +390,7 @@
 				F001229D1F2240570009B766 /* FasTStatisticsCheckInViewController.m in Sources */,
 				F00122971F21E8ED0009B766 /* FasTStatisticsViewController.m in Sources */,
 				F001229A1F21EBC90009B766 /* FasTStatisticsManager.m in Sources */,
+				F045495C2AD55CFB00C8B4A4 /* FasTBackgroundWorker.m in Sources */,
 				610FCAE217B8F522000AAF97 /* FasTAppDelegate.m in Sources */,
 				F02F87751D410A5300B5B0F3 /* FasTCheckIn.m in Sources */,
 				F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */,

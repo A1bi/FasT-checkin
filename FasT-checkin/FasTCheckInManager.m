@@ -20,7 +20,6 @@
     NSMutableArray *checkInsToSubmit;
 }
 
-- (void)scheduleCheckInSubmission;
 - (void)persistCheckIns;
 - (void)loadPersistedCheckIns;
 
@@ -47,14 +46,14 @@
         checkInsToSubmit = [[NSMutableArray alloc] init];
         
         [self loadPersistedCheckIns];
-//        [self submitCheckIns:NULL];
         
-        NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
-        [defaultCenter addObserverForName:UIApplicationWillResignActiveNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
-            [self persistCheckIns];
-        }];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(persistCheckIns) name:UIApplicationWillResignActiveNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)checkInTicket:(FasTTicket *)ticket withMedium:(NSNumber *)medium
@@ -91,8 +90,6 @@
             [self->checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];
             [self persistCheckIns];
             [[FasTStatisticsManager sharedManager] addSubmittedCheckIns:_checkInsToSubmit];
-
-            [self scheduleCheckInSubmission];
             
             self->_lastSubmissionDate = [NSDate dateWithTimeIntervalSinceNow:0];
             
@@ -100,17 +97,10 @@
         }];
     
     } else {
-        [self scheduleCheckInSubmission];
-        
         _lastSubmissionDate = [NSDate dateWithTimeIntervalSinceNow:0];
         
         if (completion) completion(nil);
     }
-}
-
-- (void)scheduleCheckInSubmission {
-//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(scheduleCheckInSubmission) object:nil];
-//    [self performSelector:@selector(submitCheckIns:) withObject:nil afterDelay:10];
 }
 
 - (void)loadPersistedCheckIns {

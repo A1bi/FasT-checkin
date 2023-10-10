@@ -9,12 +9,14 @@
 #import "FasTAppDelegate.h"
 #import "FasTScannerViewController.h"
 #import "FasTTicketVerifier.h"
+#import "FasTBackgroundWorker.h"
 
 @import Sentry;
 
 @interface FasTAppDelegate ()
 {
     CGFloat previousScreenBrightness;
+    FasTBackgroundWorker *worker;
 }
 
 - (void)setupSentry;
@@ -27,6 +29,9 @@
     [self setupSentry];
     
     [FasTTicketVerifier init];
+    
+    worker = [[FasTBackgroundWorker alloc] init];
+    [worker start];
 
     return YES;
 }
