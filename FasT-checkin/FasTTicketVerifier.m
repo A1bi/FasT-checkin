@@ -48,34 +48,28 @@ static NSMutableDictionary *scanResultsByBarcodeContent = nil;
 + (FasTScanResult *)getScanResultByBarcodeContent:(NSString *)messageData {
     // check if this message has already been processed
     FasTScanResult *result = scanResultsByBarcodeContent[messageData];
-    if (!result) {
-        // not yet processed -> verify
-        FasTSignedInfoBinary *signedInfo = [self verify:messageData];
-        
-        if (signedInfo) {
-            @try {
-                FasTTicket *ticket = [[FasTTicket alloc] initWithInfoData:signedInfo.ticketData dates:dates types:ticketTypes entrances:seatEntrances];
-                
-                // find updated ticket
-                FasTTicket *updatedTicket = ticketsById[ticket.ticketId];
-                if (updatedTicket) {
-                    ticket = updatedTicket;
-                } else {
-                    ticketsById[ticket.ticketId] = ticket;
-                }
-                
-                result = [[FasTScanResult alloc] initWithSignedInfoBinary:signedInfo ticket:ticket];
+    if (result) return result;
+    
+    // not yet processed -> verify
+    FasTSignedInfoBinary *signedInfo = [self verify:messageData];
+    if (!signedInfo) return nil;
 
-            } @catch (NSException *exception) {
-                NSLog(@"ticket could not be validated, exception: %@", exception);
-            }
+    @try {
+        FasTTicket *ticket = [[FasTTicket alloc] initWithInfoData:signedInfo.ticketData dates:dates types:ticketTypes entrances:seatEntrances];
+        
+        // find updated ticket
+        FasTTicket *updatedTicket = ticketsById[ticket.ticketId];
+        if (updatedTicket) {
+            ticket = updatedTicket;
+        } else {
+            ticketsById[ticket.ticketId] = ticket;
         }
         
-        scanResultsByBarcodeContent[messageData] = result ? result : [NSNull null];
-        
-    // message has already been processed and was invalid
-    } else if ([result isKindOfClass:[NSNull class]]) {
-        return nil;
+        result = [[FasTScanResult alloc] initWithSignedInfoBinary:signedInfo ticket:ticket];
+        scanResultsByBarcodeContent[messageData] = result;
+
+    } @catch (NSException *exception) {
+        NSLog(@"ticket could not be validated, exception: %@", exception);
     }
     
     return result;
