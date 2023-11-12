@@ -76,7 +76,7 @@
         NSISO8601DateFormatter *formatter = [[NSISO8601DateFormatter alloc] init];
         NSMutableArray *checkIns = [NSMutableArray array];
         for (FasTCheckIn *checkIn in checkInsToSubmit) {
-            NSDictionary *info = @{ @"ticket_id": checkIn.ticketId, @"date": [formatter stringFromDate:checkIn.date], @"medium": checkIn.medium ? checkIn.medium : [NSNull null] };
+            NSDictionary *info = @{ @"ticket_id": checkIn.ticketId, @"date": [formatter stringFromDate:checkIn.date], @"medium": checkIn.medium };
             [checkIns addObject:info];
         }
         

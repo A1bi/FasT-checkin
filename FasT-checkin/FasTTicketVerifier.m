@@ -7,6 +7,7 @@
 //
 
 #import "FasTTicketVerifier.h"
+#import "FasTScanResult.h"
 #import "FasTTicket.h"
 #import "FasTSignedInfoBinary.h"
 #import "FasTApi.h"
@@ -22,7 +23,7 @@ static NSDictionary *dates = nil;
 static NSDictionary *ticketTypes = nil;
 static NSDictionary *seatEntrances = nil;
 static NSMutableDictionary *ticketsById = nil;
-static NSMutableDictionary *ticketsByBarcode = nil;
+static NSMutableDictionary *scanResultsByBarcodeContent = nil;
 
 @interface FasTTicketVerifier ()
 
@@ -35,7 +36,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 
 + (void)init {
     ticketsById = [[NSMutableDictionary alloc] init];
-    ticketsByBarcode = [[NSMutableDictionary alloc] init];
+    scanResultsByBarcodeContent = [[NSMutableDictionary alloc] init];
     
     NSData *responseData = [[NSUserDefaults standardUserDefaults] objectForKey:kLastApiResponseDefaultsKey];
     NSDictionary *response = (NSDictionary *)[NSKeyedUnarchiver unarchiveObjectWithData:responseData];
@@ -44,20 +45,16 @@ static NSMutableDictionary *ticketsByBarcode = nil;
     }
 }
 
-+ (FasTTicket *)getTicketByBarcode:(NSString *)messageData signedInfo:(FasTSignedInfoBinary **)_signedInfo {
++ (FasTScanResult *)getScanResultByBarcodeContent:(NSString *)messageData {
     // check if this message has already been processed
-    FasTTicket *ticket = ticketsByBarcode[messageData];
-    if (!ticket) {
+    FasTScanResult *result = scanResultsByBarcodeContent[messageData];
+    if (!result) {
         // not yet processed -> verify
         FasTSignedInfoBinary *signedInfo = [self verify:messageData];
         
         if (signedInfo) {
-            if (_signedInfo) {
-                *_signedInfo = signedInfo;
-            }
-            
             @try {
-                ticket = [[FasTTicket alloc] initWithInfoData:signedInfo.ticketData dates:dates types:ticketTypes entrances:seatEntrances];
+                FasTTicket *ticket = [[FasTTicket alloc] initWithInfoData:signedInfo.ticketData dates:dates types:ticketTypes entrances:seatEntrances];
                 
                 // find updated ticket
                 FasTTicket *updatedTicket = ticketsById[ticket.ticketId];
@@ -66,20 +63,22 @@ static NSMutableDictionary *ticketsByBarcode = nil;
                 } else {
                     ticketsById[ticket.ticketId] = ticket;
                 }
+                
+                result = [[FasTScanResult alloc] initWithSignedInfoBinary:signedInfo ticket:ticket];
 
             } @catch (NSException *exception) {
                 NSLog(@"ticket could not be validated, exception: %@", exception);
             }
         }
         
-        ticketsByBarcode[messageData] = ticket ? ticket : [NSNull null];
+        scanResultsByBarcodeContent[messageData] = result ? result : [NSNull null];
         
     // message has already been processed and was invalid
-    } else if ([ticket isKindOfClass:[NSNull class]]) {
+    } else if ([result isKindOfClass:[NSNull class]]) {
         return nil;
     }
     
-    return ticket;
+    return result;
 }
 
 + (FasTSignedInfoBinary *)verify:(NSString *)messageData {
@@ -209,7 +208,7 @@ static NSMutableDictionary *ticketsByBarcode = nil;
 + (void)clearTickets
 {
     [ticketsById removeAllObjects];
-    [ticketsByBarcode removeAllObjects];
+    [scanResultsByBarcodeContent removeAllObjects];
 }
 
 + (NSDate *)currentDate

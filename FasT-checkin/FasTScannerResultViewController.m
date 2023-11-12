@@ -8,6 +8,7 @@
 
 #import "FasTCheckInManager.h"
 #import "FasTScannerResultViewController.h"
+#import "FasTScanResult.h"
 #import "FasTSignedInfoBinary.h"
 #import "FasTStatisticsManager.h"
 #import "FasTTicket.h"
@@ -185,13 +186,13 @@ typedef enum {
         }
     
     } else {
-        FasTSignedInfoBinary *signedInfo;
-        FasTTicket *ticket = [FasTTicketVerifier getTicketByBarcode:content signedInfo:&signedInfo];
-        if (!ticket) {
+        FasTScanResult *result = [FasTTicketVerifier getScanResultByBarcodeContent:content];
+        if (!result) {
             [self setErrorTitle:@"Ticket ungültig" description:@"Barcode ungültig."];
             [stats increaseDeniedScans];
 
         } else {
+            FasTTicket *ticket = result.ticket;
             if (![ticket isValidForDate:[FasTTicketVerifier currentDate]]) {
                 [self setErrorTitle:@"Ticket ungültig" description:@"Ticket gilt für einen anderen Termin."];
                 [stats increaseDeniedScans];
@@ -206,7 +207,7 @@ typedef enum {
 
             } else {
                 if (!ticket.checkIn) {
-                    [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:signedInfo.medium];
+                    [[FasTCheckInManager sharedManager] checkInTicket:ticket withMedium:result.signedInfoBinary.medium];
                     [stats addCheckIn:ticket.checkIn];
 
                     if (ticket.seatRange) {
