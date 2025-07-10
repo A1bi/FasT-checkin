@@ -48,7 +48,10 @@
         submissionLock = [[NSLock alloc] init];
         [self loadPersistedCheckIns];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(persistCheckIns) name:UIApplicationWillResignActiveNotification object:nil];
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        // submit check-ins in case some remain from the last run when network was down
+        [center addObserver:self selector:@selector(submitCheckIns) name:UIApplicationDidBecomeActiveNotification object:nil];
+        [center addObserver:self selector:@selector(persistCheckIns) name:UIApplicationWillResignActiveNotification object:nil];
     }
     return self;
 }
