@@ -1,12 +1,12 @@
 PODS:
   - MBProgressHUD (1.2.0)
-  - Sentry (7.16.0):
-    - Sentry/Core (= 7.16.0)
-  - Sentry/Core (7.16.0)
+  - Sentry (8.53.1):
+    - Sentry/Core (= 8.53.1)
+  - Sentry/Core (8.53.1)
 
 DEPENDENCIES:
   - MBProgressHUD (~> 1.2.0)
-  - Sentry (~> 7.1)
+  - Sentry (~> 8.53)
 
 SPEC REPOS:
   trunk:
@@ -15,8 +15,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
-  Sentry: 8045e58d18a62583325aa4a661262fdea799abb1
+  Sentry: 1e4e974d45f09d153af4b30b42acfb1c79e957d3
 
-PODFILE CHECKSUM: 4bc5cbc4e08cff9101c09346c04f0671d93fe1ba
+PODFILE CHECKSUM: 82ba924b0f20673221c161004652e66682de9e09
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.15.2
