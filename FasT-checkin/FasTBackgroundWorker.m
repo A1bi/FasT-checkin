@@ -12,17 +12,15 @@
 
 #define kMaxUpdateInterval 210
 #define kMinUpdateInterval 60
-#define kSubmitInterval 60
 
 @interface FasTBackgroundWorker ()
 {
-    NSTimer *updateTimer, *submitTimer;
+    NSTimer *updateTimer;
 }
 
 - (void)startTimers;
 - (void)stopTimers;
 - (void)updateTicketInfo;
-- (void)submitCheckIns;
 
 @end
 
@@ -47,13 +45,10 @@
     NSLog(@"background: starting timers");
     updateTimer = [NSTimer scheduledTimerWithTimeInterval:kMaxUpdateInterval target:self selector:@selector(updateTicketInfo) userInfo:nil repeats:YES];
     [updateTimer fire];
-    submitTimer = [NSTimer scheduledTimerWithTimeInterval:kSubmitInterval target:self selector:@selector(submitCheckIns) userInfo:nil repeats:YES];
-    [submitTimer fire];
 }
 
 - (void)stopTimers {
     [updateTimer invalidate];
-    [submitTimer invalidate];
     NSLog(@"background: timers stopped");
 }
 
@@ -65,11 +60,6 @@
     } else {
         NSLog(@"background: skipping update");
     }
-}
-
-- (void)submitCheckIns {
-    NSLog(@"background: submit");
-    [[FasTCheckInManager sharedManager] submitCheckIns:NULL];
 }
 
 @end

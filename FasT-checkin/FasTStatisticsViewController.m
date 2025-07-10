@@ -93,26 +93,7 @@
 - (IBAction)showActionSheet:(id)sender {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    UIAlertAction *action;
-    action = [UIAlertAction actionWithTitle:@"Check-Ins übertragen" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-
-        [[FasTCheckInManager sharedManager] submitCheckIns:^(NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-                
-                if (error) {
-                    [self presentError:error];
-                    return;
-                }
-                
-                [self refresh];
-            });
-        }];
-    }];
-    [alert addAction:action];
-    
-    action = [UIAlertAction actionWithTitle:@"Check-In-Status zurücksetzen" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"Check-In-Status zurücksetzen" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [FasTTicketVerifier clearTickets];
     }];
     [alert addAction:action];

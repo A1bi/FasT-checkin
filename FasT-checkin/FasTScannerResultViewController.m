@@ -146,25 +146,6 @@ typedef enum {
                 
                 [self setSuccessTitle:@"Eingang geändert" description:[NSString stringWithFormat:@"Der aktuelle Eingang wurde geändert auf „%@“.", entrance]];
             
-            } else if ([instruction[@"action"] isEqualToString:@"submit_check_ins"]) {
-                [self setResultType:FasTScannerResultTypePending];
-                
-                FasTCheckInManager *manager = [FasTCheckInManager sharedManager];
-                NSInteger numCheckIns = manager.checkInsToSubmit.count;
-                
-                [manager submitCheckIns:^(NSError *error) {
-                    NSString *description;
-                    
-                    if (error) {
-                        description = [NSString stringWithFormat:@"Bei der Übertragung der Check-Ins ist folgender Fehler aufgetreten: %@", error];
-                        [self setErrorTitle:@"Fehler bei der Übertragung" description:description];
-                    
-                    } else {
-                        description = [NSString stringWithFormat:@"Es wurden erfolgreich %ld Check-Ins übertragen.", (long)numCheckIns];
-                        [self setSuccessTitle:@"Check-Ins übertragen" description:description];
-                    }
-                }];
-            
             } else if ([instruction[@"action"] isEqualToString:@"refresh_info"]) {
                 [self setResultType:FasTScannerResultTypePending];
                 

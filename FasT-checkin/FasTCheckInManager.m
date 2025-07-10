@@ -17,11 +17,13 @@
 
 @interface FasTCheckInManager ()
 {
+    NSLock *submissionLock;
     NSMutableArray *checkInsToSubmit;
 }
 
 - (void)persistCheckIns;
 - (void)loadPersistedCheckIns;
+- (void)submitCheckIns;
 
 @end
 
@@ -43,8 +45,7 @@
 {
     self = [super init];
     if (self) {
-        checkInsToSubmit = [[NSMutableArray alloc] init];
-        
+        submissionLock = [[NSLock alloc] init];
         [self loadPersistedCheckIns];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(persistCheckIns) name:UIApplicationWillResignActiveNotification object:nil];
@@ -60,47 +61,66 @@
 {
     FasTCheckIn *checkIn = [[FasTCheckIn alloc] initWithTicket:ticket medium:medium];
     ticket.checkIn = checkIn;
-    [checkInsToSubmit addObject:ticket.checkIn];
+    
+    @synchronized(checkInsToSubmit) {
+        [checkInsToSubmit addObject:ticket.checkIn];
+    }
+    
+    [self submitCheckIns];
 }
 
 // if internet connection is not available save check ins for later submission
 - (void)persistCheckIns {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:checkInsToSubmit] forKey:kCheckInsToSubmitDefaultsKey];
+    
+    @synchronized(checkInsToSubmit) {
+        [defaults setObject:[NSKeyedArchiver archivedDataWithRootObject:checkInsToSubmit] forKey:kCheckInsToSubmitDefaultsKey];
+    }
+    
     [defaults setObject:_lastSubmissionDate forKey:kLastSubmissionDateDefaultsKey];
     [defaults synchronize];
 }
 
-- (void)submitCheckIns:(void (^)(NSError *error))completion {
-    if (checkInsToSubmit.count > 0) {
-        NSISO8601DateFormatter *formatter = [[NSISO8601DateFormatter alloc] init];
-        NSMutableArray *checkIns = [NSMutableArray array];
-        for (FasTCheckIn *checkIn in checkInsToSubmit) {
-            NSDictionary *info = @{ @"ticket_id": checkIn.ticketId, @"date": [formatter stringFromDate:checkIn.date], @"medium": checkIn.medium };
-            [checkIns addObject:info];
-        }
-        
-        NSArray *_checkInsToSubmit = [checkInsToSubmit copy];
-        [FasTApi post:nil data:@{ @"check_ins": checkIns } completion:^(id  _Nullable data, NSError * _Nullable error) {
-            if (error) {
-                if (completion) completion(error);
-                return;
+- (void)submitCheckIns {
+    if (![submissionLock tryLock]) return;
+    
+    NSArray *checkInsInSubmission;
+    
+    @synchronized(checkInsToSubmit) {
+        checkInsInSubmission = [NSArray arrayWithArray:checkInsToSubmit];
+    }
+    
+    if (checkInsInSubmission.count < 1) {
+        [submissionLock unlock];
+        return;
+    }
+    
+    NSISO8601DateFormatter *formatter = [[NSISO8601DateFormatter alloc] init];
+    NSMutableArray *checkIns = [NSMutableArray array];
+    for (FasTCheckIn *checkIn in checkInsInSubmission) {
+        NSDictionary *info = @{ @"ticket_id": checkIn.ticketId, @"date": [formatter stringFromDate:checkIn.date], @"medium": checkIn.medium };
+        [checkIns addObject:info];
+    }
+    
+    [FasTApi post:nil data:@{ @"check_ins": checkIns } completion:^(id  _Nullable data, NSError * _Nullable error) {
+        if (error) {
+            [self->submissionLock unlock];
+            [self performSelector:@selector(submitCheckIns) withObject:nil afterDelay:5];
+            
+        } else {
+            @synchronized(self->checkInsToSubmit) {
+                [self->checkInsToSubmit removeObjectsInArray:checkInsInSubmission];
             }
-
-            [self->checkInsToSubmit removeObjectsInArray:_checkInsToSubmit];
+            
             [self persistCheckIns];
-            [[FasTStatisticsManager sharedManager] addSubmittedCheckIns:_checkInsToSubmit];
+            [[FasTStatisticsManager sharedManager] addSubmittedCheckIns:checkInsInSubmission];
             
             self->_lastSubmissionDate = [NSDate dateWithTimeIntervalSinceNow:0];
             
-            if (completion) completion(nil);
-        }];
-    
-    } else {
-        _lastSubmissionDate = [NSDate dateWithTimeIntervalSinceNow:0];
-        
-        if (completion) completion(nil);
-    }
+            [self->submissionLock unlock];
+            [self submitCheckIns];
+        }
+    }];
 }
 
 - (void)loadPersistedCheckIns {
