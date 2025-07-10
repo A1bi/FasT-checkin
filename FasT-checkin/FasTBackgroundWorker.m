@@ -7,20 +7,18 @@
 //
 
 #import "FasTBackgroundWorker.h"
-#import "FasTCheckInManager.h"
 #import "FasTTicketVerifier.h"
 
-#define kMaxUpdateInterval 210
-#define kMinUpdateInterval 60
+#define kWorkInterval 60
 
 @interface FasTBackgroundWorker ()
 {
-    NSTimer *updateTimer;
+    NSTimer *timer;
 }
 
-- (void)startTimers;
-- (void)stopTimers;
-- (void)updateTicketInfo;
+- (void)startTimer;
+- (void)stopTimer;
+- (void)work;
 
 @end
 
@@ -28,38 +26,32 @@
 
 - (void)start {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(startTimers) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [center addObserver:self selector:@selector(stopTimers) name:UIApplicationWillResignActiveNotification object:nil];
+    [center addObserver:self selector:@selector(startTimer) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [center addObserver:self selector:@selector(stopTimer) name:UIApplicationWillResignActiveNotification object:nil];
 }
 
 - (void)stop {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self stopTimers];
+    [self stopTimer];
 }
 
 - (void)dealloc {
     [self stop];
 }
 
-- (void)startTimers {
-    NSLog(@"background: starting timers");
-    updateTimer = [NSTimer scheduledTimerWithTimeInterval:kMaxUpdateInterval target:self selector:@selector(updateTicketInfo) userInfo:nil repeats:YES];
-    [updateTimer fire];
+- (void)startTimer {
+    NSLog(@"background: starting timer");
+    timer = [NSTimer scheduledTimerWithTimeInterval:kWorkInterval target:self selector:@selector(work) userInfo:nil repeats:YES];
+    [timer fire];
 }
 
-- (void)stopTimers {
-    [updateTimer invalidate];
-    NSLog(@"background: timers stopped");
+- (void)stopTimer {
+    [timer invalidate];
+    NSLog(@"background: timer stopped");
 }
 
-- (void)updateTicketInfo {
-    NSDate *lastRefresh = [FasTTicketVerifier lastRefresh];
-    if (!lastRefresh || -[lastRefresh timeIntervalSinceNow] > kMinUpdateInterval) {
-        NSLog(@"background: update");
-        [FasTTicketVerifier refreshInfo:NULL];
-    } else {
-        NSLog(@"background: skipping update");
-    }
+- (void)work {
+    [FasTTicketVerifier refreshInfo:NULL];
 }
 
 @end
