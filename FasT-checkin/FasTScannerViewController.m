@@ -9,6 +9,7 @@
 #import "FasTScannerViewController.h"
 #import "FasTApi.h"
 #import "FasTStatisticsManager.h"
+#import "FasT_checkin-Swift.h"
 
 @interface FasTScannerViewController ()
 {
@@ -20,6 +21,9 @@
     NSMutableDictionary *recentScanTimes;
     FasTScannerResultViewController *barcodeResultController;
     BOOL scanningBlocked;
+    FasTBroadcastReceiver *broadcastReceiver;
+    NSInteger numberOfValidTicketsSold;
+    NSInteger numberOfCheckIns;
 }
 
 @property (nonatomic) IBOutlet UILongPressGestureRecognizer *longPressRecognizer;
@@ -29,6 +33,8 @@
 - (void)initCapturePreview;
 - (void)initBarcodeDetection;
 - (void)initLayers;
+- (void)listenToBroadcasts;
+- (void)updateFromBroadcast;
 - (void)stopScanning;
 - (void)captureSessionDidStart;
 - (void)clearRecentScanTimes;
@@ -52,6 +58,7 @@
     [self initCapturePreview];
     [self initBarcodeDetection];
     [self initLayers];
+    [self listenToBroadcasts];
     
     recentScanTimes = [[NSMutableDictionary alloc] init];
     
@@ -139,6 +146,30 @@
     barcodeResultController = [[FasTScannerResultViewController alloc] init];
     barcodeResultController.delegate = self;
     [self.view addSubview:barcodeResultController.view];
+}
+
+- (void)listenToBroadcasts
+{
+    __weak FasTScannerViewController *_self = self;
+    broadcastReceiver = [[FasTBroadcastReceiver alloc] init];
+    [broadcastReceiver addOnBroadcastWithHandler:^(NSDictionary<NSString *,id> *data) {
+        if (data[@"check_ins"]) {
+            self->numberOfCheckIns = ((NSNumber *)data[@"check_ins"]).intValue;
+            
+        } else if (data[@"valid_tickets"]) {
+            self->numberOfValidTicketsSold = ((NSNumber *)data[@"valid_tickets"]).intValue;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_self updateFromBroadcast];
+        });
+    }];
+    [broadcastReceiver connect];
+}
+
+- (void)updateFromBroadcast
+{
+    self.topBar.topItem.title = [NSString stringWithFormat:@"%ld von %ld Tickets eingecheckt", (long)numberOfCheckIns, (long)numberOfValidTicketsSold];
 }
 
 - (void)stopScanning

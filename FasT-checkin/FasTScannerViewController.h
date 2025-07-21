@@ -12,4 +12,6 @@
 
 @interface FasTScannerViewController : UIViewController <AVCaptureMetadataOutputObjectsDelegate, FasTScannerResultViewControllerDelegate, UIAdaptivePresentationControllerDelegate>
 
+@property (weak, nonatomic) IBOutlet UINavigationBar *topBar;
+
 @end

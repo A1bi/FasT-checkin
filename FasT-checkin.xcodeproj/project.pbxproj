@@ -39,6 +39,8 @@
 		F07C6FA4235248D5002289FF /* FasTScannerResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F07C6FA2235248D5002289FF /* FasTScannerResultViewController.m */; };
 		F07C6FA5235248D5002289FF /* FasTScannerResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */; };
 		F07C6FA82353758A002289FF /* FasTAudioFeedbackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07C6FA72353758A002289FF /* FasTAudioFeedbackManager.m */; };
+		F0AAB9412E2EE7E300E9F1FF /* ActionCableSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F0AAB9402E2EE7E300E9F1FF /* ActionCableSwift */; };
+		F0AAB9442E2EE83400E9F1FF /* FasTBroadcastReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0AAB9432E2EE83400E9F1FF /* FasTBroadcastReceiver.swift */; };
 		F0B9E6B12B00D89F004B3998 /* FasTScanResult.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B9E6B02B00D89F004B3998 /* FasTScanResult.m */; };
 /* End PBXBuildFile section */
 
@@ -97,6 +99,8 @@
 		F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FasTScannerResultViewController.xib; sourceTree = "<group>"; };
 		F07C6FA62353758A002289FF /* FasTAudioFeedbackManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTAudioFeedbackManager.h; sourceTree = "<group>"; };
 		F07C6FA72353758A002289FF /* FasTAudioFeedbackManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTAudioFeedbackManager.m; sourceTree = "<group>"; };
+		F0AAB9422E2EE83300E9F1FF /* FasT-checkin-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FasT-checkin-Bridging-Header.h"; sourceTree = "<group>"; };
+		F0AAB9432E2EE83400E9F1FF /* FasTBroadcastReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FasTBroadcastReceiver.swift; sourceTree = "<group>"; };
 		F0B9E6AF2B00D89F004B3998 /* FasTScanResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTScanResult.h; sourceTree = "<group>"; };
 		F0B9E6B02B00D89F004B3998 /* FasTScanResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTScanResult.m; sourceTree = "<group>"; };
 		F0E0DD6923E3371500A3F06C /* release.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = release.local.xcconfig; sourceTree = "<group>"; };
@@ -110,6 +114,7 @@
 			files = (
 				F0377C801D370BD000F4A668 /* AudioToolbox.framework in Frameworks */,
 				F0377C761D35573200F4A668 /* Security.framework in Frameworks */,
+				F0AAB9412E2EE7E300E9F1FF /* ActionCableSwift in Frameworks */,
 				F015FFCF1D3443DE00493E8E /* CoreGraphics.framework in Frameworks */,
 				F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */,
 				610FCAD217B8F522000AAF97 /* UIKit.framework in Frameworks */,
@@ -197,6 +202,8 @@
 				F001229C1F2240570009B766 /* FasTStatisticsCheckInViewController.m */,
 				F07C6FA62353758A002289FF /* FasTAudioFeedbackManager.h */,
 				F07C6FA72353758A002289FF /* FasTAudioFeedbackManager.m */,
+				F0AAB9432E2EE83400E9F1FF /* FasTBroadcastReceiver.swift */,
+				F0AAB9422E2EE83300E9F1FF /* FasT-checkin-Bridging-Header.h */,
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
 				F015FFCC1D34432700493E8E /* Images.xcassets */,
 				F0760BBA28E9BB7A0054FB82 /* sounds */,
@@ -286,6 +293,7 @@
 				TargetAttributes = {
 					610FCACD17B8F522000AAF97 = {
 						DevelopmentTeam = YBNG5Y8L6M;
+						LastSwiftMigration = 1640;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -300,6 +308,9 @@
 				de,
 			);
 			mainGroup = 610FCAC517B8F522000AAF97;
+			packageReferences = (
+				F0AAB93F2E2EE7E300E9F1FF /* XCRemoteSwiftPackageReference "Action-Cable-Swift" */,
+			);
 			productRefGroup = 610FCACF17B8F522000AAF97 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -405,6 +416,7 @@
 				F0B9E6B12B00D89F004B3998 /* FasTScanResult.m in Sources */,
 				F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */,
 				F07C6FA4235248D5002289FF /* FasTScannerResultViewController.m in Sources */,
+				F0AAB9442E2EE83400E9F1FF /* FasTBroadcastReceiver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,10 +569,11 @@
 			baseConfigurationReference = 0AE9547D2FFE57C6B255F0F6 /* Pods-FasT-checkin.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1.10.0;
+				CURRENT_PROJECT_VERSION = 1.11.0;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YBNG5Y8L6M;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
@@ -572,12 +585,16 @@
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.10.0;
+				MARKETING_VERSION = 1.11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.a0s.${PRODUCT_NAME:rfc1034identifier}.debug";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6ac67505-b572-44a3-b319-d2c067cd3062";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Development";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Wildcard Development";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "FasT-checkin/FasT-checkin-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -587,11 +604,12 @@
 			baseConfigurationReference = EA14629DE5D7C1EF36DFBEA0 /* Pods-FasT-checkin.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 1.10.0;
+				CURRENT_PROJECT_VERSION = 1.11.0;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YBNG5Y8L6M;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
@@ -603,12 +621,14 @@
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = 1.10.0;
+				MARKETING_VERSION = 1.11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.a0s.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "4892eec6-8b0d-4aa8-b73b-ae7b84d9131f";
 				PROVISIONING_PROFILE_SPECIFIER = "iOS Adhoc";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "FasT-checkin Distribution";
+				SWIFT_OBJC_BRIDGING_HEADER = "FasT-checkin/FasT-checkin-Bridging-Header.h";
+				SWIFT_VERSION = 6.0;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -635,6 +655,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F0AAB93F2E2EE7E300E9F1FF /* XCRemoteSwiftPackageReference "Action-Cable-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nerzh/Action-Cable-Swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F0AAB9402E2EE7E300E9F1FF /* ActionCableSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F0AAB93F2E2EE7E300E9F1FF /* XCRemoteSwiftPackageReference "Action-Cable-Swift" */;
+			productName = ActionCableSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 610FCAC617B8F522000AAF97 /* Project object */;
 }
