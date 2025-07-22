@@ -28,6 +28,7 @@
 
 @property (nonatomic) IBOutlet UILongPressGestureRecognizer *longPressRecognizer;
 @property (weak, nonatomic) IBOutlet UIImageView *scanArea;
+@property (weak, nonatomic) IBOutlet UINavigationBar *topBar;
 
 - (void)initCaptureSession;
 - (void)initCapturePreview;
@@ -35,6 +36,7 @@
 - (void)initLayers;
 - (void)listenToBroadcasts;
 - (void)updateFromBroadcast;
+- (void)startScanning;
 - (void)stopScanning;
 - (void)captureSessionDidStart;
 - (void)clearRecentScanTimes;
@@ -172,8 +174,15 @@
     self.topBar.topItem.title = [NSString stringWithFormat:@"%ld von %ld Tickets eingecheckt", (long)numberOfCheckIns, (long)numberOfValidTicketsSold];
 }
 
+- (void)startScanning
+{
+    _scanArea.alpha = 1;
+    [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+}
+
 - (void)stopScanning
 {
+    _scanArea.alpha = .7;
     [metadataOutput setMetadataObjectsDelegate:nil queue:dispatch_get_main_queue()];
     
     scanningTouch = nil;
@@ -202,7 +211,7 @@
     scanningTouch = touches.anyObject;
     _longPressRecognizer.enabled = YES;
 
-    [metadataOutput setMetadataObjectsDelegate:self queue:dispatch_get_main_queue()];
+    [self startScanning];
 
     [[FasTStatisticsManager sharedManager] increaseScanAttempts];
 }
