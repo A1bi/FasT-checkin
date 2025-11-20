@@ -36,12 +36,19 @@
 		F0760BC028E9BE930054FB82 /* success.aif in Resources */ = {isa = PBXBuildFile; fileRef = F0760BBB28E9BB8F0054FB82 /* success.aif */; };
 		F0760BC128E9BE930054FB82 /* warning.aif in Resources */ = {isa = PBXBuildFile; fileRef = F0760BBC28E9BB8F0054FB82 /* warning.aif */; };
 		F0760BC228E9BE930054FB82 /* failure.aif in Resources */ = {isa = PBXBuildFile; fileRef = F0760BBF28E9BCB10054FB82 /* failure.aif */; };
+		F076E4402ECF5A07006ADF32 /* OrdersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F076E43F2ECF5A07006ADF32 /* OrdersList.swift */; };
+		F076E4422ECF5AAC006ADF32 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = F076E4412ECF5AAC006ADF32 /* Order.swift */; };
+		F076E4442ECF5D5E006ADF32 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = F076E4432ECF5D5E006ADF32 /* Ticket.swift */; };
+		F076E4462ECF61AA006ADF32 /* OrdersListEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F076E4452ECF61AA006ADF32 /* OrdersListEntry.swift */; };
+		F076E4482ECF66D8006ADF32 /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F076E4472ECF66D8006ADF32 /* SampleData.swift */; };
 		F07C6FA4235248D5002289FF /* FasTScannerResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F07C6FA2235248D5002289FF /* FasTScannerResultViewController.m */; };
 		F07C6FA5235248D5002289FF /* FasTScannerResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */; };
 		F07C6FA82353758A002289FF /* FasTAudioFeedbackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F07C6FA72353758A002289FF /* FasTAudioFeedbackManager.m */; };
 		F0AAB9412E2EE7E300E9F1FF /* ActionCableSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F0AAB9402E2EE7E300E9F1FF /* ActionCableSwift */; };
 		F0AAB9442E2EE83400E9F1FF /* FasTBroadcastReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0AAB9432E2EE83400E9F1FF /* FasTBroadcastReceiver.swift */; };
 		F0B9E6B12B00D89F004B3998 /* FasTScanResult.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B9E6B02B00D89F004B3998 /* FasTScanResult.m */; };
+		F0D46AD02ECFC35200D46D3A /* OrdersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D46ACF2ECFC35200D46D3A /* OrdersListViewController.swift */; };
+		F0D46AD32ECFCD7800D46D3A /* OrderStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D46AD22ECFCD7800D46D3A /* OrderStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +101,11 @@
 		F0760BBB28E9BB8F0054FB82 /* success.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = success.aif; sourceTree = "<group>"; };
 		F0760BBC28E9BB8F0054FB82 /* warning.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = warning.aif; sourceTree = "<group>"; };
 		F0760BBF28E9BCB10054FB82 /* failure.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = failure.aif; sourceTree = "<group>"; };
+		F076E43F2ECF5A07006ADF32 /* OrdersList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersList.swift; sourceTree = "<group>"; };
+		F076E4412ECF5AAC006ADF32 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		F076E4432ECF5D5E006ADF32 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticket.swift; sourceTree = "<group>"; };
+		F076E4452ECF61AA006ADF32 /* OrdersListEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersListEntry.swift; sourceTree = "<group>"; };
+		F076E4472ECF66D8006ADF32 /* SampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		F07C6FA1235248D5002289FF /* FasTScannerResultViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTScannerResultViewController.h; sourceTree = "<group>"; };
 		F07C6FA2235248D5002289FF /* FasTScannerResultViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTScannerResultViewController.m; sourceTree = "<group>"; };
 		F07C6FA3235248D5002289FF /* FasTScannerResultViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FasTScannerResultViewController.xib; sourceTree = "<group>"; };
@@ -103,6 +115,8 @@
 		F0AAB9432E2EE83400E9F1FF /* FasTBroadcastReceiver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FasTBroadcastReceiver.swift; sourceTree = "<group>"; };
 		F0B9E6AF2B00D89F004B3998 /* FasTScanResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FasTScanResult.h; sourceTree = "<group>"; };
 		F0B9E6B02B00D89F004B3998 /* FasTScanResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FasTScanResult.m; sourceTree = "<group>"; };
+		F0D46ACF2ECFC35200D46D3A /* OrdersListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrdersListViewController.swift; sourceTree = "<group>"; };
+		F0D46AD22ECFCD7800D46D3A /* OrderStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderStore.swift; sourceTree = "<group>"; };
 		F0E0DD6923E3371500A3F06C /* release.local.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = release.local.xcconfig; sourceTree = "<group>"; };
 		F0FDB148210A469D00DC8CB1 /* Pods_FasT_checkin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_FasT_checkin.framework; path = "../../Library/Developer/Xcode/DerivedData/FasT-checkin-blowwejktzdwkhgqsajbfckufbop/Build/Products/Debug-iphoneos/Pods_FasT_checkin.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -203,6 +217,13 @@
 				F07C6FA62353758A002289FF /* FasTAudioFeedbackManager.h */,
 				F07C6FA72353758A002289FF /* FasTAudioFeedbackManager.m */,
 				F0AAB9432E2EE83400E9F1FF /* FasTBroadcastReceiver.swift */,
+				F076E43F2ECF5A07006ADF32 /* OrdersList.swift */,
+				F0D46ACF2ECFC35200D46D3A /* OrdersListViewController.swift */,
+				F076E4452ECF61AA006ADF32 /* OrdersListEntry.swift */,
+				F0D46AD22ECFCD7800D46D3A /* OrderStore.swift */,
+				F076E4412ECF5AAC006ADF32 /* Order.swift */,
+				F076E4432ECF5D5E006ADF32 /* Ticket.swift */,
+				F076E4472ECF66D8006ADF32 /* SampleData.swift */,
 				F0AAB9422E2EE83300E9F1FF /* FasT-checkin-Bridging-Header.h */,
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
 				F015FFCC1D34432700493E8E /* Images.xcassets */,
@@ -400,11 +421,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F076E4402ECF5A07006ADF32 /* OrdersList.swift in Sources */,
+				F0D46AD02ECFC35200D46D3A /* OrdersListViewController.swift in Sources */,
 				610FCADE17B8F522000AAF97 /* main.m in Sources */,
 				F074C74420F7B66600184557 /* FasTSignedInfoBinary.m in Sources */,
+				F076E4422ECF5AAC006ADF32 /* Order.swift in Sources */,
 				F07C6FA82353758A002289FF /* FasTAudioFeedbackManager.m in Sources */,
 				F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */,
 				F001229D1F2240570009B766 /* FasTStatisticsCheckInViewController.m in Sources */,
+				F076E4442ECF5D5E006ADF32 /* Ticket.swift in Sources */,
+				F076E4462ECF61AA006ADF32 /* OrdersListEntry.swift in Sources */,
 				F00122971F21E8ED0009B766 /* FasTStatisticsViewController.m in Sources */,
 				F001229A1F21EBC90009B766 /* FasTStatisticsManager.m in Sources */,
 				F045495C2AD55CFB00C8B4A4 /* FasTBackgroundWorker.m in Sources */,
@@ -415,6 +441,8 @@
 				F02F87721D41020000B5B0F3 /* FasTApi.m in Sources */,
 				F0B9E6B12B00D89F004B3998 /* FasTScanResult.m in Sources */,
 				F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */,
+				F0D46AD32ECFCD7800D46D3A /* OrderStore.swift in Sources */,
+				F076E4482ECF66D8006ADF32 /* SampleData.swift in Sources */,
 				F07C6FA4235248D5002289FF /* FasTScannerResultViewController.m in Sources */,
 				F0AAB9442E2EE83400E9F1FF /* FasTBroadcastReceiver.swift in Sources */,
 			);
@@ -583,7 +611,7 @@
 					"API_AUTH_TOKEN=$(API_AUTH_TOKEN)",
 				);
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 1.11.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.a0s.${PRODUCT_NAME:rfc1034identifier}.debug";
@@ -619,7 +647,7 @@
 					"API_AUTH_TOKEN=$(API_AUTH_TOKEN)",
 				);
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MARKETING_VERSION = 1.11.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "de.a0s.${PRODUCT_NAME:rfc1034identifier}";
