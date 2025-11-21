@@ -2,6 +2,7 @@ import SwiftUI
 
 struct OrderDetailsView: View {
     var order: Order
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack {
@@ -29,6 +30,21 @@ struct OrderDetailsView: View {
             }
         }
         .navigationTitle("Bestellung \(order.number)")
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Link(destination: URL(string: "https://www.theater-kaisersesch.de/vorverkauf/bestellungen/\(order.id)")!) {
+                    Image(systemName: "safari")
+                }
+            }
+            if #available(iOS 26.0, *) {
+                ToolbarSpacer(.fixed, placement: .primaryAction)
+            }
+            ToolbarItem(placement: .primaryAction) {
+                Button("schließen", systemImage: "xmark", action: {
+                    dismiss()
+                })
+            }
+        }
     }
 }
 
