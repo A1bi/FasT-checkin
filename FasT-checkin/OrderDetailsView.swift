@@ -13,14 +13,13 @@ struct OrderDetailsView: View {
                 .font(.title)
                 .frame(maxWidth: .infinity, alignment: .leading)
             HStack {
-                if (order.paid) {
-                    Image(systemName: "checkmark.square.fill").foregroundStyle(.green)
-                    Text("bezahlt")
-                } else {
-                    Image(systemName: "xmark.square.fill").foregroundStyle(.red)
-                    Text("nicht bezahlt")
-                }
+                Image(systemName: "eurosign")
+                Text(order.paid ? "bezahlt" : "nicht bezahlt")
             }
+            .foregroundStyle(.white)
+            .padding(.vertical, 5)
+            .padding(.horizontal, 10)
+            .background(RoundedRectangle(cornerRadius: 4).fill(order.paid ? .green : .red))
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, 2)
         }
