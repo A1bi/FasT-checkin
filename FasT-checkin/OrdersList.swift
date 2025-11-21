@@ -3,6 +3,7 @@ import SwiftUI
 struct OrdersList: View {
     @State private var presentedOrder: Order?
     @StateObject private var store = OrderStore()
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         NavigationStack {
@@ -20,6 +21,13 @@ struct OrdersList: View {
             }
             .searchable(text: $store.searchQuery, prompt: "Name oder Bestellnummer")
             .navigationTitle("Bestellungen")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("schließen", systemImage: "xmark", action: {
+                        dismiss()
+                    })
+                }
+            }
         }
         .onAppear {
             store.filterType = .unpaid
