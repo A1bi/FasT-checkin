@@ -32,6 +32,9 @@ struct OrdersList: View {
         .onAppear {
             store.filterType = .unpaid
         }
+        .task {
+            await store.fetch()
+        }
     }
 }
 

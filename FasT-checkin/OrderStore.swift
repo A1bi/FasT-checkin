@@ -8,9 +8,10 @@ enum OrderFilterType: String, CaseIterable, Identifiable {
     var id: String { self.rawValue }
 }
 
+@MainActor
 class OrderStore: ObservableObject {
-    @Published var orders: [Order]
-    @Published var filteredOrders: [Order]
+    @Published var orders: [Order] = []
+    @Published var filteredOrders: [Order] = []
     @Published var filterType: OrderFilterType = .all {
         didSet {
             updateFilteredOrders()
@@ -22,9 +23,24 @@ class OrderStore: ObservableObject {
         }
     }
     
-    init() {
-        self.orders = SampleData.shared.orders
-        self.filteredOrders = SampleData.shared.orders
+    func fetch() async {
+        do {
+            let url = URL(string: "http://localhost:3000/api/ticketing/check_ins/orders")!
+            
+            var request = URLRequest(url: url)
+            request.setValue("Token foobar", forHTTPHeaderField: "Authorization")
+            
+            let (data, _) = try await URLSession.shared.data(for: request)
+            
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            
+            self.orders = try decoder.decode([Order].self, from: data)
+            
+            updateFilteredOrders()
+        } catch {
+            print("Error fetching orders:", error)
+        }
     }
     
     private func updateFilteredOrders() {
@@ -37,19 +53,21 @@ class OrderStore: ObservableObject {
             filteredOrders = orders
         }
         
+        filteredOrders = sort(filteredOrders)
+        
         if !searchQuery.isEmpty {
-            filteredOrders = sort(filteredOrders.filter {
-                $0.lastName.contains(searchQuery) || $0.firstName.contains(searchQuery) || $0.number.contains(searchQuery)
-            })
+            filteredOrders = filteredOrders.filter {
+                $0.lastName != nil && $0.lastName!.contains(searchQuery) || $0.firstName != nil && $0.firstName!.contains(searchQuery) || $0.number.contains(searchQuery)
+            }
         }
     }
     
     private func sort(_ orders: [Order]) -> [Order] {
         return orders.sorted {
             if $0.lastName != $1.lastName {
-                $0.lastName < $1.lastName
+                $0.lastName ?? "" < $1.lastName ?? ""
             } else {
-                $0.firstName < $1.firstName
+                $0.firstName ?? "" < $1.firstName ?? ""
             }
         }
     }

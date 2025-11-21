@@ -9,13 +9,13 @@ enum OrderCheckInStatus {
 struct Order: Hashable, Decodable, Identifiable {
     var id: Int64
     var number: String
-    var firstName: String
-    var lastName: String
+    var firstName: String?
+    var lastName: String?
     var paid: Bool
     var tickets: [Ticket] = []
     
     var sortedFullName: String {
-        "\(lastName), \(firstName)"
+        "\(lastName ?? "?"), \(firstName ?? "?")"
     }
     
     var checkInStatus: OrderCheckInStatus {
