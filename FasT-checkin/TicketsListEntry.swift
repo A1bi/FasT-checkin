@@ -1,0 +1,39 @@
+import SwiftUI
+
+struct TicketsListEntry: View {
+    var ticket: Ticket
+    
+    var body: some View {
+        HStack {
+            Image(systemName: iconName).foregroundStyle(iconStyle)
+            Text(ticket.number)
+                .font(.system(.body, design: .monospaced))
+            Text(ticket.type)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 10)
+            if let seat = ticket.seat {
+                Text(seat)
+            }
+        }
+    }
+    
+    private var iconName: String {
+        if ticket.checkedIn {
+            return "checkmark.circle.fill"
+        } else {
+            return "circle"
+        }
+    }
+    
+    private var iconStyle: Color {
+        if ticket.checkedIn {
+            return .green
+        } else {
+            return .red
+        }
+    }
+}
+
+#Preview {
+    TicketsListEntry(ticket: SampleData.shared.ticket())
+}

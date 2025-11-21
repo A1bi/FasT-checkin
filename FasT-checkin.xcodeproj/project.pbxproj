@@ -23,6 +23,8 @@
 		F015FFCD1D34432700493E8E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F015FFCC1D34432700493E8E /* Images.xcassets */; };
 		F015FFCF1D3443DE00493E8E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */; };
 		F015FFD11D3444B500493E8E /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F015FFD01D3444B500493E8E /* Storyboard.storyboard */; };
+		F027F22A2ED0FCC400634156 /* OrderDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027F2292ED0FCC400634156 /* OrderDetailsView.swift */; };
+		F027F2582ED0FF2F00634156 /* TicketsListEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = F027F2572ED0FF2F00634156 /* TicketsListEntry.swift */; };
 		F02F87721D41020000B5B0F3 /* FasTApi.m in Sources */ = {isa = PBXBuildFile; fileRef = F02F87711D41020000B5B0F3 /* FasTApi.m */; };
 		F02F87751D410A5300B5B0F3 /* FasTCheckIn.m in Sources */ = {isa = PBXBuildFile; fileRef = F02F87741D410A5300B5B0F3 /* FasTCheckIn.m */; };
 		F0377C741D35509500F4A668 /* FasTTicketVerifier.m in Sources */ = {isa = PBXBuildFile; fileRef = F0377C731D35509500F4A668 /* FasTTicketVerifier.m */; };
@@ -78,6 +80,8 @@
 		F015FFCC1D34432700493E8E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F015FFCE1D3443DE00493E8E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		F015FFD01D3444B500493E8E /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
+		F027F2292ED0FCC400634156 /* OrderDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsView.swift; sourceTree = "<group>"; };
+		F027F2572ED0FF2F00634156 /* TicketsListEntry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TicketsListEntry.swift; sourceTree = "<group>"; };
 		F02F87701D41020000B5B0F3 /* FasTApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTApi.h; sourceTree = "<group>"; };
 		F02F87711D41020000B5B0F3 /* FasTApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTApi.m; sourceTree = "<group>"; };
 		F02F87731D410A5300B5B0F3 /* FasTCheckIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTCheckIn.h; sourceTree = "<group>"; };
@@ -220,6 +224,8 @@
 				F076E43F2ECF5A07006ADF32 /* OrdersList.swift */,
 				F0D46ACF2ECFC35200D46D3A /* OrdersListViewController.swift */,
 				F076E4452ECF61AA006ADF32 /* OrdersListEntry.swift */,
+				F027F2292ED0FCC400634156 /* OrderDetailsView.swift */,
+				F027F2572ED0FF2F00634156 /* TicketsListEntry.swift */,
 				F0D46AD22ECFCD7800D46D3A /* OrderStore.swift */,
 				F076E4412ECF5AAC006ADF32 /* Order.swift */,
 				F076E4432ECF5D5E006ADF32 /* Ticket.swift */,
@@ -429,6 +435,7 @@
 				F001229D1F2240570009B766 /* FasTStatisticsCheckInViewController.m in Sources */,
 				F076E4442ECF5D5E006ADF32 /* Ticket.swift in Sources */,
 				F076E4462ECF61AA006ADF32 /* OrdersListEntry.swift in Sources */,
+				F027F2582ED0FF2F00634156 /* TicketsListEntry.swift in Sources */,
 				F00122971F21E8ED0009B766 /* FasTStatisticsViewController.m in Sources */,
 				F001229A1F21EBC90009B766 /* FasTStatisticsManager.m in Sources */,
 				F045495C2AD55CFB00C8B4A4 /* FasTBackgroundWorker.m in Sources */,
@@ -438,6 +445,7 @@
 				F0667E131F1805DD0051AD14 /* FasTCheckInManager.m in Sources */,
 				F02F87721D41020000B5B0F3 /* FasTApi.m in Sources */,
 				F0B9E6B12B00D89F004B3998 /* FasTScanResult.m in Sources */,
+				F027F22A2ED0FCC400634156 /* OrderDetailsView.swift in Sources */,
 				F0377C7C1D3665F300F4A668 /* FasTTicket.m in Sources */,
 				F0D46AD32ECFCD7800D46D3A /* OrderStore.swift in Sources */,
 				F076E4482ECF66D8006ADF32 /* SampleData.swift in Sources */,

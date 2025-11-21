@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct OrdersList: View {
-    @State private var presentedOrder: Order?
     @StateObject private var store = OrderStore()
     @Environment(\.dismiss) var dismiss
     
@@ -14,10 +13,13 @@ struct OrdersList: View {
             }
             .pickerStyle(.segmented)
             .padding()
-            List(store.filteredOrders, selection: $presentedOrder) { order in
+            List(store.filteredOrders) { order in
                 NavigationLink(value: order) {
                     OrdersListEntry(order: order)
                 }
+            }
+            .navigationDestination(for: Order.self) { order in
+                OrderDetailsView(order: order)
             }
             .searchable(text: $store.searchQuery, prompt: "Name oder Bestellnummer")
             .navigationTitle("Bestellungen")

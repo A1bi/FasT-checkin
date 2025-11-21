@@ -14,6 +14,10 @@ struct Order: Hashable, Decodable, Identifiable {
     var paid: Bool
     var tickets: [Ticket] = []
     
+    var fullName: String {
+        "\(firstName ?? "?") \(lastName ?? "?")"
+    }
+    
     var sortedFullName: String {
         "\(lastName ?? "?"), \(firstName ?? "?")"
     }
