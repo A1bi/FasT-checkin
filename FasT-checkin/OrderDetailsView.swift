@@ -41,9 +41,17 @@ struct OrderDetailsView: View {
             ToolbarItemGroup(placement: .confirmationAction) {
                 if isEditing {
                     Button("Done", systemImage: "checkmark") {
+                        var tickets: [Ticket] = []
                         for ticket in selectedTickets {
                             additionallyCheckedInTickets.insert(ticket)
+                            tickets.append(ticket)
                         }
+                        
+                        Task {
+                            let store = OrderStore()
+                            await store.checkInTickets(tickets: tickets)
+                        }
+                        
                         isEditing = false
                     }
                 }

@@ -25,10 +25,7 @@ class OrderStore: ObservableObject {
     
     func fetch() async {
         do {
-            let url = URL(string: "http://localhost:3000/api/ticketing/check_ins/orders")!
-            
-            var request = URLRequest(url: url)
-            request.setValue("Token foobar", forHTTPHeaderField: "Authorization")
+            let request = apiRequestForPath(path: "ticketing/check_ins/orders")
             
             let (data, _) = try await URLSession.shared.data(for: request)
             
@@ -41,6 +38,41 @@ class OrderStore: ObservableObject {
         } catch {
             print("Error fetching orders:", error)
         }
+    }
+    
+    func checkInTickets(tickets: [Ticket]) async {
+        do {
+            var request = apiRequestForPath(path: "ticketing/check_ins")
+            request.httpMethod = "POST"
+            
+            var checkIns: [Dictionary<String, String>] = []
+            for ticket in tickets {
+                let checkIn: Dictionary<String, String> = [
+                    "ticket_id": String(ticket.id),
+                    "date": Date().ISO8601Format(),
+                    "medium": "box_office_direct"
+                ]
+                checkIns.append(checkIn)
+            }
+            let message: Dictionary<String, Array> = ["check_ins": checkIns]
+            let encoder = JSONEncoder()
+            let data = try encoder.encode(message)
+            request.httpBody = data
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let _ = try await URLSession.shared.data(for: request)
+        } catch {
+            print("Error checking in tickets:", error)
+        }
+    }
+    
+    private func apiRequestForPath(path: String) -> URLRequest {
+        let url = URL(string: "http://localhost:3000/api/\(path)")!
+                    
+        var request = URLRequest(url: url)
+        request.setValue("Token foobar", forHTTPHeaderField: "Authorization")
+        
+        return request
     }
     
     private func updateFilteredOrders() {
