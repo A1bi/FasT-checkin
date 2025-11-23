@@ -4,7 +4,6 @@ struct OrderDetailsView: View {
     var order: Order
     @State var isEditing = false
     @State var selectedTickets = Set<Ticket>()
-    @State var additionallyCheckedInTickets = Set<Ticket>()
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -28,10 +27,10 @@ struct OrderDetailsView: View {
             .font(.title3)
         List(order.tickets, id: \.self, selection: $selectedTickets) { ticket in
             if #available(iOS 17.0, *) {
-                TicketsListEntry(ticket: ticket, forceCheckIn: additionallyCheckedInTickets.contains(ticket))
+                TicketsListEntry(ticket: ticket)
                     .selectionDisabled(ticket.checkedIn)
             } else {
-                TicketsListEntry(ticket: ticket, forceCheckIn: additionallyCheckedInTickets.contains(ticket))
+                TicketsListEntry(ticket: ticket)
             }
         }
         .navigationTitle("Bestellung \(order.number)")
@@ -41,10 +40,9 @@ struct OrderDetailsView: View {
             ToolbarItemGroup(placement: .confirmationAction) {
                 if isEditing {
                     Button("Done", systemImage: "checkmark") {
-                        var tickets: [Ticket] = []
-                        for ticket in selectedTickets {
-                            additionallyCheckedInTickets.insert(ticket)
-                            tickets.append(ticket)
+                        let tickets: [Ticket] = Array(selectedTickets)
+                        for ticket in tickets {
+                            ticket.checkedIn = true
                         }
                         
                         Task {

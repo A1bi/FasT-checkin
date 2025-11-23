@@ -1,8 +1,7 @@
 import SwiftUI
 
 struct TicketsListEntry: View {
-    var ticket: Ticket
-    var forceCheckIn: Bool = false
+    @StateObject var ticket: Ticket
     
     var body: some View {
         HStack {
@@ -26,7 +25,7 @@ struct TicketsListEntry: View {
     }
     
     private var iconName: String {
-        if checkedIn {
+        if ticket.checkedIn {
             return "checkmark.circle.fill"
         } else {
             return "circle"
@@ -34,15 +33,11 @@ struct TicketsListEntry: View {
     }
     
     private var iconStyle: Color {
-        if checkedIn {
+        if ticket.checkedIn {
             return .green
         } else {
             return .red
         }
-    }
-    
-    private var checkedIn: Bool {
-        forceCheckIn || ticket.checkedIn
     }
 }
 
