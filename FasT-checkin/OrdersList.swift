@@ -13,9 +13,15 @@ struct OrdersList: View {
             }
             .pickerStyle(.segmented)
             .padding()
-            List(store.filteredOrders) { order in
-                NavigationLink(value: order) {
-                    OrdersListEntry(order: order)
+            List {
+                Section {
+                    ForEach(store.filteredOrders) { order in
+                        NavigationLink(value: order) {
+                            OrdersListEntry(order: order)
+                        }
+                    }
+                } header: {
+                    Text("\(store.filteredOrders.count) Bestellungen")
                 }
             }
             .navigationDestination(for: Order.self) { order in
@@ -33,8 +39,14 @@ struct OrdersList: View {
         }
         .onAppear {
             store.filterType = .unpaid
+            if store.filteredOrders.isEmpty {
+                store.filterType = .notFullyCheckedIn
+            }
         }
         .task {
+            await store.fetch()
+        }
+        .refreshable {
             await store.fetch()
         }
     }
