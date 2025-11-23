@@ -7,30 +7,35 @@ struct OrderDetailsView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        VStack {
-            Text(order.fullName)
-                .font(.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            HStack {
-                Image(systemName: "eurosign")
-                Text(order.paid ? "bezahlt" : "nicht bezahlt")
-            }
-            .foregroundStyle(.white)
-            .padding(.vertical, 5)
-            .padding(.horizontal, 10)
-            .background(RoundedRectangle(cornerRadius: 4).fill(order.paid ? .green : .red))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 2)
-        }
-        .padding()
-        Text("\(order.tickets.count) Tickets")
-            .font(.title3)
-        List(order.tickets, id: \.self, selection: $selectedTickets) { ticket in
-            if #available(iOS 17.0, *) {
-                TicketsListEntry(ticket: ticket)
-                    .selectionDisabled(ticket.checkedIn)
-            } else {
-                TicketsListEntry(ticket: ticket)
+        List(selection: $selectedTickets) {
+            Section {
+                ForEach(order.tickets) { ticket in
+                    if #available(iOS 17.0, *) {
+                        TicketsListEntry(ticket: ticket)
+                            .selectionDisabled(ticket.checkedIn)
+                            .tag(ticket)
+                    } else {
+                        TicketsListEntry(ticket: ticket)
+                            .tag(ticket)
+                    }
+                }
+            } header: {
+                VStack {
+                    Text(order.fullName)
+                        .font(.title)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    HStack {
+                        Image(systemName: "eurosign")
+                        Text(order.paid ? "bezahlt" : "nicht bezahlt")
+                    }
+                    .foregroundStyle(.white)
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 10)
+                    .background(RoundedRectangle(cornerRadius: 4).fill(order.paid ? .green : .red))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 10)
+                    Text("\(order.tickets.count) Tickets")
+                }
             }
         }
         .navigationTitle("Bestellung \(order.number)")
