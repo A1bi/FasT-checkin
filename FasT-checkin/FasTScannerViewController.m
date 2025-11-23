@@ -43,7 +43,6 @@
 - (void)setScanningBlocked:(BOOL)blocked;
 - (IBAction)longDoublePressRecognized;
 - (IBAction)dismissPopover:(UIStoryboardSegue *)unwindSegue;
-- (IBAction)showOrders;
 
 @end
 
@@ -275,12 +274,6 @@
     if (_longPressRecognizer.state == UIGestureRecognizerStateBegan) {
         [self performSegueWithIdentifier:@"InfoSegue" sender:nil];
     }
-}
-
-- (IBAction)showOrders
-{
-    OrdersListViewController *controller = [[OrdersListViewController alloc] init];
-    [self presentViewController:controller animated:YES completion:NULL];
 }
 
 - (void)dismissPopover:(UIStoryboardSegue *)unwindSegue {

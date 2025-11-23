@@ -29,7 +29,7 @@
                                     <navigationItem title="Einlasskontrolle" id="09C-iF-oJZ">
                                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="7q3-We-obG">
                                             <connections>
-                                                <action selector="showOrders" destination="srW-Pt-7LO" id="0Bs-gi-wDd"/>
+                                                <segue destination="FpH-uG-AbC" kind="presentation" id="Iu8-pu-qd8"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -417,6 +417,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FYv-K2-3UW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1074" y="517"/>
+        </scene>
+        <!--Orders List View Controller-->
+        <scene sceneID="uIQ-Sn-7M7">
+            <objects>
+                <viewController id="FpH-uG-AbC" customClass="OrdersListViewController" customModule="FasT_checkin" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tjo-Ru-TNW">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="5jH-3r-9te"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B3U-QV-vnT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1073" y="1208"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
