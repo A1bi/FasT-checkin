@@ -2,6 +2,9 @@ import SwiftUI
 import UIKit
 
 class OrdersListViewController: UIViewController {
+    @objc
+    var onDismiss: (() -> Void)?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,5 +23,11 @@ class OrdersListViewController: UIViewController {
         ])
         
         hostingController.didMove(toParent: self)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        if onDismiss != nil {
+            onDismiss!()
+        }
     }
 }

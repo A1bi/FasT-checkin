@@ -29,7 +29,7 @@
                                     <navigationItem title="Einlasskontrolle" id="09C-iF-oJZ">
                                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="7q3-We-obG">
                                             <connections>
-                                                <segue destination="FpH-uG-AbC" kind="presentation" id="Iu8-pu-qd8"/>
+                                                <segue destination="FpH-uG-AbC" kind="presentation" modalPresentationStyle="fullScreen" id="Iu8-pu-qd8"/>
                                             </connections>
                                         </barButtonItem>
                                     </navigationItem>
@@ -423,7 +423,7 @@
             <objects>
                 <viewController id="FpH-uG-AbC" customClass="OrdersListViewController" customModule="FasT_checkin" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tjo-Ru-TNW">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="5jH-3r-9te"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>

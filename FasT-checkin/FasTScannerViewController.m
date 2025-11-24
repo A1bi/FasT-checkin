@@ -36,6 +36,7 @@
 - (void)initLayers;
 - (void)listenToBroadcasts;
 - (void)updateFromBroadcast;
+- (void)toggleCaptureSession:(BOOL)toggle;
 - (void)startScanning;
 - (void)stopScanning;
 - (void)captureSessionDidStart;
@@ -70,15 +71,13 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self stopScanning];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self->session startRunning];
-    });
+    [self toggleCaptureSession:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self stopScanning];
-    [session stopRunning];
+    [self toggleCaptureSession:NO];
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -172,6 +171,16 @@
 - (void)updateFromBroadcast
 {
     self.topBar.topItem.title = [NSString stringWithFormat:@"%ld von %ld Tickets eingecheckt", (long)numberOfCheckIns, (long)numberOfValidTicketsSold];
+}
+
+- (void)toggleCaptureSession:(BOOL)toggle {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (toggle) {
+            [self->session startRunning];
+        } else {
+            [self->session stopRunning];
+        }
+    });
 }
 
 - (void)startScanning
@@ -292,11 +301,19 @@
 #pragma mark presentation controller delegate
 
 - (void)presentationController:(UIPresentationController *)presentationController willPresentWithAdaptiveStyle:(UIModalPresentationStyle)style transitionCoordinator:(id<UIViewControllerTransitionCoordinator>)transitionCoordinator {
+    if ([presentationController.presentedViewController isKindOfClass:[OrdersListViewController class]]) {
+        OrdersListViewController *vc = (OrdersListViewController *)presentationController.presentedViewController;
+        vc.onDismiss = ^{
+            [self presentationControllerDidDismiss:presentationController];
+        };
+    }
     [self setScanningBlocked:YES];
+    [self toggleCaptureSession:NO];
 }
 
 - (void)presentationControllerWillDismiss:(UIPresentationController *)presentationController {
     [self setScanningBlocked:NO];
+    [self toggleCaptureSession:YES];
 }
 
 #pragma mark scanner result delegate
