@@ -15,14 +15,10 @@ class FasTBroadcastReceiver : NSObject {
     
     override init() {
         let clientOptions: ACClientOptions = .init(debug: false, reconnect: true)
-        
-        #if DEBUG
-        self.client = .init(stringURL: "ws://localhost:3000/cable", options: clientOptions)
-        client.headers = ["Origin": "http://localhost:3000"]
-        #else
-        self.client = .init(stringURL: "wss://www.theater-kaisersesch.de/cable", options: clientOptions)
-        client.headers = ["Origin": "https://www.theater-kaisersesch.de"]
-        #endif
+        let apiHost = Bundle.main.object(forInfoDictionaryKey: "API_HOST") as? String ?? ""
+        let wsHost = apiHost.replace("http", "ws")
+        self.client = .init(stringURL: "\(wsHost)/cable", options: clientOptions)
+        client.headers = ["Origin": apiHost]
         
         let channelOptions: ACChannelOptions = .init(buffering: true, autoSubscribe: true)
         self.channel = client.makeChannel(name: "Ticketing::CheckpointChannel", options: channelOptions)

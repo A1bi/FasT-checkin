@@ -1,6 +1,6 @@
 // DEBUG CONFIGURATION
 
-API_HOST = "http:/localhost:3000"
-API_AUTH_TOKEN = "foobar"
+API_HOST = http:/$()/localhost:3000
+API_KEY = foobar
 
 #include? "debug.local.xcconfig"

@@ -10,6 +10,8 @@ enum OrderFilterType: String, CaseIterable, Identifiable {
 
 @MainActor
 class OrderStore: ObservableObject {
+    private let apiHost: String
+    private let apiKey: String
     @Published var orders: [Order] = []
     @Published var filteredOrders: [Order] = []
     @Published var filterType: OrderFilterType = .all {
@@ -21,6 +23,11 @@ class OrderStore: ObservableObject {
         didSet {
             updateFilteredOrders()
         }
+    }
+    
+    init() {
+        apiHost = Self.configValue(for: "API_HOST")
+        apiKey = Self.configValue(for: "API_KEY")
     }
     
     func fetch() async {
@@ -67,11 +74,9 @@ class OrderStore: ObservableObject {
     }
     
     private func apiRequestForPath(path: String) -> URLRequest {
-        let url = URL(string: "http://localhost:3000/api/\(path)")!
-                    
+        let url = URL(string: "\(apiHost)/api/\(path)")!
         var request = URLRequest(url: url)
-        request.setValue("Token foobar", forHTTPHeaderField: "Authorization")
-        
+        request.setValue("Token \(apiKey)", forHTTPHeaderField: "Authorization")
         return request
     }
     
@@ -102,5 +107,9 @@ class OrderStore: ObservableObject {
                 $0.firstName ?? "" < $1.firstName ?? ""
             }
         }
+    }
+    
+    static private func configValue(for key: String) -> String {
+        Bundle.main.object(forInfoDictionaryKey: key) as? String ?? ""
     }
 }

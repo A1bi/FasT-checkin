@@ -612,11 +612,7 @@
 				DEVELOPMENT_TEAM = YBNG5Y8L6M;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"API_HOST=$(API_HOST)",
-					"API_AUTH_TOKEN=$(API_AUTH_TOKEN)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
@@ -646,11 +642,7 @@
 				DEVELOPMENT_TEAM = YBNG5Y8L6M;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FasT-checkin/FasT-checkin-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(inherited)",
-					"API_HOST=$(API_HOST)",
-					"API_AUTH_TOKEN=$(API_AUTH_TOKEN)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				INFOPLIST_FILE = "FasT-checkin/FasT-checkin-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";

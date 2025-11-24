@@ -6,10 +6,6 @@
 //  Copyright © 2016 Albisigns. All rights reserved.
 //
 
-#ifndef API_AUTH_TOKEN
-#error "API Auth Token not set"
-#endif
-
 #import "FasTApi.h"
 
 @interface FasTApi ()
@@ -60,7 +56,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-        NSString *auth = [NSString stringWithFormat:@"Token %@", NSStringize(API_AUTH_TOKEN)];
+        NSString *auth = [NSString stringWithFormat:@"Token %@", [self configValueFor:@"API_KEY"]];
         config.HTTPAdditionalHeaders = @{ @"Accept": @"application/json", @"Authorization": auth };
         sharedSession = [NSURLSession sessionWithConfiguration:config];
     });
@@ -68,7 +64,7 @@
 }
 
 + (NSURL *)urlForAction:(NSString *)action params:(NSDictionary *)params {
-    NSString *url = [NSString stringWithFormat:@"%@/api/ticketing/check_ins", NSStringize(API_HOST)];
+    NSString *url = [NSString stringWithFormat:@"%@/api/ticketing/check_ins", [self configValueFor:@"API_HOST"]];
     if (action) {
         url = [NSString stringWithFormat:@"%@/%@", url, action];
     }
@@ -84,6 +80,10 @@
     }
 
     return components.URL;
+}
+
++ (NSString *)configValueFor:(NSString *)key {
+    return [NSBundle.mainBundle objectForInfoDictionaryKey:key];
 }
 
 @end
