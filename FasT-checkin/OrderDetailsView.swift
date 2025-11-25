@@ -1,9 +1,10 @@
 import SwiftUI
 
 struct OrderDetailsView: View {
-    var order: Order
+    @State var order: Order
     @State var isEditing = false
     @State var selectedTickets = Set<Ticket>()
+    @State private var markAsPaidConfirmationShown = false
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -20,29 +21,31 @@ struct OrderDetailsView: View {
                     }
                 }
             } header: {
-                HStack {
-                    VStack {
-                        Text(order.fullName)
-                            .font(.title)
+                VStack {
+                    HStack {
+                        VStack {
+                            Text(order.fullName)
+                                .font(.title)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            HStack {
+                                Image(systemName: "eurosign")
+                                Text(order.paid ? "bezahlt" : "nicht bezahlt")
+                            }
+                            .foregroundStyle(.white)
+                            .padding(.vertical, 5)
+                            .padding(.horizontal, 10)
+                            .background(RoundedRectangle(cornerRadius: 4).fill(order.paid ? .green : .red))
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        HStack {
-                            Image(systemName: "eurosign")
-                            Text(order.paid ? "bezahlt" : "nicht bezahlt")
+                            .padding(.bottom, 10)
                         }
-                        .foregroundStyle(.white)
-                        .padding(.vertical, 5)
-                        .padding(.horizontal, 10)
-                        .background(RoundedRectangle(cornerRadius: 4).fill(order.paid ? .green : .red))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.bottom, 10)
-                        Text("\(order.tickets.count) Tickets")
+                        if (!order.paid) {
+                            Text(abs(order.balance), format: .currency(code: "EUR"))
+                                .font(.title2)
+                                .foregroundStyle(.red)
+                            Text("offen")
+                        }
                     }
-                    if (!order.paid) {
-                        Text(abs(order.balance), format: .currency(code: "EUR"))
-                            .font(.title2)
-                            .foregroundStyle(.red)
-                        Text("offen")
-                    }
+                    Text("\(order.tickets.count) Tickets")
                 }
             }
         }
@@ -79,7 +82,7 @@ struct OrderDetailsView: View {
                 ToolbarItemGroup(placement: .primaryAction) {
                     if !order.paid {
                         Button(action: {
-                            isEditing = true
+                            markAsPaidConfirmationShown = true
                         }) {
                             Image("mark_as_paid", label: Text("als bezahlt markieren"))
                         }
@@ -101,6 +104,16 @@ struct OrderDetailsView: View {
                     isEditing = false
                     dismiss()
                 })
+            }
+        }
+        .alert("Möchten Sie die Bestellung als bezahlt markieren?", isPresented: $markAsPaidConfirmationShown) {
+            Button("als bezahlt markieren") {
+                withAnimation {
+                    order.paid = true
+                }
+            }
+            Button("abbrechen", role: .cancel) {
+                markAsPaidConfirmationShown = false
             }
         }
     }
