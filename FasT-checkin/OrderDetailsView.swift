@@ -13,14 +13,15 @@ struct OrderDetailsView: View {
         List(selection: $selectedTickets) {
             Section {
                 ForEach(order.tickets) { ticket in
-                    if #available(iOS 17.0, *) {
-                        TicketsListEntry(ticket: ticket)
-                            .selectionDisabled(ticket.checkedIn)
-                            .tag(ticket)
-                    } else {
-                        TicketsListEntry(ticket: ticket)
-                            .tag(ticket)
+                    Group {
+                        if #available(iOS 17.0, *) {
+                            TicketsListEntry(ticket: ticket)
+                                .selectionDisabled(ticket.checkedIn)
+                        } else {
+                            TicketsListEntry(ticket: ticket)
+                        }
                     }
+                    .tag(ticket)
                 }
             } header: {
                 VStack {
@@ -43,6 +44,8 @@ struct OrderDetailsView: View {
                                 .font(.title2)
                                 .foregroundStyle(.red)
                             Text("offen")
+                        } else {
+                            EmptyView()
                         }
                     }
                     .padding(.bottom, 10)
@@ -62,37 +65,43 @@ struct OrderDetailsView: View {
                         
                         isEditing = false
                     }
+                } else {
+                    EmptyView()
                 }
             }
-            if !isEditing {
-                ToolbarItemGroup(placement: .primaryAction) {
+//            if #available(iOS 26.0, *) {
+//                ToolbarSpacer(.fixed, placement: .primaryAction)
+//            }
+            ToolbarItemGroup(placement: .primaryAction) {
+                if !isEditing {
                     Link(destination: URL(string: "https://www.theater-kaisersesch.de/vorverkauf/bestellungen/\(order.id)")!) {
                         Image(systemName: "safari")
                     }
+                } else {
+                    EmptyView()
                 }
-                if #available(iOS 26.0, *) {
-                    ToolbarSpacer(.fixed, placement: .primaryAction)
-                }
-                ToolbarItemGroup(placement: .primaryAction) {
-                    if !order.paid {
-                        Button(action: {
-                            markAsPaidConfirmationShown = true
-                        }) {
-                            Image("mark_as_paid", label: Text("als bezahlt markieren"))
-                        }
+                if !order.paid && !isEditing {
+                    Button(action: {
+                        markAsPaidConfirmationShown = true
+                    }) {
+                        Image("mark_as_paid", label: Text("als bezahlt markieren"))
                     }
-                    if order.checkInStatus != .full {
-                        Button(action: {
-                            isEditing = true
-                        }) {
-                            Image("check_in", label: Text("einchecken"))
-                        }
-                    }
+                } else {
+                    EmptyView()
                 }
-                if #available(iOS 26.0, *) {
-                    ToolbarSpacer(.fixed, placement: .primaryAction)
+                if order.checkInStatus != .full && !isEditing {
+                    Button(action: {
+                        isEditing = true
+                    }) {
+                        Image("check_in", label: Text("einchecken"))
+                    }
+                } else {
+                    EmptyView()
                 }
             }
+//            if #available(iOS 26.0, *) {
+//                ToolbarSpacer(.fixed, placement: .primaryAction)
+//            }
             ToolbarItem(placement: .primaryAction) {
                 Button("schließen", systemImage: "xmark", action: {
                     if isEditing {
@@ -140,7 +149,7 @@ struct OrderDetailsView: View {
 }
 
 #Preview("paid") {
-    NavigationStack {
+    NavigationView {
         var order = SampleData.shared.order
         order.paid = true
         return OrderDetailsView(order: order)
@@ -148,7 +157,7 @@ struct OrderDetailsView: View {
 }
 
 #Preview("unpaid") {
-    NavigationStack {
+    NavigationView {
         var order = SampleData.shared.order
         order.paid = false
         return OrderDetailsView(order: order)

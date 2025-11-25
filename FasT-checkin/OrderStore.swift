@@ -3,7 +3,7 @@ import Foundation
 enum OrderFilterType: String, CaseIterable, Identifiable {
     case all = "alle"
     case unpaid = "unbezahlt"
-    case notFullyCheckedIn = "nicht eingecheckt"
+    case notFullyCheckedIn = "einzuchecken"
     
     var id: String { self.rawValue }
 }

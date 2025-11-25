@@ -10,28 +10,31 @@ struct OrdersList: View {
     @State private var firstAppearance = true
     
     var body: some View {
-        NavigationStack {
-            Picker("Select Theme", selection: $store.filterType) {
-                ForEach(OrderFilterType.allCases) { type in
-                    Text(type.rawValue).tag(type)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding()
+        NavigationView {
             List {
                 Section {
                     ForEach(store.filteredOrders) { order in
-                        NavigationLink(value: order) {
+                        NavigationLink(destination: OrderDetailsView(order: order)
+                            .environment(\.dismissModal, dismiss)
+                        ) {
                             OrdersListEntry(order: order)
                         }
                     }
+                    .listRowInsets(.init(top: 0, leading: 15, bottom: 0, trailing: 15))
                 } header: {
-                    Text("\(store.filteredOrders.count) Bestellungen")
+                    VStack {
+                        Picker("Select Theme", selection: $store.filterType) {
+                            ForEach(OrderFilterType.allCases) { type in
+                                Text(type.rawValue).tag(type)
+                            }
+                        }
+                        .pickerStyle(.segmented)
+                        .padding(.bottom, 10)
+                        Text("\(store.filteredOrders.count) Bestellungen")
+                    }
+                    .padding(.vertical, 15)
                 }
-            }
-            .navigationDestination(for: Order.self) { order in
-                OrderDetailsView(order: order)
-                    .environment(\.dismissModal, dismiss)
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
             }
             .searchable(text: $store.searchQuery, prompt: "Name oder Bestellnummer")
             .navigationTitle("Bestellungen")
