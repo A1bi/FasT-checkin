@@ -3,6 +3,7 @@ import SwiftUI
 struct OrdersList: View {
     @StateObject private var store = OrderStore()
     @Environment(\.dismiss) var dismiss
+    @State private var firstAppearance = true
     
     var body: some View {
         NavigationStack {
@@ -36,18 +37,22 @@ struct OrdersList: View {
                     })
                 }
             }
-        }
-        .onAppear {
-            store.filterType = .unpaid
-            if store.filteredOrders.isEmpty {
-                store.filterType = .notFullyCheckedIn
+            .refreshable {
+                await store.fetch()
             }
-        }
-        .task {
-            await store.fetch()
-        }
-        .refreshable {
-            await store.fetch()
+            .onAppear {
+                Task {
+                    await store.fetch()
+                    
+                    if firstAppearance {
+                        store.filterType = .unpaid
+                        if store.filteredOrders.isEmpty {
+                            store.filterType = .notFullyCheckedIn
+                        }
+                        firstAppearance = false
+                    }
+                }
+            }
         }
     }
 }
