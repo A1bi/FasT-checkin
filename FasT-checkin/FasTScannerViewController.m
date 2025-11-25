@@ -304,7 +304,7 @@
     if ([presentationController.presentedViewController isKindOfClass:[OrdersListViewController class]]) {
         OrdersListViewController *vc = (OrdersListViewController *)presentationController.presentedViewController;
         vc.onDismiss = ^{
-            [self presentationControllerDidDismiss:presentationController];
+            [self presentationControllerWillDismiss:presentationController];
         };
     }
     [self setScanningBlocked:YES];

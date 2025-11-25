@@ -95,8 +95,11 @@ struct OrderDetailsView: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("schließen", systemImage: "xmark", action: {
-                    isEditing = false
-                    dismiss()
+                    if isEditing {
+                        isEditing = false
+                    } else {
+                        dismiss()
+                    }
                 })
             }
         }
