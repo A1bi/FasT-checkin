@@ -23,22 +23,20 @@ struct OrderDetailsView: View {
                 }
             } header: {
                 VStack {
+                    Text(order.fullName)
+                        .font(.title)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.bottom, 5)
                     HStack {
-                        VStack {
-                            Text(order.fullName)
-                                .font(.title)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            HStack {
-                                Image(systemName: "eurosign")
-                                Text(order.paid ? "bezahlt" : "nicht bezahlt")
-                            }
-                            .foregroundStyle(.white)
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, 10)
-                            .background(RoundedRectangle(cornerRadius: 4).fill(order.paid ? .green : .red))
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.bottom, 10)
+                        HStack {
+                            Image(systemName: "eurosign")
+                            Text(order.paid ? "bezahlt" : "nicht bezahlt")
                         }
+                        .foregroundStyle(.white)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .background(RoundedRectangle(cornerRadius: 4).fill(order.paid ? .green : .red))
+                        .frame(maxWidth: .infinity, alignment: .leading)
                         if (!order.paid) {
                             Text(abs(order.balance), format: .currency(code: "EUR"))
                                 .font(.title2)
@@ -46,6 +44,7 @@ struct OrderDetailsView: View {
                             Text("offen")
                         }
                     }
+                    .padding(.bottom, 10)
                     Text("\(order.tickets.count) Tickets")
                 }
             }
