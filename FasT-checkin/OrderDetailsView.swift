@@ -5,6 +5,7 @@ struct OrderDetailsView: View {
     @State var isEditing = false
     @State var selectedTickets = Set<Ticket>()
     @State private var markAsPaidConfirmationShown = false
+    @State private var checkInAllTicketsConfirmationShown = false
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -57,14 +58,7 @@ struct OrderDetailsView: View {
                 if isEditing {
                     Button("Done", systemImage: "checkmark") {
                         let tickets: [Ticket] = Array(selectedTickets)
-                        for ticket in tickets {
-                            ticket.checkedIn = true
-                        }
-                        
-                        Task {
-                            let store = OrderStore()
-                            await store.checkInTickets(tickets: tickets)
-                        }
+                        checkInTickets(tickets: tickets)
                         
                         isEditing = false
                     }
@@ -111,10 +105,30 @@ struct OrderDetailsView: View {
                 withAnimation {
                     order.paid = true
                 }
+                if order.checkInStatus != .full {
+                    checkInAllTicketsConfirmationShown = true
+                }
             }
-            Button("abbrechen", role: .cancel) {
-                markAsPaidConfirmationShown = false
+            Button("abbrechen", role: .cancel) {}
+        }
+        .alert("Möchten Sie alle Tickets einchecken?", isPresented: $checkInAllTicketsConfirmationShown) {
+            Button("alle Tickets einchecken") {
+                withAnimation {
+                    checkInTickets(tickets: order.tickets)
+                }
             }
+            Button("nicht einchecken", role: .cancel) {}
+        }
+    }
+    
+    private func checkInTickets(tickets: [Ticket]) {
+        for ticket in tickets {
+            ticket.checkedIn = true
+        }
+        
+        Task {
+            let store = OrderStore()
+            await store.checkInTickets(tickets: tickets)
         }
     }
 }
