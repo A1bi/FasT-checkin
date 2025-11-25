@@ -105,7 +105,9 @@ class OrderStore: ObservableObject {
         
         if !searchQuery.isEmpty {
             filteredOrders = filteredOrders.filter {
-                $0.lastName != nil && $0.lastName!.contains(searchQuery) || $0.firstName != nil && $0.firstName!.contains(searchQuery) || $0.number.contains(searchQuery)
+                $0.lastName != nil && $0.lastName!.range(of: searchQuery, options: .caseInsensitive) != nil ||
+                $0.firstName != nil && $0.firstName!.range(of: searchQuery, options: .caseInsensitive) != nil ||
+                $0.number.contains(searchQuery)
             }
         }
     }
