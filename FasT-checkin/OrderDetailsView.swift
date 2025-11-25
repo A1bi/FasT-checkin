@@ -7,6 +7,7 @@ struct OrderDetailsView: View {
     @State private var markAsPaidConfirmationShown = false
     @State private var checkInAllTicketsConfirmationShown = false
     @Environment(\.dismiss) var dismiss
+    let store = OrderStore()
     
     var body: some View {
         List(selection: $selectedTickets) {
@@ -105,6 +106,10 @@ struct OrderDetailsView: View {
         .alert("Möchten Sie die Bestellung als bezahlt markieren?", isPresented: $markAsPaidConfirmationShown) {
             Button("als bezahlt markieren") {
                 withAnimation {
+                    Task {
+                        await store.markOrderAsPaid(order: order)
+                    }
+                    
                     order.paid = true
                 }
                 if order.checkInStatus != .full {
@@ -129,7 +134,6 @@ struct OrderDetailsView: View {
         }
         
         Task {
-            let store = OrderStore()
             await store.checkInTickets(tickets: tickets)
         }
     }

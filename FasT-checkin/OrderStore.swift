@@ -73,6 +73,17 @@ class OrderStore: ObservableObject {
         }
     }
     
+    func markOrderAsPaid(order: Order) async {
+        do {
+            var request = apiRequestForPath(path: "ticketing/check_ins/orders/\(order.id)/mark_as_paid")
+            request.httpMethod = "POST"
+            
+            let _ = try await URLSession.shared.data(for: request)
+        } catch {
+            print("Error marking order as paid:", error)
+        }
+    }
+    
     private func apiRequestForPath(path: String) -> URLRequest {
         let url = URL(string: "\(apiHost)/api/\(path)")!
         var request = URLRequest(url: url)
