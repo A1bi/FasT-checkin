@@ -68,7 +68,7 @@ struct OrderDetailsView: View {
                 }
             }
             ToolbarItemGroup(placement: .primaryAction) {
-                if !isEditing {
+                if !isEditing && order.checkInStatus != .full {
                     Button("einchecken", systemImage: "person.fill.checkmark.rtl", action: {
                         isEditing = true
                     })
@@ -82,6 +82,7 @@ struct OrderDetailsView: View {
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("schließen", systemImage: "xmark", action: {
+                    isEditing = false
                     dismiss()
                 })
             }
