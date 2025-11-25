@@ -7,7 +7,8 @@ struct SampleData {
             number: orderNumber(),
             firstName: ["John", "Roger", "Freddie", "Brian"].randomElement()!,
             lastName: ["Deacon", "Taylor", "Mercury", "May"].randomElement()!,
-            paid: Bool.random()
+            paid: Bool.random(),
+            balance: Float.random(in: 1...30)
         )
         for i in 1...Int.random(in: 3...5) {
             order.tickets.append(ticket(i: i))

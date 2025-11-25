@@ -12,6 +12,7 @@ struct Order: Hashable, Decodable, Identifiable {
     var firstName: String?
     var lastName: String?
     var paid: Bool
+    var balance: Float
     var tickets: [Ticket] = []
     
     var fullName: String {

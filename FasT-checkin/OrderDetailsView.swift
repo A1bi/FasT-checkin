@@ -20,21 +20,29 @@ struct OrderDetailsView: View {
                     }
                 }
             } header: {
-                VStack {
-                    Text(order.fullName)
-                        .font(.title)
+                HStack {
+                    VStack {
+                        Text(order.fullName)
+                            .font(.title)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        HStack {
+                            Image(systemName: "eurosign")
+                            Text(order.paid ? "bezahlt" : "nicht bezahlt")
+                        }
+                        .foregroundStyle(.white)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .background(RoundedRectangle(cornerRadius: 4).fill(order.paid ? .green : .red))
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    HStack {
-                        Image(systemName: "eurosign")
-                        Text(order.paid ? "bezahlt" : "nicht bezahlt")
+                        .padding(.bottom, 10)
+                        Text("\(order.tickets.count) Tickets")
                     }
-                    .foregroundStyle(.white)
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, 10)
-                    .background(RoundedRectangle(cornerRadius: 4).fill(order.paid ? .green : .red))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 10)
-                    Text("\(order.tickets.count) Tickets")
+                    if (!order.paid) {
+                        Text(abs(order.balance), format: .currency(code: "EUR"))
+                            .font(.title2)
+                            .foregroundStyle(.red)
+                        Text("offen")
+                    }
                 }
             }
         }
@@ -81,8 +89,18 @@ struct OrderDetailsView: View {
     }
 }
 
-#Preview {
+#Preview("paid") {
     NavigationStack {
-        OrderDetailsView(order: SampleData.shared.order)
+        var order = SampleData.shared.order
+        order.paid = true
+        return OrderDetailsView(order: order)
+    }
+}
+
+#Preview("unpaid") {
+    NavigationStack {
+        var order = SampleData.shared.order
+        order.paid = false
+        return OrderDetailsView(order: order)
     }
 }
