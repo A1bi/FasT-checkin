@@ -67,18 +67,34 @@ struct OrderDetailsView: View {
                     }
                 }
             }
-            ToolbarItemGroup(placement: .primaryAction) {
-                if !isEditing && order.checkInStatus != .full {
-                    Button("einchecken", systemImage: "person.fill.checkmark.rtl", action: {
-                        isEditing = true
-                    })
+            if !isEditing {
+                ToolbarItemGroup(placement: .primaryAction) {
+                    Link(destination: URL(string: "https://www.theater-kaisersesch.de/vorverkauf/bestellungen/\(order.id)")!) {
+                        Image(systemName: "safari")
+                    }
                 }
-                Link(destination: URL(string: "https://www.theater-kaisersesch.de/vorverkauf/bestellungen/\(order.id)")!) {
-                    Image(systemName: "safari")
+                if #available(iOS 26.0, *) {
+                    ToolbarSpacer(.fixed, placement: .primaryAction)
                 }
-            }
-            if #available(iOS 26.0, *) {
-                ToolbarSpacer(.fixed, placement: .primaryAction)
+                ToolbarItemGroup(placement: .primaryAction) {
+                    if !order.paid {
+                        Button(action: {
+                            isEditing = true
+                        }) {
+                            Image("mark_as_paid", label: Text("als bezahlt markieren"))
+                        }
+                    }
+                    if order.checkInStatus != .full {
+                        Button(action: {
+                            isEditing = true
+                        }) {
+                            Image("check_in", label: Text("einchecken"))
+                        }
+                    }
+                }
+                if #available(iOS 26.0, *) {
+                    ToolbarSpacer(.fixed, placement: .primaryAction)
+                }
             }
             ToolbarItem(placement: .primaryAction) {
                 Button("schließen", systemImage: "xmark", action: {
