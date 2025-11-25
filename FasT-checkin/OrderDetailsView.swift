@@ -6,7 +6,7 @@ struct OrderDetailsView: View {
     @State var selectedTickets = Set<Ticket>()
     @State private var markAsPaidConfirmationShown = false
     @State private var checkInAllTicketsConfirmationShown = false
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismissModal) var dismiss
     let store = OrderStore()
     
     var body: some View {
@@ -97,8 +97,8 @@ struct OrderDetailsView: View {
                 Button("schließen", systemImage: "xmark", action: {
                     if isEditing {
                         isEditing = false
-                    } else {
-                        dismiss()
+                    } else if dismiss != nil {
+                        dismiss!()
                     }
                 })
             }

@@ -1,5 +1,9 @@
 import SwiftUI
 
+extension EnvironmentValues {
+    @Entry var dismissModal: DismissAction? = nil
+}
+
 struct OrdersList: View {
     @StateObject private var store = OrderStore()
     @Environment(\.dismiss) var dismiss
@@ -27,6 +31,7 @@ struct OrdersList: View {
             }
             .navigationDestination(for: Order.self) { order in
                 OrderDetailsView(order: order)
+                    .environment(\.dismissModal, dismiss)
             }
             .searchable(text: $store.searchQuery, prompt: "Name oder Bestellnummer")
             .navigationTitle("Bestellungen")
