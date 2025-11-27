@@ -307,8 +307,6 @@
             [self presentationControllerWillDismiss:presentationController];
         };
     }
-    [self setScanningBlocked:YES];
-    [self toggleCaptureSession:NO];
 }
 
 - (void)presentationControllerWillDismiss:(UIPresentationController *)presentationController {
