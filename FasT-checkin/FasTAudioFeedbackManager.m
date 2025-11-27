@@ -9,18 +9,12 @@
 #import "FasTAudioFeedbackManager.h"
 
 #import <AVFAudio/AVFAudio.h>
-#import <AudioToolbox/AudioServices.h>
 
-void AudioServicesPlaySystemSoundWithVibration(SystemSoundID soundId, id arg, NSDictionary *vibrationPattern);
-
-static NSDictionary *successVibrationPattern;
-static NSDictionary *warningVibrationPattern;
-static NSDictionary *errorVibrationPattern;
 static AVAudioPlayer *successSound, *warningSound, *failureSound;
+static UINotificationFeedbackGenerator *feedbackGenerator;
 
 @interface FasTAudioFeedbackManager ()
 
-+ (void)vibrateWithPattern:(NSDictionary *)pattern;
 + (AVAudioPlayer *)preparePlayerForSound:(NSString *)soundName;
 
 @end
@@ -28,17 +22,12 @@ static AVAudioPlayer *successSound, *warningSound, *failureSound;
 @implementation FasTAudioFeedbackManager
 
 + (void)initialize {
-    successVibrationPattern = @{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @100 ] };
-    warningVibrationPattern = @{ @"Intensity": @0.5, @"VibePattern": @[ @YES, @50, @NO, @50, @YES, @50, @NO, @50, @YES, @50 ] };
-    errorVibrationPattern = @{ @"Intensity": @1.0, @"VibePattern": @[ @YES, @500 ] };
-    
     successSound = [self preparePlayerForSound:@"success"];
     warningSound = [self preparePlayerForSound:@"warning"];
     failureSound = [self preparePlayerForSound:@"failure"];
-}
-
-+ (void)vibrateWithPattern:(NSDictionary *)pattern {
-    AudioServicesPlaySystemSoundWithVibration(kSystemSoundID_Vibrate, nil, pattern);
+    
+    feedbackGenerator = [[UINotificationFeedbackGenerator alloc] init];
+    [feedbackGenerator prepare];
 }
 
 + (AVAudioPlayer *)preparePlayerForSound:(NSString *)soundName {
@@ -49,17 +38,17 @@ static AVAudioPlayer *successSound, *warningSound, *failureSound;
 }
 
 + (void)indicateSuccess {
-    [self vibrateWithPattern:successVibrationPattern];
+    [feedbackGenerator notificationOccurred:UINotificationFeedbackTypeSuccess];
     [successSound play];
 }
 
 + (void)indicateWarning {
-    [self vibrateWithPattern:warningVibrationPattern];
+    [feedbackGenerator notificationOccurred:UINotificationFeedbackTypeWarning];
     [warningSound play];
 }
 
 + (void)indicateError {
-    [self vibrateWithPattern:errorVibrationPattern];
+    [feedbackGenerator notificationOccurred:UINotificationFeedbackTypeError];
     [failureSound play];
 }
 @end
