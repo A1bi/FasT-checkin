@@ -28,7 +28,7 @@ struct TicketsListEntry: View {
         if ticket.checkedIn {
             return "checkmark.circle.fill"
         } else {
-            return "circle"
+            return "circle.badge.questionmark"
         }
     }
     
@@ -36,7 +36,7 @@ struct TicketsListEntry: View {
         if ticket.checkedIn {
             return .green
         } else {
-            return .red
+            return .yellow
         }
     }
 }
