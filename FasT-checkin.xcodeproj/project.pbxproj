@@ -18,6 +18,7 @@
 		F00122971F21E8ED0009B766 /* FasTStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F00122961F21E8ED0009B766 /* FasTStatisticsViewController.m */; };
 		F001229A1F21EBC90009B766 /* FasTStatisticsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F00122991F21EBC90009B766 /* FasTStatisticsManager.m */; };
 		F001229D1F2240570009B766 /* FasTStatisticsCheckInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F001229C1F2240570009B766 /* FasTStatisticsCheckInViewController.m */; };
+		F0116DE72ED9DB5400149368 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = F0116DE62ED9DB5400149368 /* AppIcon.icon */; };
 		F015FFC71D343F0800493E8E /* FasTScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F015FFC61D343F0800493E8E /* FasTScannerViewController.m */; };
 		F015FFC91D34408000493E8E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F015FFC81D34408000493E8E /* AVFoundation.framework */; };
 		F015FFCD1D34432700493E8E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F015FFCC1D34432700493E8E /* Images.xcassets */; };
@@ -74,6 +75,7 @@
 		F00122991F21EBC90009B766 /* FasTStatisticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTStatisticsManager.m; sourceTree = "<group>"; };
 		F001229B1F2240570009B766 /* FasTStatisticsCheckInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTStatisticsCheckInViewController.h; sourceTree = "<group>"; };
 		F001229C1F2240570009B766 /* FasTStatisticsCheckInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTStatisticsCheckInViewController.m; sourceTree = "<group>"; };
+		F0116DE62ED9DB5400149368 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
 		F015FFC51D343F0800493E8E /* FasTScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FasTScannerViewController.h; sourceTree = "<group>"; };
 		F015FFC61D343F0800493E8E /* FasTScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FasTScannerViewController.m; sourceTree = "<group>"; };
 		F015FFC81D34408000493E8E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -233,6 +235,7 @@
 				F0AAB9422E2EE83300E9F1FF /* FasT-checkin-Bridging-Header.h */,
 				F015FFD01D3444B500493E8E /* Storyboard.storyboard */,
 				F015FFCC1D34432700493E8E /* Images.xcassets */,
+				F0116DE62ED9DB5400149368 /* AppIcon.icon */,
 				F0760BBA28E9BB7A0054FB82 /* sounds */,
 				610FCAD817B8F522000AAF97 /* Supporting Files */,
 				610FCAD017B8F522000AAF97 /* Frameworks */,
@@ -355,6 +358,7 @@
 				F0760BC228E9BE930054FB82 /* failure.aif in Resources */,
 				F07C6FA5235248D5002289FF /* FasTScannerResultViewController.xib in Resources */,
 				F0377C7E1D36860A00F4A668 /* Podfile in Resources */,
+				F0116DE72ED9DB5400149368 /* AppIcon.icon in Resources */,
 				610FCADC17B8F522000AAF97 /* InfoPlist.strings in Resources */,
 				F015FFCD1D34432700493E8E /* Images.xcassets in Resources */,
 				610FCCEE17BA40EA000AAF97 /* Settings.bundle in Resources */,
