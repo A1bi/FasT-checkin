@@ -44,7 +44,7 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>The camera is needed for scanning ticket barcodes.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>Storyboard</string>
 	<key>UIMainStoryboardFile</key>
