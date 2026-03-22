@@ -49,7 +49,7 @@ struct OrderDetailsView: View {
                         }
                     }
                     .padding(.bottom, 10)
-                    Text("\(order.tickets.count) Tickets")
+                    Text("\(order.validTickets.count) Tickets")
                 }
             }
         }

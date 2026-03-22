@@ -13,11 +13,25 @@ struct TicketsListEntry: View {
                 Image(systemName: iconName)
                     .foregroundStyle(iconStyle)
             }
-            Text(ticket.number)
-                .font(.system(.body, design: .monospaced))
-            Text(ticket.type)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 10)
+            if #available(iOS 16.0, *) {
+                Text(ticket.number)
+                    .font(.system(.body, design: .monospaced))
+                    .foregroundStyle(labelColor)
+                    .strikethrough(ticket.invalidated)
+                Text(ticket.type)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(labelColor)
+                    .strikethrough(ticket.invalidated)
+                    .padding(.horizontal, 10)
+            } else {
+                Text(ticket.number)
+                    .font(.system(.body, design: .monospaced))
+                    .foregroundStyle(labelColor)
+                Text(ticket.type)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(labelColor)
+                    .padding(.horizontal, 10)
+            }
             if let seat = ticket.seat {
                 Text(seat)
             }
@@ -25,7 +39,9 @@ struct TicketsListEntry: View {
     }
     
     private var iconName: String {
-        if ticket.checkedIn {
+        if ticket.invalidated {
+            return "xmark"
+        } else if ticket.checkedIn {
             return "checkmark.circle.fill"
         } else {
             return "circle.badge.questionmark"
@@ -33,11 +49,17 @@ struct TicketsListEntry: View {
     }
     
     private var iconStyle: Color {
-        if ticket.checkedIn {
+        if ticket.invalidated {
+            return .red
+        } else if ticket.checkedIn {
             return .green
         } else {
             return .yellow
         }
+    }
+    
+    private var labelColor: Color {
+        ticket.invalidated ? .gray : .primary
     }
 }
 

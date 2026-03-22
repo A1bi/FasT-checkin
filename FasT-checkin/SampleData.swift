@@ -22,6 +22,7 @@ struct SampleData {
             number: "\(order != nil ? order!.number : orderNumber())-\(i ?? Int.random(in: 1...5))",
             type: ["Erwachsene", "Ermäßigt", "Freikarte"].randomElement()!,
             seat: "\(["A", "B", "C", "D"].randomElement()!)\(Int.random(in: 1...100))",
+            invalidated: Bool.random(),
             checkedIn: Bool.random()
         )
     }

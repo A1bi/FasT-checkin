@@ -15,6 +15,10 @@ struct Order: Hashable, Decodable, Identifiable {
     var balance: Float
     var tickets: [Ticket] = []
     
+    var validTickets: [Ticket] {
+        tickets.filter({ !$0.invalidated })
+    }
+    
     var fullName: String {
         "\(firstName ?? "?") \(lastName ?? "?")"
     }
@@ -25,7 +29,7 @@ struct Order: Hashable, Decodable, Identifiable {
     
     var checkInStatus: OrderCheckInStatus {
         switch tickets.filter({ $0.checkedIn }).count {
-        case tickets.count:
+        case validTickets.count...:
             .full
         case 0:
             .none
