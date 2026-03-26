@@ -22,10 +22,13 @@ static UINotificationFeedbackGenerator *feedbackGenerator;
 @implementation FasTAudioFeedbackManager
 
 + (void)initialize {
+    // playback + mixWithOthers: sounds play even with the silent switch on and don't interrupt other apps
+    [AVAudioSession.sharedInstance setCategory:AVAudioSessionCategoryPlayback withOptions:AVAudioSessionCategoryOptionMixWithOthers error:nil];
+
     successSound = [self preparePlayerForSound:@"success"];
     warningSound = [self preparePlayerForSound:@"warning"];
     failureSound = [self preparePlayerForSound:@"failure"];
-    
+
     feedbackGenerator = [[UINotificationFeedbackGenerator alloc] init];
     [feedbackGenerator prepare];
 }
