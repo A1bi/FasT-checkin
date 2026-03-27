@@ -189,7 +189,7 @@ static NSMutableDictionary *scanResultsByBarcodeContent = nil;
         ticket.type = ticketTypes[ticketInfo[@"type_id"]];
         ticket.entrance = seatEntrances[ticketInfo[@"seat_id"]];
         ticket.number = ticketInfo[@"number"];
-        ticket.cancelled = ((NSNumber *)ticketInfo[@"cancelled"]).boolValue;
+        ticket.invalidated = ((NSNumber *)ticketInfo[@"invalidated"]).boolValue;
         ticket.seatRange = ticketInfo[@"seat_range"];
     }
 }

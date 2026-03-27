@@ -18,7 +18,7 @@
 @property (nonatomic) NSString *type;
 @property (nonatomic) NSArray *seatRange;
 @property (nonatomic) NSString *entrance;
-@property BOOL cancelled;
+@property BOOL invalidated;
 @property (nonatomic, weak) FasTCheckIn *checkIn;
 
 - (instancetype)initWithInfoData:(NSData *)data dates:(NSDictionary *)dates types:(NSDictionary *)types entrances:(NSDictionary *)entrances;

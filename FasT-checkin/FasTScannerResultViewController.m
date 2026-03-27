@@ -178,8 +178,8 @@ typedef enum {
                 [self setErrorTitle:@"Ticket ungültig" description:@"Ticket gilt für einen anderen Termin."];
                 [stats increaseDeniedScans];
 
-            } else if (ticket.cancelled) {
-                [self setErrorTitle:@"Ticket ungültig" description:@"Ticket wurde storniert."];
+            } else if (ticket.invalidated) {
+                [self setErrorTitle:@"Ticket nicht mehr gültig" description:@"Ticket wurde storniert oder zum Weiterverkauf freigegeben."];
                 [stats increaseDeniedScans];
 
             } else if (![ticket isValidAtEntrance:[self currentEntrance]]) {
